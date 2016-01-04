@@ -1,0 +1,89 @@
+<style type="text/css">
+	.button
+	{
+		background-color:rgb(221, 221, 221);
+		background-image:linear-gradient(rgb(237, 237, 237), rgb(237, 237, 237) 38%, rgb(222, 222, 222));
+		border-bottom-color:rgba(0, 0, 0, 0.247059);
+		border-bottom-left-radius:2px;
+		border-bottom-right-radius:2px;
+		border-bottom-style:solid;
+		border-bottom-width:1px;
+		border-image-outset:0px;
+		border-image-repeat:stretch;
+		border-image-slice:100%;
+		border-image-source:none;
+		border-image-width:1;
+		border-left-color:rgba(0, 0, 0, 0.247059);
+		border-left-style:solid;
+		border-left-width:1px;
+		border-right-color:rgba(0, 0, 0, 0.247059);
+		border-right-style:solid;
+		border-right-width:1px;
+		border-top-color:rgba(0, 0, 0, 0.247059);
+		border-top-left-radius:2px;
+		border-top-right-radius:2px;
+		border-top-style:solid;
+		border-top-width:1px;
+		box-shadow:rgba(0, 0, 0, 0.0784314) 0px 1px 0px 0px, rgba(255, 255, 255, 0.74902) 0px 1px 2px 0px inset;
+		color:rgb(68, 68, 68);
+		cursor:pointer;
+		display:inline-block;
+		margin:0px;
+		margin-right:1px;
+		outline-color:rgb(68, 68, 68);
+		padding:1px 10px;
+		text-align:center;
+		text-shadow:rgb(240, 240, 240) 0px 1px 0px;
+		text-transform:none;
+		word-spacing:0px;
+	}
+	#addTwitch
+	{
+		padding-left: 5px;
+		margin: 5px 0;
+	}
+	#addTwitchDialog
+	{
+		width: 375px;
+		margin: 5px auto;
+	}
+</style>
+<div style="width:600px;padding: 10px;">
+	<form id="form">
+
+		<div>
+			<label for="streams">Les URL des streams s&eacute;par&eacute;es par des retours &agrave; la ligne :</label>
+			<textarea id="streams" style="width: 100%; height: 15em;"></textarea>
+			<i>Marche avec des liens <a href="https://twitch.tv">twitch.tv</a> , <a href="http://hitbox.tv">hitbox.tv</a></i>
+		</div>
+		<div id="addTwitch" class="button" style="display:block">Ajouter &agrave; la liste les streamers que je suis sur Twitch</div>
+		<div id="addTwitchDialog" style="display:none">
+			<label for="usernameTwitch">Nom d'utilisateur : 
+				<input type="text" id="usernameTwitch"/>
+			</label>
+			<div class="button" id="importTwitch">Importer la liste</div>
+		</div>
+
+		<br/>
+
+		<label for="notif" style="display: block; margin-bottom: 0.5em">
+			<input type="checkbox" id="notif" style="position: relative;vertical-align: middle;bottom: 1px;"/> Activer les notifications pour les streams
+		</label>
+
+		<label for="titleNotif" style="display: block; margin-bottom: 0.5em">
+			<input type="checkbox" id="titleNotif" style="position: relative;vertical-align: middle;bottom: 1px;"/> Activer les notifications en cas de changement de titre de stream
+		</label>
+
+		<label style="display: block; margin-bottom: 0.2em">
+			Temps de rafra&icirc;chissement entre chaque notification (sec) : 
+			<input type="number" min="1" step="1" id="refreshTime" style="display: inline-block; width: 4em;"/>
+		</label>
+
+
+		<div id="status" style="display: none; bottom: 1em; text-align: center; font-weight: bold"></div>
+
+		<input type="submit" id="save" value="Enregistrer"/>
+	</form>
+
+	<script src="options.js"></script>
+</div>
