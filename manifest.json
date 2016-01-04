@@ -1,12 +1,12 @@
 {
 	"manifest_version": 2,
-	"name": "Streamers Online",
-	"version": "0.2.3",
+	"name": "StreamON",
+	"version": "0.3.0",
 	"description": "Extension pour savoir si tes streamers préférés sont en live.",
 	"browser_action":
 			{
 				"default_icon": "icon128.png",
-				"default_title": "Streamers Online",
+				"default_title": "StreamON",
 				"default_popup": "popup.html"
 			},
 	"permissions": [

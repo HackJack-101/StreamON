@@ -18,7 +18,7 @@ function save_options() {
 	}, function () {
 		var status = document.getElementById('status');
 		status.style.display = 'block';
-		status.textContent = 'Options sauvegardées';
+		status.textContent = 'Options sauvegard&eacute;es';
 		setTimeout(function () {
 			status.textContent = '';
 			status.style.display = 'none';
