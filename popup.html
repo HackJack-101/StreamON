@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>StreamersOnline</title>
+		<style type="text/css">
+			body
+			{
+				min-width: 350px;
+			}
+			h1
+			{
+				font-size: 1.5em;
+				margin:0;
+				padding: 0;
+				text-align: center;
+			}
+			h2
+			{
+				font-size: 1.25em;
+			}
+			.streamOn,.streamOn:hover,.streamOn:visited
+			{
+				display: flex;
+				text-decoration: none;
+				color: black;
+				margin-left: 2px;
+				margin-bottom: 2px;
+				cursor: pointer;
+				border-radius: 2px;
+				border: 1px solid #D0D0D0;
+			}
+			.streamOn:hover
+			{
+				background: #EAEAEA;
+				border: 1px solid #D0D0D0;
+			}
+			.streamOn .description, .streamOn  .preview
+			{
+				display: inline-block;
+				vertical-align: middle;
+			}
+			.streamOn .description
+			{
+				padding-left: 5px;
+			}
+			.title
+			{
+				font-weight: bold;
+				display: block;
+			}
+			.preview
+			{
+				width: 80px;
+				height: 45px;
+				margin: auto 0;
+			}
+			#offlineList
+			{
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: space-between;
+			}
+			.streamOff {
+				padding: 2px;
+				margin: 1px;
+				cursor: pointer;
+				font-weight: 600;
+			}
+		</style>
+	</head>
+
+	<body>
+		<h1>Streamers Online</h1>
+		<h2>Streams en ligne (<span id="online">0</span>)</h2>
+		<nav id="onlineList">
+
+		</nav>
+		<h2>Streams hors ligne(<span id="offline">0</span>)</h2>
+		<nav id="offlineList">
+
+		</nav>
+
+		<script src="popup.js"></script>
+	</body>
+</html>
