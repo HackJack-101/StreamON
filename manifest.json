@@ -1,0 +1,33 @@
+{
+	"manifest_version": 2,
+	"name": "StreamersOnline",
+	"version": "0.2.2",
+	"description": "Extension pour savoir si tes streamers préférés sont en live.",
+	"browser_action":
+			{
+				"default_icon": "icon128.png",
+				"default_title": "Aucun de tes streamers est en live",
+				"default_popup": "popup.html"
+			},
+	"permissions": [
+		"notifications",
+		"tabs",
+		"storage"
+	],
+	"background": {
+		"scripts": ["background.js"]
+	},
+	"web_accessible_resources": [
+		"icon.png",
+		"icon_ok.png"
+	],
+	"icons": {
+		"16": "icon16.png",
+		"48": "icon48.png",
+		"128": "icon128.png"
+	},
+	"options_ui": {
+		"page": "options.html",
+		"chrome_style": true
+	}
+}
