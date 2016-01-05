@@ -1,0 +1,50 @@
+{
+	"extName": {
+		"message": "StreamON"
+	},
+	"extDesc": {
+		"message": "An Chrome extension to alert you when a streaming goes online."
+	},
+	"game": {
+		"message": "Game"
+	},
+	"optionsSaved": {
+		"message": "Options saved"
+	},
+	"playingTo": {
+		"message": "is now playing"
+	},
+	"title": {
+		"message": "StreamON"
+	},
+	"onlineTitle": {
+		"message": "Online streams"
+	},
+	"offlineTitle": {
+		"message": "Offline streams"
+	},
+	"streamsLabel": {
+		"message": "Stream URLs split by line returns:"
+	},
+	"streamsHelp": {
+		"message": "Works with twitch.tv and hitbox.tv links"
+	},
+	"addTwitch": {
+		"message": "Import following streamers from Twitch"
+	},
+	"username": {
+		"message": "Username"
+	},
+	"importTwitch": {
+		"message": "Import following streamers"
+	},
+	"notifLabel": {
+		"message": "Activate stream notifications"
+	},
+	"titleNotifLabel": {
+		"message": "Activate stream notifications when game/title changes"
+	},
+	"refreshTimeLabel": {
+		"message": "Time between each checking of your streaming list (sec)"
+	}
+}
