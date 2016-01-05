@@ -18,7 +18,7 @@ function save_options() {
 	}, function () {
 		var status = document.getElementById('status');
 		status.style.display = 'block';
-		status.textContent = 'Options sauvegard&eacute;es';
+		status.textContent = chrome.i18n.getMessage("optionsSaved");
 		setTimeout(function () {
 			status.textContent = '';
 			status.style.display = 'none';
@@ -83,7 +83,7 @@ function importTwitchFollowing(username, offset)
 function addTwitch()
 {
 	document.getElementById('addTwitch').style.display = 'none';
-	document.getElementById('addTwitchDialog').style.display = 'block';
+	document.getElementById('addTwitchDialog').style.display = 'flex';
 	document.getElementById('importTwitch').addEventListener('click', function () {
 		var username = document.getElementById('usernameTwitch').value;
 		if (username != null && username.length > 0)

@@ -41,49 +41,81 @@
 	{
 		padding-left: 5px;
 		margin: 5px 0;
+		display: block;
 	}
 	#addTwitchDialog
 	{
-		width: 375px;
-		margin: 5px auto;
+		margin: 5px 40px;
+		justify-content: space-around;
+	}
+	#refreshTime
+	{
+		display: inline-block;
+		width: 4em;
+	}
+	.container
+	{
+		width:600px;
+		padding: 10px;
+	}
+	#streams
+	{
+		width: 100%; 
+		height: 15em;
+	}
+	.hidden
+	{
+		display:none;
+	}
+	#notif, #titleNotif
+	{
+		position: relative;
+		vertical-align: middle;
+		bottom: 1px;
+	}
+	#status
+	{
+		bottom: 1em; 
+		text-align: center; 
+		font-weight: bold;
 	}
 </style>
-<div style="width:600px;padding: 10px;">
+<div class="container">
 	<form id="form">
 
 		<div>
-			<label for="streams">Les URL des streams s&eacute;par&eacute;es par des retours &agrave; la ligne :</label>
-			<textarea id="streams" style="width: 100%; height: 15em;"></textarea>
-			<i>Marche avec des liens <a href="https://twitch.tv">twitch.tv</a> , <a href="http://hitbox.tv">hitbox.tv</a></i>
+			<label for="streams" id="streamsLabel"></label>
+			<textarea id="streams"></textarea>
+			<i id="streamsHelp"></i>
 		</div>
-		<div id="addTwitch" class="button" style="display:block">Ajouter &agrave; la liste les streamers que je suis sur Twitch</div>
-		<div id="addTwitchDialog" style="display:none">
-			<label for="usernameTwitch">Nom d'utilisateur : 
+		<div id="addTwitch" class="button"></div>
+		<div id="addTwitchDialog" class="hidden">
+			<label for="usernameTwitch">
+				<span id="username"></span> : 
 				<input type="text" id="usernameTwitch"/>
 			</label>
-			<div class="button" id="importTwitch">Importer la liste</div>
+			<div class="button" id="importTwitch"></div>
 		</div>
 
 		<br/>
 
 		<label for="notif" style="display: block; margin-bottom: 0.5em">
-			<input type="checkbox" id="notif" style="position: relative;vertical-align: middle;bottom: 1px;"/> Activer les notifications pour les streams
+			<input type="checkbox" id="notif"/> <span id="notifLabel"></span>
 		</label>
-
 		<label for="titleNotif" style="display: block; margin-bottom: 0.5em">
-			<input type="checkbox" id="titleNotif" style="position: relative;vertical-align: middle;bottom: 1px;"/> Activer les notifications en cas de changement de titre de stream
+			<input type="checkbox" id="titleNotif"/> <span id="titleNotifLabel"></span>
 		</label>
 
 		<label style="display: block; margin-bottom: 0.2em">
-			Temps de rafra&icirc;chissement entre chaque v&eacute;rification des streams (sec) : 
-			<input type="number" min="1" step="1" id="refreshTime" style="display: inline-block; width: 4em;"/>
+			<span id="refreshTimeLabel"></span> : <input type="number" min="1" step="1" id="refreshTime"/>
 		</label>
 
 
-		<div id="status" style="display: none; bottom: 1em; text-align: center; font-weight: bold"></div>
+		<div id="status" class="hidden"></div>
 
 		<input type="submit" id="save" value="Enregistrer"/>
 	</form>
 
 	<script src="options.js"></script>
+	<script src="locales.js"></script>
 </div>

@@ -1,0 +1,50 @@
+{
+	"extName": {
+		"message": "StreamON"
+	},
+	"extDesc": {
+		"message": "Une extension pour savoir si tes streamers préférés sont en live."
+	},
+	"game": {
+		"message": "Jeu"
+	},
+	"optionsSaved": {
+		"message": "Options sauvegardées"
+	},
+	"playingTo": {
+		"message": "joue à"
+	},
+	"title": {
+		"message": "StreamON"
+	},
+	"onlineTitle": {
+		"message": "Streams en ligne"
+	},
+	"offlineTitle": {
+		"message": "Streams hors ligne"
+	},
+	"streamsLabel": {
+		"message": "Les URL des streams séparés par des retours à la ligne :"
+	},
+	"streamsHelp": {
+		"message": "Marche avec des liens twitch.tv , hitbox.tv"
+	},
+	"addTwitch": {
+		"message": "Ajouter à la liste les streamers que je suis sur Twitch"
+	},
+	"username": {
+		"message": "Nom d'utilisateur"
+	},
+	"importTwitch": {
+		"message": "Importer la liste"
+	},
+	"notifLabel": {
+		"message": "Activer les notifications pour les streams"
+	},
+	"titleNotifLabel": {
+		"message": "Activer les notifications en cas de changement de titre/jeu du stream"
+	},
+	"refreshTimeLabel": {
+		"message": "Temps entre chaque vérification de votre liste de streaming (sec)"
+	}
+}

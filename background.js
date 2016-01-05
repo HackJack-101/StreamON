@@ -171,7 +171,7 @@ function displayNotification(profile, server)
 				{
 					icon: data[server][profile].logo,
 					lang: "fr-FR",
-					body: 'Jeu : ' + data[server][profile].game
+					body: chrome.i18n.getMessage("game") + ' : ' + data[server][profile].game
 				}
 		);
 

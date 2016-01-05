@@ -65,7 +65,7 @@ function resultTwitchStream(online, content, profile)
 		e.innerHTML = '<img class="preview" src="' + content.stream.preview.medium + '" width="80" height="45" alt="preview"/>\n\
 <div class="description">\n\
 <span class="title">' + content.stream.channel.status + '</span>\n\
-<span class="username">' + content.stream.channel.display_name + '</span> joue &aagrave; <span>' + content.stream.channel.game + '</span>\n\
+<span class="username">' + content.stream.channel.display_name + '</span> ' + chrome.i18n.getMessage("playingTo") + ' <span>' + content.stream.channel.game + '</span>\n\
 </div>';
 		document.getElementById("onlineList").appendChild(e);
 		var onlineNumber = document.getElementById('online');
@@ -92,7 +92,7 @@ function resultHitboxStream(online, content, profile)
 		e.innerHTML = '<img class="preview" src="http://edge.sf.hitbox.tv/' + content.livestream[0].media_thumbnail + '" width="80" height="45" alt="preview"/>\n\
 <div class="description">\n\
 <span class="title">' + content.livestream[0].media_status + '</span>\n\
-<span class="username">' + content.livestream[0].media_display_name + '</span> joue &aagrave; <span>' + content.livestream[0].category_name + '</span>\n\
+<span class="username">' + content.livestream[0].media_display_name + '</span> ' + chrome.i18n.getMessage("playingTo") + ' <span>' + content.livestream[0].category_name + '</span>\n\
 </div>';
 		document.getElementById("onlineList").appendChild(e);
 		var onlineNumber = document.getElementById('online');

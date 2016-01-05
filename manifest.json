@@ -1,12 +1,13 @@
 {
 	"manifest_version": 2,
-	"name": "StreamON",
-	"version": "0.3.0",
-	"description": "Extension pour savoir si tes streamers préférés sont en live.",
+	"name": "__MSG_extName__",
+	"default_locale": "en",
+	"version": "0.4.0",
+	"description": "__MSG_extDesc__",
 	"browser_action":
 			{
 				"default_icon": "icon128.png",
-				"default_title": "StreamON",
+				"default_title": "__MSG_extName__",
 				"default_popup": "popup.html"
 			},
 	"permissions": [
@@ -15,7 +16,9 @@
 		"storage"
 	],
 	"background": {
-		"scripts": ["background.js"]
+		"scripts": [
+			"background.js"
+		]
 	},
 	"web_accessible_resources": [
 		"icon.png",
