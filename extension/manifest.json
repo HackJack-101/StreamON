@@ -13,6 +13,7 @@
 	"permissions": [
 		"notifications",
 		"tabs",
+		"management",
 		"storage"
 	],
 	"background": {

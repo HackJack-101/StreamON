@@ -46,7 +46,6 @@ function checkHitbox(url)
 		if (XHR.readyState == 4 && (XHR.status == 200 || XHR.status == 0))
 		{
 			var result = JSON.parse(XHR.responseText);
-			console.log(result);
 			resultHitboxStream(result.livestream[0].media_is_live === "1", result, profile);
 		}
 	};
@@ -61,7 +60,9 @@ function resultTwitchStream(online, content, profile)
 		var e = document.createElement("a");
 		e.setAttribute("class", "streamOn");
 		e.setAttribute("data-profile", profile);
-		e.addEventListener("click", clickTwitch, false);
+		e.addEventListener("click", function () {
+			openServer(this.getAttribute('data-profile'), "twitch.tv");
+		}, false);
 		e.innerHTML = '<img class="preview" src="' + content.stream.preview.medium + '" width="80" height="45" alt="preview"/>\n\
 <div class="description">\n\
 <span class="title">' + content.stream.channel.status + '</span>\n\
@@ -74,6 +75,10 @@ function resultTwitchStream(online, content, profile)
 	{
 		var e = document.createElement("div");
 		e.setAttribute("class", "streamOff");
+		e.setAttribute("data-profile", profile);
+		e.addEventListener("click", function () {
+			openServer(this.getAttribute('data-profile'), "twitch.tv");
+		}, false);
 		e.innerHTML = profile;
 		document.getElementById("offlineList").appendChild(e);
 		var offlineNumber = document.getElementById('offline');
@@ -88,7 +93,9 @@ function resultHitboxStream(online, content, profile)
 		var e = document.createElement("a");
 		e.setAttribute("class", "streamOn");
 		e.setAttribute("data-profile", profile);
-		e.addEventListener("click", clickHitbox, false);
+		e.addEventListener("click", function () {
+			openServer(this.getAttribute('data-profile'), "hitbox.tv");
+		}, false);
 		e.innerHTML = '<img class="preview" src="http://edge.sf.hitbox.tv/' + content.livestream[0].media_thumbnail + '" width="80" height="45" alt="preview"/>\n\
 <div class="description">\n\
 <span class="title">' + content.livestream[0].media_status + '</span>\n\
@@ -102,7 +109,9 @@ function resultHitboxStream(online, content, profile)
 		var e = document.createElement("div");
 		e.setAttribute("class", "streamOff");
 		e.setAttribute("data-profile", profile);
-		e.addEventListener("click", clickHitbox, false);
+		e.addEventListener("click", function () {
+			openServer(this.getAttribute('data-profile'), "twitch.tv");
+		}, false);
 		e.innerHTML = profile;
 		document.getElementById("offlineList").appendChild(e);
 		var offlineNumber = document.getElementById('offline');
@@ -110,34 +119,26 @@ function resultHitboxStream(online, content, profile)
 	}
 }
 
-function openTwitch(profile)
+function openServer(profile, server)
 {
-	chrome.tabs.query({url: "*://*.twitch.tv/" + profile}, function (a) {
-		if (a.length < 1) // Si la page n'est pas déjà ouverte, on ouvre un nouvel onglet
-			chrome.tabs.create({url: "http://www.twitch.tv/" + profile});
-		else // Sinon on passe le focus sur la premiere page contenant le pattern
-			chrome.tabs.highlight({windowId: a[0].windowId, tabs: a[0].index});
-	});
+	miniPlayer(profile, server);
+
+//	chrome.tabs.query({url: "*://*." + server + "/" + profile}, function (a) {
+//		if (a.length < 1) // Si la page n'est pas déjà ouverte, on ouvre un nouvel onglet
+//			chrome.tabs.create({url: "http://www." + server + "/" + profile});
+//		else // Sinon on passe le focus sur la premiere page contenant le pattern
+//			chrome.tabs.highlight({windowId: a[0].windowId, tabs: a[0].index});
+//	});
 }
 
-function clickTwitch(e)
+function miniPlayer(profile, server)
 {
-	openTwitch(this.getAttribute('data-profile'));
+	chrome.runtime.sendMessage("ocmhnldnkkmebkncidbfangifbabjfdb", {server: server, profile: profile});
 }
 
-function openHitbox(profile)
+function clickServer(e)
 {
-	chrome.tabs.query({url: "*://*.hitbox.tv/" + profile}, function (a) {
-		if (a.length < 1) // Si la page n'est pas déjà ouverte, on ouvre un nouvel onglet
-			chrome.tabs.create({url: "http://www.hitbox.tv/" + profile});
-		else // Sinon on passe le focus sur la premiere page contenant le pattern
-			chrome.tabs.highlight({windowId: a[0].windowId, tabs: a[0].index});
-	});
-}
-
-function clickHitbox(e)
-{
-	openHitbox(this.getAttribute('data-profile'));
+	openHitbox(this.getAttribute('data-profile'), "hitbox.tv");
 }
 
 function getProfileName(url)
