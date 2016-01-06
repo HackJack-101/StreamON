@@ -46,5 +46,8 @@
 	},
 	"refreshTimeLabel": {
 		"message": "Temps entre chaque vérification de votre liste de streaming (sec)"
+	},
+	"openMiniPlayer": {
+		"message": "Ouvrir dans le mini-player"
 	}
 }

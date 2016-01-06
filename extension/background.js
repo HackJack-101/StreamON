@@ -58,7 +58,6 @@ function checkHitbox(url)
 		if (XHR.readyState == 4 && (XHR.status == 200 || XHR.status == 0))
 		{
 			var result = JSON.parse(XHR.responseText);
-			console.log(result);
 			resultHitboxStream(result.livestream[0].media_is_live === "1", result, profile);
 		}
 	};
@@ -138,7 +137,6 @@ function resultHitboxStream(online, content, profile)
 			data.hitbox[profile].game = content.livestream[0].category_name;
 			data.hitbox[profile].title = content.livestream[0].media_status;
 			data.hitbox[profile].logo = 'http://edge.sf.hitbox.tv/' + content.livestream[0].channel.user_logo;
-			console.log(data.hitbox[profile].logo);
 			displayNotification(profile, "hitbox");
 		} else
 		{

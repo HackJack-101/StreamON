@@ -2,7 +2,7 @@
 	"manifest_version": 2,
 	"name": "__MSG_extName__",
 	"default_locale": "en",
-	"version": "0.4.0",
+	"version": "0.5.0",
 	"description": "__MSG_extDesc__",
 	"browser_action":
 			{
@@ -14,6 +14,7 @@
 		"notifications",
 		"tabs",
 		"management",
+		"background",
 		"storage"
 	],
 	"background": {
@@ -22,8 +23,7 @@
 		]
 	},
 	"web_accessible_resources": [
-		"icon.png",
-		"icon_ok.png"
+		"play.png"
 	],
 	"icons": {
 		"16": "icon16.png",

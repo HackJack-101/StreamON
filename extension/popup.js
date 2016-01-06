@@ -57,32 +57,10 @@ function resultTwitchStream(online, content, profile)
 {
 	if (online)
 	{
-		var e = document.createElement("a");
-		e.setAttribute("class", "streamOn");
-		e.setAttribute("data-profile", profile);
-		e.addEventListener("click", function () {
-			openServer(this.getAttribute('data-profile'), "twitch.tv");
-		}, false);
-		e.innerHTML = '<img class="preview" src="' + content.stream.preview.medium + '" width="80" height="45" alt="preview"/>\n\
-<div class="description">\n\
-<span class="title">' + content.stream.channel.status + '</span>\n\
-<span class="username">' + content.stream.channel.display_name + '</span> ' + chrome.i18n.getMessage("playingTo") + ' <span>' + content.stream.channel.game + '</span>\n\
-</div>';
-		document.getElementById("onlineList").appendChild(e);
-		var onlineNumber = document.getElementById('online');
-		onlineNumber.innerHTML = parseInt(onlineNumber.innerHTML) + 1;
+		addOnlineElement(profile, "twitch.tv", content.stream.preview.medium, content.stream.channel.status, content.stream.channel.display_name, content.stream.channel.game);
 	} else
 	{
-		var e = document.createElement("div");
-		e.setAttribute("class", "streamOff");
-		e.setAttribute("data-profile", profile);
-		e.addEventListener("click", function () {
-			openServer(this.getAttribute('data-profile'), "twitch.tv");
-		}, false);
-		e.innerHTML = profile;
-		document.getElementById("offlineList").appendChild(e);
-		var offlineNumber = document.getElementById('offline');
-		offlineNumber.innerHTML = parseInt(offlineNumber.innerHTML) + 1;
+		addOfflineElement(profile, "twitch.tv");
 	}
 }
 
@@ -90,50 +68,113 @@ function resultHitboxStream(online, content, profile)
 {
 	if (online)
 	{
-		var e = document.createElement("a");
-		e.setAttribute("class", "streamOn");
-		e.setAttribute("data-profile", profile);
-		e.addEventListener("click", function () {
-			openServer(this.getAttribute('data-profile'), "hitbox.tv");
-		}, false);
-		e.innerHTML = '<img class="preview" src="http://edge.sf.hitbox.tv/' + content.livestream[0].media_thumbnail + '" width="80" height="45" alt="preview"/>\n\
-<div class="description">\n\
-<span class="title">' + content.livestream[0].media_status + '</span>\n\
-<span class="username">' + content.livestream[0].media_display_name + '</span> ' + chrome.i18n.getMessage("playingTo") + ' <span>' + content.livestream[0].category_name + '</span>\n\
-</div>';
-		document.getElementById("onlineList").appendChild(e);
-		var onlineNumber = document.getElementById('online');
-		onlineNumber.innerHTML = parseInt(onlineNumber.innerHTML) + 1;
+		addOnlineElement(profile, "hitbox.tv", "http://edge.sf.hitbox.tv/" + content.livestream[0].media_thumbnail, content.livestream[0].media_status, content.livestream[0].media_display_name, content.livestream[0].category_name);
 	} else
 	{
-		var e = document.createElement("div");
-		e.setAttribute("class", "streamOff");
-		e.setAttribute("data-profile", profile);
-		e.addEventListener("click", function () {
-			openServer(this.getAttribute('data-profile'), "twitch.tv");
-		}, false);
-		e.innerHTML = profile;
-		document.getElementById("offlineList").appendChild(e);
-		var offlineNumber = document.getElementById('offline');
-		offlineNumber.innerHTML = parseInt(offlineNumber.innerHTML) + 1;
+		addOfflineElement(profile, "hitbox.tv");
 	}
+}
+
+function addOfflineElement(profile, server)
+{
+	var e = document.createElement("div");
+	e.setAttribute("class", "streamOff link");
+	e.setAttribute("data-profile", profile);
+	e.addEventListener("click", function () {
+		openServer(this.getAttribute('data-profile'), server);
+	}, false);
+	e.innerHTML = profile;
+
+	document.getElementById("offlineList").appendChild(e);
+	var offlineNumber = document.getElementById('offline');
+	offlineNumber.innerHTML = parseInt(offlineNumber.innerHTML) + 1;
+}
+
+function addOnlineElement(profile, server, _img, _title, _name, _game)
+{
+	var e = document.createElement("a");
+	e.setAttribute("class", "streamOn");
+	e.setAttribute("data-profile", profile);
+
+	var img = document.createElement("img");
+	img.setAttribute("class", "preview pointer");
+	img.setAttribute("width", "80");
+	img.setAttribute("height", "45");
+	img.setAttribute("alt", "preview");
+	img.setAttribute("src", "play.png");
+	img.setAttribute("style", "background-image:url('" + _img + "')");
+	img.addEventListener("click", function () {
+		openServer(this.parentNode.getAttribute('data-profile'), server);
+	}, false);
+
+	var desc = document.createElement("div");
+	desc.setAttribute("class", "description");
+
+	var title = document.createElement("span");
+	title.setAttribute("class", "link title");
+	title.innerHTML = _title;
+	title.addEventListener("click", function () {
+		openServer(this.parentNode.parentNode.getAttribute('data-profile'), server);
+	}, false);
+
+	var name = document.createElement("span");
+	name.setAttribute("class", "username");
+	name.innerHTML = _name;
+
+	var playing = document.createElement("span");
+	playing.setAttribute("class", "playing");
+	playing.innerHTML = ' ' + chrome.i18n.getMessage("playingTo") + ' ';
+
+	var game = document.createElement("span");
+	game.setAttribute("class", "game");
+	game.innerHTML = _game;
+
+	var miniPlayer = document.createElement("div");
+	miniPlayer.setAttribute("class", "link");
+	miniPlayer.innerHTML = chrome.i18n.getMessage("openMiniPlayer");
+	miniPlayer.addEventListener("click", function () {
+		openMiniPlayer(profile, server);
+	}, false);
+
+	desc.appendChild(title);
+	desc.appendChild(name);
+	desc.appendChild(playing);
+	desc.appendChild(game);
+	desc.appendChild(miniPlayer);
+
+	e.appendChild(img);
+	e.appendChild(desc);
+
+	document.getElementById("onlineList").appendChild(e);
+	var onlineNumber = document.getElementById('online');
+	onlineNumber.innerHTML = parseInt(onlineNumber.innerHTML) + 1;
 }
 
 function openServer(profile, server)
 {
-	miniPlayer(profile, server);
-
-//	chrome.tabs.query({url: "*://*." + server + "/" + profile}, function (a) {
-//		if (a.length < 1) // Si la page n'est pas déjà ouverte, on ouvre un nouvel onglet
-//			chrome.tabs.create({url: "http://www." + server + "/" + profile});
-//		else // Sinon on passe le focus sur la premiere page contenant le pattern
-//			chrome.tabs.highlight({windowId: a[0].windowId, tabs: a[0].index});
-//	});
+	chrome.tabs.query({url: "*://*." + server + "/" + profile}, function (a) {
+		if (a.length < 1) // Si la page n'est pas déjà ouverte, on ouvre un nouvel onglet
+			chrome.tabs.create({url: "http://www." + server + "/" + profile});
+		else // Sinon on passe le focus sur la premiere page contenant le pattern
+			chrome.tabs.highlight({windowId: a[0].windowId, tabs: a[0].index});
+	});
 }
 
-function miniPlayer(profile, server)
+function openMiniPlayer(profile, server)
 {
-	chrome.runtime.sendMessage("ocmhnldnkkmebkncidbfangifbabjfdb", {server: server, profile: profile});
+	chrome.management.get("ocmhnldnkkmebkncidbfangifbabjfdb", function (r) {
+		if (r && r.enabled)
+			chrome.runtime.sendMessage("ocmhnldnkkmebkncidbfangifbabjfdb", {server: server, profile: profile});
+		else
+		{
+			chrome.management.get("glccgoppknfoonfajicijebeaedpnkfp", function (r) {
+				if (r && r.enabled)
+					chrome.runtime.sendMessage("glccgoppknfoonfajicijebeaedpnkfp", {server: server, profile: profile});
+				else
+					chrome.tabs.create({url: "https://chrome.google.com/webstore/detail/glccgoppknfoonfajicijebeaedpnkfp"});
+			});
+		}
+	});
 }
 
 function clickServer(e)

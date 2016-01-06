@@ -6,7 +6,10 @@
 		<style type="text/css">
 			body
 			{
+				font-family: 'Roboto', 'Segoe UI', Tahoma, sans-serif;
 				min-width: 350px;
+				background: #FAFAFA;
+				cursor: default;
 			}
 			h1
 			{
@@ -14,10 +17,12 @@
 				margin:0;
 				padding: 0;
 				text-align: center;
+				color: #00796B;
 			}
 			h2
 			{
 				font-size: 1.25em;
+				color: #D81B60;
 			}
 			.streamOn,.streamOn:hover,.streamOn:visited
 			{
@@ -26,22 +31,22 @@
 				color: black;
 				margin-left: 2px;
 				margin-bottom: 2px;
-				cursor: pointer;
 				border-radius: 2px;
 				border: 1px solid #D0D0D0;
+				padding: 2px;
 			}
 			.streamOn:hover
 			{
-				background: #EAEAEA;
+				background: #E3F2FD;
 				border: 1px solid #D0D0D0;
 			}
 			.streamOn .description, .streamOn  .preview
 			{
-				display: inline-block;
 				vertical-align: middle;
 			}
 			.streamOn .description
 			{
+				display: inline-block;
 				padding-left: 5px;
 			}
 			.title
@@ -51,9 +56,12 @@
 			}
 			.preview
 			{
+				display: block;
 				width: 80px;
 				height: 45px;
 				margin: auto 0;
+				background-size: 80px 45px;
+				background-repeat: no-repeat;
 			}
 			#offlineList
 			{
@@ -64,8 +72,25 @@
 			.streamOff {
 				padding: 2px;
 				margin: 1px;
-				cursor: pointer;
 				font-weight: 600;
+			}
+			.link
+			{
+				cursor: pointer;
+				color: #1976D2;
+				font-weight: 700;
+			}
+			.pointer
+			{
+				cursor: pointer;
+			}
+			.preview.pointer:hover
+			{
+				border: 2px solid #1976D2;
+			}
+			.game
+			{
+				font-style: initial;
 			}
 		</style>
 	</head>
