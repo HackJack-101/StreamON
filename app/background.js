@@ -13,6 +13,8 @@ chrome.app.runtime.onLaunched.addListener(function () {
 });
 
 chrome.runtime.onMessageExternal.addListener(function (msg) {
+	if (chrome.app.window.get("miniplayer"))
+		chrome.app.window.get("miniplayer").close();
 	chrome.app.window.create('window.html', {
 		id: "miniplayer",
 		innerBounds: {
