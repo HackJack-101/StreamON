@@ -4,5 +4,8 @@
 	},
 	"extDesc": {
 		"message": "Un mini-player pour StreamON."
+	},
+	"alwaysOnTop": {
+		"message": "Rester au dessus"
 	}
 }

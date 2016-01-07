@@ -1,48 +1,49 @@
-chrome.app.runtime.onLaunched.addListener(function () {
-	chrome.app.window.create('window.html', {
-		id: "miniplayer",
-		bounds: {
-			width: 832,
-			height: 468
-		},
-		innerBounds: {
-			width: 832,
-			height: 468
-		}
-	});
-});
-
 chrome.runtime.onMessageExternal.addListener(function (msg) {
-	if (chrome.app.window.get("miniplayer"))
-		chrome.app.window.get("miniplayer").close();
+	if (chrome.app.window.get(msg.server + "_" + msg.profile))
+		chrome.app.window.get(msg.server + "_" + msg.profile).focus();
 	chrome.app.window.create('window.html', {
-		id: "miniplayer",
+		id: msg.server + "_" + msg.profile,
 		innerBounds: {
 			width: 832,
 			height: 468
 		},
-		frame: {color: '#000000'},
-		alwaysOnTop: true
+		frame: {color: '#000000'}
 	},
 			function (createdWindow) {
 				var win = createdWindow.contentWindow;
 				switch (msg.server)
 				{
-					case 'twitch.tv':
+					case 'twitch':
 						win.onload = function () {
-							win.document.querySelector('#content').innerHTML =
-									'<webview src="http://player.twitch.tv/?channel=' + msg.profile + '" style="width:100vw;height:100vh"></webview>';
+							var webview = win.document.createElement('webview');
+							webview.setAttribute("src", 'http://player.twitch.tv/?channel=' + msg.profile);
+							win.document.querySelector('#content').appendChild(webview);
+							win.document.querySelector('#alwaysOnTopLabel').innerHTML = chrome.i18n.getMessage("alwaysOnTop");
+							win.document.querySelector('#alwaysOnTop').addEventListener('change', function () {
+								var id = msg.server + "_" + msg.profile;
+								chrome.app.window.get(id).setAlwaysOnTop(chrome.app.window.get(id).contentWindow.document.querySelector('#alwaysOnTop').checked);
+							});
 						};
 						break;
-					case 'hitbox.tv':
+					case 'hitbox':
 						win.onload = function () {
-							win.document.querySelector('#content').innerHTML =
-									'<webview src="http://www.hitbox.tv/embed/' + msg.profile + '" style="width:100vw;height:100vh"></webview>';
+							webview.setAttribute("src", 'http://www.hitbox.tv/embed/' + msg.profile);
+							win.document.querySelector('#content').appendChild(webview);
+							win.document.querySelector('#alwaysOnTopLabel').innerHTML = chrome.i18n.getMessage("alwaysOnTop");
+							win.document.querySelector('#alwaysOnTop').addEventListener('change', function () {
+								var id = msg.server + "_" + msg.profile;
+								chrome.app.window.get(id).setAlwaysOnTop(chrome.app.window.get(id).contentWindow.document.querySelector('#alwaysOnTop').checked);
+							});
 						};
 						break;
 					default:
 						break;
 				}
+				win.addEventListener('permissionrequest', function (e) {
+					if (e.permission == 'fullscreen') {
+						e.request.allow();
+					}
+				});
 			}
 	);
 });
