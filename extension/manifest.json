@@ -2,11 +2,11 @@
 	"manifest_version": 2,
 	"name": "__MSG_extName__",
 	"default_locale": "en",
-	"version": "0.5.0",
+	"version": "0.6.0",
 	"description": "__MSG_extDesc__",
 	"browser_action":
 			{
-				"default_icon": "icon128.png",
+				"default_icon": "assets/icon128.png",
 				"default_title": "__MSG_extName__",
 				"default_popup": "popup.html"
 			},
@@ -19,16 +19,20 @@
 	],
 	"background": {
 		"scripts": [
+			"lib/tools.js",
+			"lib/twitch.js",
+			"lib/hitbox.js",
 			"background.js"
 		]
 	},
 	"web_accessible_resources": [
-		"play.png"
+		"assets/*.png",
+		"lib/*.js"
 	],
 	"icons": {
-		"16": "icon16.png",
-		"48": "icon48.png",
-		"128": "icon128.png"
+		"16": "assets/icon16.png",
+		"48": "assets/icon48.png",
+		"128": "assets/icon128.png"
 	},
 	"options_ui": {
 		"page": "options.html",

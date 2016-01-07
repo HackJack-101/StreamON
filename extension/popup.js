@@ -10,69 +10,17 @@ function checkStreams()
 			if (streams[i].length > 0)
 			{
 				var url = streams[i];
-				var regexpTwitch = /twitch/gi;
-				var regexpHitbox = /hitbox/gi;
-				if (url.match(regexpTwitch) != null && url.match(regexpTwitch).length > 0)
-					checkTwitch(url);
-				else if (url.match(regexpHitbox) != null && url.match(regexpHitbox).length > 0)
-					checkHitbox(url);
+				for (var k in modules)
+				{
+					if (modules[k].check(url))
+					{
+						modules[k].display(url);
+						break;
+					}
+				}
 			}
 		}
 	});
-}
-
-function checkTwitch(url)
-{
-	var profile = getProfileName(url);
-	var XHR = new XMLHttpRequest();
-
-	XHR.onreadystatechange = function () {
-		if (XHR.readyState == 4 && (XHR.status == 200 || XHR.status == 0))
-		{
-			var result = JSON.parse(XHR.responseText);
-			resultTwitchStream(result.stream !== null, result, profile);
-		}
-	};
-	XHR.open("GET", "https://api.twitch.tv/kraken/streams/" + profile, true);
-	XHR.send(null);
-}
-
-function checkHitbox(url)
-{
-	var profile = getProfileName(url);
-	var XHR = new XMLHttpRequest();
-
-	XHR.onreadystatechange = function () {
-		if (XHR.readyState == 4 && (XHR.status == 200 || XHR.status == 0))
-		{
-			var result = JSON.parse(XHR.responseText);
-			resultHitboxStream(result.livestream[0].media_is_live === "1", result, profile);
-		}
-	};
-	XHR.open("GET", "https://api.hitbox.tv/media/live/" + profile, true);
-	XHR.send(null);
-}
-
-function resultTwitchStream(online, content, profile)
-{
-	if (online)
-	{
-		addOnlineElement(profile, "twitch.tv", content.stream.preview.medium, content.stream.channel.status, content.stream.channel.display_name, content.stream.channel.game);
-	} else
-	{
-		addOfflineElement(profile, "twitch.tv");
-	}
-}
-
-function resultHitboxStream(online, content, profile)
-{
-	if (online)
-	{
-		addOnlineElement(profile, "hitbox.tv", "http://edge.sf.hitbox.tv/" + content.livestream[0].media_thumbnail, content.livestream[0].media_status, content.livestream[0].media_display_name, content.livestream[0].category_name);
-	} else
-	{
-		addOfflineElement(profile, "hitbox.tv");
-	}
 }
 
 function addOfflineElement(profile, server)
@@ -81,7 +29,7 @@ function addOfflineElement(profile, server)
 	e.setAttribute("class", "streamOff link");
 	e.setAttribute("data-profile", profile);
 	e.addEventListener("click", function () {
-		openServer(this.getAttribute('data-profile'), server);
+		modules[server].openStream(this.getAttribute('data-profile'));
 	}, false);
 	e.innerHTML = profile;
 
@@ -101,10 +49,10 @@ function addOnlineElement(profile, server, _img, _title, _name, _game)
 	img.setAttribute("width", "80");
 	img.setAttribute("height", "45");
 	img.setAttribute("alt", "preview");
-	img.setAttribute("src", "play.png");
+	img.setAttribute("src", "assets/play.png");
 	img.setAttribute("style", "background-image:url('" + _img + "')");
 	img.addEventListener("click", function () {
-		openServer(this.parentNode.getAttribute('data-profile'), server);
+		modules[server].openStream(this.parentNode.getAttribute('data-profile'));
 	}, false);
 
 	var desc = document.createElement("div");
@@ -114,7 +62,7 @@ function addOnlineElement(profile, server, _img, _title, _name, _game)
 	title.setAttribute("class", "link title");
 	title.innerHTML = _title;
 	title.addEventListener("click", function () {
-		openServer(this.parentNode.parentNode.getAttribute('data-profile'), server);
+		modules[server].openStream(this.parentNode.parentNode.getAttribute('data-profile'));
 	}, false);
 
 	var name = document.createElement("span");
@@ -150,16 +98,6 @@ function addOnlineElement(profile, server, _img, _title, _name, _game)
 	onlineNumber.innerHTML = parseInt(onlineNumber.innerHTML) + 1;
 }
 
-function openServer(profile, server)
-{
-	chrome.tabs.query({url: "*://*." + server + "/" + profile}, function (a) {
-		if (a.length < 1) // Si la page n'est pas déjà ouverte, on ouvre un nouvel onglet
-			chrome.tabs.create({url: "http://www." + server + "/" + profile});
-		else // Sinon on passe le focus sur la premiere page contenant le pattern
-			chrome.tabs.highlight({windowId: a[0].windowId, tabs: a[0].index});
-	});
-}
-
 function openMiniPlayer(profile, server)
 {
 	chrome.management.get("ocmhnldnkkmebkncidbfangifbabjfdb", function (r) {
@@ -175,20 +113,6 @@ function openMiniPlayer(profile, server)
 			});
 		}
 	});
-}
-
-function clickServer(e)
-{
-	openHitbox(this.getAttribute('data-profile'), "hitbox.tv");
-}
-
-function getProfileName(url)
-{
-	var n = url.lastIndexOf("/");
-	if (n == (url.length - 1))
-		return getProfileName(url.substring(0, url.length - 1));
-	else
-		return url.substring(n + 1);
 }
 
 function main()

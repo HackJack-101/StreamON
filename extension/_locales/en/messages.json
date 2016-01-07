@@ -1,4 +1,7 @@
 {
+	"locale": {
+		"message": "en-US"
+	},
 	"extName": {
 		"message": "StreamON"
 	},
