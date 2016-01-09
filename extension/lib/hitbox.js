@@ -29,7 +29,12 @@ modules.hitbox =
 			{
 				if (online)
 				{
-					addOnlineElement(profile, "hitbox", "http://edge.sf.hitbox.tv/" + content.livestream[0].media_thumbnail, content.livestream[0].media_status, content.livestream[0].media_display_name, content.livestream[0].category_name);
+					var thumbnail = "http://edge.sf.hitbox.tv/" + content.livestream[0].media_thumbnail;
+					var title = content.livestream[0].media_status;
+					var name = content.livestream[0].media_display_name;
+					var game = content.livestream[0].category_name;
+					var embed = "http://www.hitbox.tv/embed/" + profile;
+					addOnlineElement(profile, "hitbox", thumbnail, title, name, game, embed);
 				} else
 				{
 					addOfflineElement(profile, "hitbox");
@@ -91,6 +96,12 @@ modules.hitbox =
 								}
 							});
 						}
+					}
+				} else
+				{
+					if (modules.hitbox.data[profile].streamOnline)
+					{
+						modules.hitbox.data[profile].streamOnline = false;
 					}
 				}
 

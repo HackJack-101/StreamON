@@ -29,7 +29,12 @@ modules.twitch =
 			{
 				if (online)
 				{
-					addOnlineElement(profile, "twitch", content.stream.preview.medium, content.stream.channel.status, content.stream.channel.display_name, content.stream.channel.game);
+					var thumbnail = content.stream.preview.medium;
+					var title = content.stream.channel.status;
+					var name = content.stream.channel.display_name;
+					var game = content.stream.channel.game;
+					var embed = "http://player.twitch.tv/?channel=" + profile;
+					addOnlineElement(profile, "twitch", thumbnail, title, name, game, embed);
 				} else
 				{
 					addOfflineElement(profile, "twitch");
@@ -91,6 +96,12 @@ modules.twitch =
 								}
 							});
 						}
+					}
+				} else
+				{
+					if (modules.twitch.data[profile].streamOnline)
+					{
+						modules.twitch.data[profile].streamOnline = false;
 					}
 				}
 

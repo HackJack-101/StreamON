@@ -38,7 +38,7 @@ function addOfflineElement(profile, server)
 	offlineNumber.innerHTML = parseInt(offlineNumber.innerHTML) + 1;
 }
 
-function addOnlineElement(profile, server, _img, _title, _name, _game)
+function addOnlineElement(profile, server, _img, _title, _name, _game, embed)
 {
 	var e = document.createElement("a");
 	e.setAttribute("class", "streamOn");
@@ -54,6 +54,7 @@ function addOnlineElement(profile, server, _img, _title, _name, _game)
 	img.addEventListener("click", function () {
 		modules[server].openStream(this.parentNode.getAttribute('data-profile'));
 	}, false);
+	e.appendChild(img);
 
 	var desc = document.createElement("div");
 	desc.setAttribute("class", "description");
@@ -64,33 +65,34 @@ function addOnlineElement(profile, server, _img, _title, _name, _game)
 	title.addEventListener("click", function () {
 		modules[server].openStream(this.parentNode.parentNode.getAttribute('data-profile'));
 	}, false);
+	desc.appendChild(title);
 
 	var name = document.createElement("span");
 	name.setAttribute("class", "username");
 	name.innerHTML = _name;
+	desc.appendChild(name);
 
-	var playing = document.createElement("span");
-	playing.setAttribute("class", "playing");
-	playing.innerHTML = ' ' + chrome.i18n.getMessage("playingTo") + ' ';
+	if (_game)
+	{
+		var playing = document.createElement("span");
+		playing.setAttribute("class", "playing");
+		playing.innerHTML = ' ' + chrome.i18n.getMessage("playingTo") + ' ';
 
-	var game = document.createElement("span");
-	game.setAttribute("class", "game");
-	game.innerHTML = _game;
+		var game = document.createElement("span");
+		game.setAttribute("class", "game");
+		game.innerHTML = _game;
+		desc.appendChild(playing);
+		desc.appendChild(game);
+	}
 
 	var miniPlayer = document.createElement("div");
 	miniPlayer.setAttribute("class", "link");
 	miniPlayer.innerHTML = chrome.i18n.getMessage("openMiniPlayer");
 	miniPlayer.addEventListener("click", function () {
-		openMiniPlayer(profile, server);
+		openMiniPlayer(embed);
 	}, false);
-
-	desc.appendChild(title);
-	desc.appendChild(name);
-	desc.appendChild(playing);
-	desc.appendChild(game);
 	desc.appendChild(miniPlayer);
 
-	e.appendChild(img);
 	e.appendChild(desc);
 
 	document.getElementById("onlineList").appendChild(e);
@@ -98,18 +100,20 @@ function addOnlineElement(profile, server, _img, _title, _name, _game)
 	onlineNumber.innerHTML = parseInt(onlineNumber.innerHTML) + 1;
 }
 
-function openMiniPlayer(profile, server)
+function openMiniPlayer(url)
 {
-	chrome.management.get("ocmhnldnkkmebkncidbfangifbabjfdb", function (r) {
+	var idDevMiniPlayer = "ocmhnldnkkmebkncidbfangifbabjfdb";
+	var idMiniPlayer = "glccgoppknfoonfajicijebeaedpnkfp";
+	chrome.management.get(idDevMiniPlayer, function (r) {
 		if (r && r.enabled)
-			chrome.runtime.sendMessage("ocmhnldnkkmebkncidbfangifbabjfdb", {server: server, profile: profile});
+			chrome.runtime.sendMessage(idDevMiniPlayer, {url: url});
 		else
 		{
-			chrome.management.get("glccgoppknfoonfajicijebeaedpnkfp", function (r) {
+			chrome.management.get(idMiniPlayer, function (r) {
 				if (r && r.enabled)
-					chrome.runtime.sendMessage("glccgoppknfoonfajicijebeaedpnkfp", {server: server, profile: profile});
+					chrome.runtime.sendMessage(idMiniPlayer, {url: url});
 				else
-					chrome.tabs.create({url: "https://chrome.google.com/webstore/detail/glccgoppknfoonfajicijebeaedpnkfp"});
+					chrome.tabs.create({url: "https://chrome.google.com/webstore/detail/" + idMiniPlayer});
 			});
 		}
 	});
