@@ -2,7 +2,7 @@
 	"manifest_version": 2,
 	"name": "__MSG_extName__",
 	"default_locale": "en",
-	"version": "0.6.0",
+	"version": "0.7.0",
 	"description": "__MSG_extDesc__",
 	"browser_action":
 			{
@@ -22,6 +22,7 @@
 			"lib/tools.js",
 			"lib/twitch.js",
 			"lib/hitbox.js",
+			"lib/dailymotion.js",
 			"background.js"
 		]
 	},
