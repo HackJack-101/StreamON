@@ -19,7 +19,7 @@
 				width:100vw;
 				height:100vh
 			}
-			.options
+			#options
 			{
 				position: absolute;
 				top: 0;
@@ -33,14 +33,28 @@
 				margin: 0 5px;
 				vertical-align: middle;
 			}
-			#alwaysOnTopLabel
+			#alwaysOnTopLabel, #alwaysOnTop
 			{
 				vertical-align: middle;
+			}
+			#url
+			{
+				width: 90vw;
+				margin: auto;
+				display: block;
+				line-height: 2em;
+				font-size: 1.5em;
+				font-weight: 600;
+			}
+			h2#title
+			{    margin-top: 40vh;
+				 width: 100%;
+				 text-align: center
 			}
 		</style>
 	</head>
 	<body id="content">
-		<label class="options">
+		<label id="options">
 			<input type="checkbox" id="alwaysOnTop"> <span id="alwaysOnTopLabel"></span>
 		</label>
 	</body>
