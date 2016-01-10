@@ -1,121 +1,121 @@
 <style type="text/css">
-	.button
-	{
-		background-color:rgb(221, 221, 221);
-		background-image:linear-gradient(rgb(237, 237, 237), rgb(237, 237, 237) 38%, rgb(222, 222, 222));
-		border-bottom-color:rgba(0, 0, 0, 0.247059);
-		border-bottom-left-radius:2px;
-		border-bottom-right-radius:2px;
-		border-bottom-style:solid;
-		border-bottom-width:1px;
-		border-image-outset:0px;
-		border-image-repeat:stretch;
-		border-image-slice:100%;
-		border-image-source:none;
-		border-image-width:1;
-		border-left-color:rgba(0, 0, 0, 0.247059);
-		border-left-style:solid;
-		border-left-width:1px;
-		border-right-color:rgba(0, 0, 0, 0.247059);
-		border-right-style:solid;
-		border-right-width:1px;
-		border-top-color:rgba(0, 0, 0, 0.247059);
-		border-top-left-radius:2px;
-		border-top-right-radius:2px;
-		border-top-style:solid;
-		border-top-width:1px;
-		box-shadow:rgba(0, 0, 0, 0.0784314) 0px 1px 0px 0px, rgba(255, 255, 255, 0.74902) 0px 1px 2px 0px inset;
-		color:rgb(68, 68, 68);
-		cursor:pointer;
-		display:inline-block;
-		margin:0px;
-		margin-right:1px;
-		outline-color:rgb(68, 68, 68);
-		padding:1px 10px;
-		text-align:center;
-		text-shadow:rgb(240, 240, 240) 0px 1px 0px;
-		text-transform:none;
-		word-spacing:0px;
-	}
-	#addTwitch
-	{
-		padding-left: 5px;
-		margin: 5px 0;
-		display: block;
-	}
-	#addTwitchDialog
-	{
-		margin: 5px 40px;
-		justify-content: space-around;
-	}
-	#refreshTime
-	{
-		display: inline-block;
-		width: 4em;
-	}
-	.container
-	{
-		width:600px;
-		padding: 10px;
-	}
-	#streams
-	{
-		width: 100%; 
-		height: 15em;
-	}
-	.hidden
-	{
-		display:none;
-	}
-	#notif, #titleNotif
-	{
-		position: relative;
-		vertical-align: middle;
-		bottom: 1px;
-	}
-	#status
-	{
-		bottom: 1em; 
-		text-align: center; 
-		font-weight: bold;
-	}
+    .button
+    {
+        background-color:rgb(221, 221, 221);
+        background-image:linear-gradient(rgb(237, 237, 237), rgb(237, 237, 237) 38%, rgb(222, 222, 222));
+        border-bottom-color:rgba(0, 0, 0, 0.247059);
+        border-bottom-left-radius:2px;
+        border-bottom-right-radius:2px;
+        border-bottom-style:solid;
+        border-bottom-width:1px;
+        border-image-outset:0px;
+        border-image-repeat:stretch;
+        border-image-slice:100%;
+        border-image-source:none;
+        border-image-width:1;
+        border-left-color:rgba(0, 0, 0, 0.247059);
+        border-left-style:solid;
+        border-left-width:1px;
+        border-right-color:rgba(0, 0, 0, 0.247059);
+        border-right-style:solid;
+        border-right-width:1px;
+        border-top-color:rgba(0, 0, 0, 0.247059);
+        border-top-left-radius:2px;
+        border-top-right-radius:2px;
+        border-top-style:solid;
+        border-top-width:1px;
+        box-shadow:rgba(0, 0, 0, 0.0784314) 0px 1px 0px 0px, rgba(255, 255, 255, 0.74902) 0px 1px 2px 0px inset;
+        color:rgb(68, 68, 68);
+        cursor:pointer;
+        display:inline-block;
+        margin:0px;
+        margin-right:1px;
+        outline-color:rgb(68, 68, 68);
+        padding:1px 10px;
+        text-align:center;
+        text-shadow:rgb(240, 240, 240) 0px 1px 0px;
+        text-transform:none;
+        word-spacing:0px;
+    }
+    #addTwitch
+    {
+        padding-left: 5px;
+        margin: 5px 0;
+        display: block;
+    }
+    #addTwitchDialog
+    {
+        margin: 5px 40px;
+        justify-content: space-around;
+    }
+    #refreshTime
+    {
+        display: inline-block;
+        width: 4em;
+    }
+    .container
+    {
+        width:600px;
+        padding: 10px;
+    }
+    #streams
+    {
+        width: 100%; 
+        height: 15em;
+    }
+    .hidden
+    {
+        display:none;
+    }
+    #notif, #titleNotif
+    {
+        position: relative;
+        vertical-align: middle;
+        bottom: 1px;
+    }
+    #status
+    {
+        bottom: 1em; 
+        text-align: center; 
+        font-weight: bold;
+    }
 </style>
 <div class="container">
-	<form id="form">
+    <form id="form">
 
-		<div>
-			<label for="streams" id="streamsLabel"></label>
-			<textarea id="streams"></textarea>
-			<i id="streamsHelp"></i>
-		</div>
-		<div id="addTwitch" class="button"></div>
-		<div id="addTwitchDialog" class="hidden">
-			<label for="usernameTwitch">
-				<span id="username"></span> : 
-				<input type="text" id="usernameTwitch"/>
-			</label>
-			<div class="button" id="importTwitch"></div>
-		</div>
+        <div>
+            <label for="streams" id="streamsLabel"></label>
+            <textarea id="streams"></textarea>
+            <i id="streamsHelp"></i>
+        </div>
+        <div id="addTwitch" class="button"></div>
+        <div id="addTwitchDialog" class="hidden">
+            <label for="usernameTwitch">
+                <span id="username"></span> : 
+                <input type="text" id="usernameTwitch"/>
+            </label>
+            <div class="button" id="importTwitch"></div>
+        </div>
 
-		<br/>
+        <br/>
 
-		<label for="notif" style="display: block; margin-bottom: 0.5em">
-			<input type="checkbox" id="notif"/> <span id="notifLabel"></span>
-		</label>
-		<label for="titleNotif" style="display: block; margin-bottom: 0.5em">
-			<input type="checkbox" id="titleNotif"/> <span id="titleNotifLabel"></span>
-		</label>
+        <label for="notif" style="display: block; margin-bottom: 0.5em">
+            <input type="checkbox" id="notif"/> <span id="notifLabel"></span>
+        </label>
+        <label for="titleNotif" style="display: block; margin-bottom: 0.5em">
+            <input type="checkbox" id="titleNotif"/> <span id="titleNotifLabel"></span>
+        </label>
 
-		<label style="display: block; margin-bottom: 0.2em">
-			<span id="refreshTimeLabel"></span> : <input type="number" min="1" step="1" id="refreshTime"/>
-		</label>
+        <label style="display: block; margin-bottom: 0.2em">
+            <span id="refreshTimeLabel"></span> : <input type="number" min="1" step="1" id="refreshTime"/>
+        </label>
 
 
-		<div id="status" class="hidden"></div>
+        <div id="status" class="hidden"></div>
 
-		<input type="submit" id="save" value="Enregistrer"/>
-	</form>
+        <input type="submit" id="save" value="Enregistrer"/>
+    </form>
 
-	<script src="options.js"></script>
-	<script src="locales.js"></script>
+    <script src="options.js"></script>
+    <script src="locales.js"></script>
 </div>
