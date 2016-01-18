@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "__MSG_extName__",
     "default_locale": "en",
-    "version": "0.8.0",
+    "version": "0.8.1",
     "description": "__MSG_extDesc__",
     "browser_action":
             {
@@ -19,6 +19,7 @@
     ],
     "background": {
         "scripts": [
+            "lib/substitution.js",
             "lib/tools.js",
             "lib/twitch.js",
             "lib/hitbox.js",

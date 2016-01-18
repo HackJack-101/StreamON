@@ -57,7 +57,7 @@ modules.dailymotion =
                     addOnlineElement(profile, "dailymotion", thumbnail, title, name, null, embed);
                 } else
                 {
-                    addOfflineElement(profile, "dailymotion");
+                    addOfflineElement(profile, "dailymotion", content['owner.username']);
                 }
             },
             notify: function (url) {

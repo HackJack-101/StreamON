@@ -58,7 +58,7 @@ modules.hitbox =
                     addOnlineElement(profile, "hitbox", thumbnail, title, name, game, embed);
                 } else
                 {
-                    addOfflineElement(profile, "hitbox");
+                    addOfflineElement(profile, "hitbox", null);
                 }
             },
             notify: function (url) {

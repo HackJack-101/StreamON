@@ -30,7 +30,7 @@ function checkStreams()
         {
             if (streams[i].length > 0)
             {
-                var url = streams[i];
+                var url = substitute(streams[i]);
                 for (var k in modules)
                 {
                     if (modules[k].check(url))
@@ -44,7 +44,7 @@ function checkStreams()
     });
 }
 
-function addOfflineElement(profile, server)
+function addOfflineElement(profile, server, name)
 {
     var e = document.createElement("div");
     e.setAttribute("class", "streamOff link");
@@ -52,7 +52,10 @@ function addOfflineElement(profile, server)
     e.addEventListener("click", function () {
         modules[server].openStream(this.getAttribute('data-profile'));
     }, false);
-    e.innerHTML = profile;
+    if (name)
+        e.innerHTML = name;
+    else
+        e.innerHTML = profile;
 
     document.getElementById("offlineList").appendChild(e);
     var offlineNumber = document.getElementById('offline');

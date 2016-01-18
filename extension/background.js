@@ -31,7 +31,7 @@ function checkStreams()
             {
                 if (streams[i].length > 0)
                 {
-                    var url = streams[i];
+                    var url = substitute(streams[i]);
                     for (var k in modules)
                     {
                         if (modules[k].check(url))

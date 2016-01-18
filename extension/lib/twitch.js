@@ -58,7 +58,7 @@ modules.twitch =
                     addOnlineElement(profile, "twitch", thumbnail, title, name, game, embed);
                 } else
                 {
-                    addOfflineElement(profile, "twitch");
+                    addOfflineElement(profile, "twitch", null);
                 }
             },
             notify: function (url) {
