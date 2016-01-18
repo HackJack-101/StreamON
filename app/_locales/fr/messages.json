@@ -9,6 +9,9 @@
         "message": "Rester au dessus"
     },
     "inputURL": {
-        "message": "Entrez ici l'URL embed de votre vidéo :"
+        "message": "Entrez ici l'adresse que vous souhaitez charger :"
+    },
+    "submit": {
+        "message": "Charger"
     }
 }

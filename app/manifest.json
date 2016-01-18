@@ -2,12 +2,18 @@
     "manifest_version": 2,
     "name": "__MSG_extName__",
     "default_locale": "en",
-    "version": "0.4.0",
+    "version": "0.4.6",
     "description": "__MSG_extDesc__",
     "app": {
         "background": {
             "scripts": [
-                "background.js"
+                "resolution.js",
+                "lib/youtube.js",
+                "lib/youtube-short.js",
+                "lib/twitch-video.js",
+                "lib/twitch.js",
+                "launch.js",
+                "message.js"
             ]
         }
     },
@@ -17,9 +23,9 @@
         "webview"
     ],
     "icons": {
-        "16": "icon16.png",
-        "48": "icon48.png",
-        "128": "icon128.png"
+        "16": "assets/icon16.png",
+        "48": "assets/icon48.png",
+        "128": "assets/icon128.png"
     },
     "externally_connectable": {
         "ids": [

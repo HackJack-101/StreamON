@@ -9,6 +9,9 @@
         "message": "Always on top"
     },
     "inputURL": {
-        "message": "Enter here the embed URL of your video:"
+        "message": "Enter here the URL:"
+    },
+    "submit": {
+        "message": "Submit"
     }
 }
