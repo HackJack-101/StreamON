@@ -31,7 +31,10 @@ var ids = [
     "importTwitch",
     "notifLabel",
     "titleNotifLabel",
-    "refreshTimeLabel"
+    "refreshTimeLabel",
+    "contextMenuLabel",
+    "needRestart",
+    "advancedOptions"
 ];
 function fill(id)
 {
