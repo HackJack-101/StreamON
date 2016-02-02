@@ -3,7 +3,7 @@
         "message": "fr-FR"
     },
     "extName": {
-        "message": "StreamON"
+        "message": "Stream[ON]"
     },
     "extDesc": {
         "message": "Une extension pour savoir si tes streamers préférés sont en live."
@@ -50,7 +50,19 @@
     "refreshTimeLabel": {
         "message": "Temps entre chaque vérification de votre liste de streaming (sec)"
     },
+    "contextMenuLabel": {
+        "message": "Afficher les options de Stream[ON] dans le menu contextuel (clic droit)"
+    },
     "openMiniPlayer": {
         "message": "Ouvrir dans le mini-player"
+    },
+    "followWithStreamON": {
+        "message": "Suivre avec Stream[ON]"
+    },
+    "advancedOptions": {
+        "message": "Options avancées"
+    },
+    "needRestart": {
+        "message": "Nécessite un redémarrage du navigateur"
     }
 }
