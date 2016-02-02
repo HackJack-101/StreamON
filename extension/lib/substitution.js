@@ -39,6 +39,10 @@ var subtitutionList = [
     {
         "pattern": /skyyart\.fr/gi,
         "url": "http://games.dailymotion.com/live/x2m6m14"
+    },
+    {
+        "pattern": /furiie\.tv/gi,
+        "url": "http://www.twitch.tv/furiie"
     }
 ];
 
