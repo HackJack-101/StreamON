@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Advanced options - Stream[ON]</title>
+        <meta charset="utf-8"/>
+        <link rel="stylesheet" type="text/css" href="options.css"/>
+    </head>
+    <body>
+
+        <div class="container">
+            <form id="form">
+
+                <div>
+                    <label for="streams" id="streamsLabel"></label>
+                    <textarea id="streams"></textarea>
+                    <i id="streamsHelp"></i>
+                </div>
+                <div id="addTwitch" class="button"></div>
+                <div id="addTwitchDialog" class="hidden">
+                    <label for="usernameTwitch">
+                        <span id="username"></span> : 
+                        <input type="text" id="usernameTwitch"/>
+                    </label>
+                    <div class="button" id="importTwitch"></div>
+                </div>
+
+                <br/>
+
+                <label for="notif" style="display: block; margin-bottom: 0.5em">
+                    <input type="checkbox" id="notif"/> <span id="notifLabel"></span>
+                </label>
+                
+                <label for="titleNotif" style="display: block; margin-bottom: 0.5em">
+                    <input type="checkbox" id="titleNotif"/> <span id="titleNotifLabel"></span>
+                </label>
+
+                <label style="display: block; margin-bottom: 0.2em">
+                    <span id="refreshTimeLabel"></span> : <input type="number" min="1" step="1" id="refreshTime"/>
+                </label>
+                
+                <label for="contextMenu" style="display: block; margin-bottom: 0.5em">
+                    <input type="checkbox" id="contextMenu"/> <span id="contextMenuLabel"></span> (<i id="needRestart"></i>)
+                </label>
+
+                <div id="status" class="hidden"></div>
+
+                <input type="submit" id="save" value="Enregistrer"/>
+            </form>
+
+        </div>
+        <script src="advanced.js"></script>
+        <script src="/locales.js"></script>
+    </body>
+</html>

@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "__MSG_extName__",
     "default_locale": "en",
-    "version": "0.8.1",
+    "version": "0.10.1",
     "description": "__MSG_extDesc__",
     "browser_action":
             {
@@ -12,10 +12,11 @@
             },
     "permissions": [
         "notifications",
-        "tabs",
+        "activeTab",
         "management",
         "background",
-        "storage"
+        "storage",
+        "contextMenus"
     ],
     "background": {
         "scripts": [
@@ -25,10 +26,12 @@
             "lib/hitbox.js",
             "lib/dailymotion.js",
             "background.js"
-        ]
+        ],
+        "persistent": true
     },
     "web_accessible_resources": [
         "assets/*.png",
+        "scripts/*.js",
         "lib/*.js"
     ],
     "icons": {
@@ -37,7 +40,7 @@
         "128": "assets/icon128.png"
     },
     "options_ui": {
-        "page": "options.html",
+        "page": "options/options.html",
         "chrome_style": true
     }
 }

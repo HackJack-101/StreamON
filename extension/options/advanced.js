@@ -20,23 +20,31 @@
  */
 
 function save_options() {
-    // Refresh time
     var refreshTime = document.getElementById('refreshTime').value;
     refreshTime = parseInt(refreshTime);
     if (refreshTime < 1)
         refreshTime = 1;
-    // Notifications
     var notif = document.getElementById('notif').checked;
-    // Title Notifications
     var titleNotif = document.getElementById('titleNotif').checked;
-    // Streams
+    var contextMenu = document.getElementById('contextMenu').checked;
     var streams = document.getElementById('streams').value;
+    var cleanedStreams = [];
+    var streamArray = streams.split("\n");
+    for (var i in streamArray)
+    {
+        var s = streamArray[i];
+        s = s.trim();
+        if (s.length > 0)
+            cleanedStreams.push(s);
+    }
     chrome.storage.sync.set({
         refreshTime: refreshTime,
-        streams: streams,
+        streams: cleanedStreams.join("\n"),
         notif: notif,
-        titleNotif: titleNotif
+        titleNotif: titleNotif,
+        contextMenu: contextMenu
     }, function () {
+        restore_options();
         var status = document.getElementById('status');
         status.style.display = 'block';
         status.textContent = chrome.i18n.getMessage("optionsSaved");
@@ -52,25 +60,15 @@ function restore_options() {
         refreshTime: 60,
         streams: "",
         notif: true,
-        titleNotif: false
-
+        titleNotif: false,
+        contextMenu: true
     }, function (options) {
-        // Notifications
         document.getElementById('notif').checked = options.notif;
-        // Title Notifications
         document.getElementById('titleNotif').checked = options.titleNotif;
-        // Refresh time
+        document.getElementById('contextMenu').checked = options.contextMenu;
         document.getElementById('refreshTime').value = options.refreshTime;
-        // Streams
         document.getElementById('streams').value = options.streams;
-    });
-
-    var addTwitchButton = document.getElementById('addTwitch');
-    addTwitchButton.addEventListener('click', addTwitch);
-
-    document.getElementById('form').addEventListener('submit', function (e) {
-        e.preventDefault();
-        save_options();
+        setListener();
     });
 }
 
@@ -119,4 +117,31 @@ function addTwitch()
 
 }
 
-document.addEventListener('DOMContentLoaded', restore_options);
+function setListener()
+{
+    var addTwitchButton = document.getElementById('addTwitch');
+    addTwitchButton.addEventListener('click', addTwitch);
+
+    document.getElementById('form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        save_options();
+    }, false);
+}
+
+document.addEventListener('DOMContentLoaded', function ()
+{
+    document.getElementById('form').addEventListener('submit', function (e) {
+        e.preventDefault();
+    }, false);
+
+    restore_options();
+
+    var optionsAdvanced = document.getElementById('advancedOptions');
+    if (optionsAdvanced)
+        optionsAdvanced.addEventListener('click', function (e) {
+            e.preventDefault();
+            chrome.tabs.create({
+                url: chrome.extension.getURL('options/advanced.html')
+            });
+        }, false);
+}, false);

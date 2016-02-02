@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Stream[ON] Options</title>
+        <meta charset="utf-8"/>
+        <link rel="stylesheet" type="text/css" href="options.css"/>
+    </head>
+    <body>
+
+        <div class="container">
+            <form id="form">
+
+                <div>
+                    <label for="streams" id="streamsLabel"></label>
+                    <textarea id="streams"></textarea>
+                    <i id="streamsHelp"></i>
+                </div>
+
+                <label style="display: block; margin-bottom: 0.2em">
+                    <span id="refreshTimeLabel"></span> : <input type="number" min="1" step="1" id="refreshTime"/>
+                </label>
+
+
+                <div id="status" class="hidden"></div>
+
+                <input type="submit" id="save" value="Enregistrer"/>
+            </form>
+            <a href="#" id="advancedOptions"></a>
+
+        </div>
+        <script src="options.js"></script>
+        <script src="/locales.js"></script>
+    </body>
+</html>
