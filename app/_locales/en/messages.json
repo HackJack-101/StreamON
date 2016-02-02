@@ -1,9 +1,9 @@
 {
     "extName": {
-        "message": "StreamON MiniPlayer"
+        "message": "Stream[ON] MiniPlayer"
     },
     "extDesc": {
-        "message": "A mini-player for StreamON"
+        "message": "A mini-player for Stream[ON]"
     },
     "alwaysOnTop": {
         "message": "Always on top"
