@@ -25,8 +25,8 @@ function checkStreams()
     }, function (options) {
         if (options.background)
         {
-            var s = options.streams;
-            var streams = s.split("\n");
+            var streams = options.streams;
+            streams = streams.split("\n");
             for (var i = 0; i < streams.length; i++)
             {
                 if (streams[i].length > 0)
@@ -62,8 +62,60 @@ function displayNotification(title, icon, body, callback)
     };
 }
 
+function openMiniPlayer(info, tab)
+{
+    if (info.frameUrl) // is a embed player
+        tools.openMiniPlayer(info.linkURL, true);
+    else if (info.linkUrl) // is a link
+        tools.openMiniPlayer(info.linkURL, true);
+    else
+        tools.openMiniPlayer(tab.url, true);
+}
+
+function followStream(info, tab)
+{
+    var newStream = tab.url;
+    if (info.linkUrl)
+        console.log(info.linkURL);
+
+    chrome.storage.sync.get({
+        streams: ""
+    }, function (options) {
+        var streams = options.streams;
+        if (streams.length > 0)
+            streams += "\n";
+        streams += newStream;
+        chrome.storage.sync.set({streams: streams});
+    });
+
+}
+
 function main()
 {
+    chrome.storage.sync.get({
+        contextMenu: true
+    }, function (options) {
+        if (options.contextMenu)
+        {
+            var menu = chrome.contextMenus.create({
+                title: "Stream[ON]",
+                contexts: ["all"]
+            });
+            var followMenu = chrome.contextMenus.create({
+                title: chrome.i18n.getMessage("followWithStreamON"),
+                contexts: ["page", "link", "selection", "frame"],
+                parentId: menu,
+                onclick: followStream
+            });
+            var miniPlayerMenu = chrome.contextMenus.create({
+                title: chrome.i18n.getMessage("openMiniPlayer"),
+                contexts: ["page", "link", "selection", "audio", "video", "frame"],
+                parentId: menu,
+                onclick: openMiniPlayer
+            });
+        }
+    });
+
     checkStreams();
     chrome.storage.sync.get({
         refreshTime: 60

@@ -36,6 +36,27 @@ var tools = {
             else // Sinon on passe le focus sur la premiere page contenant le pattern
                 chrome.tabs.highlight({windowId: a[0].windowId, tabs: a[0].index});
         });
+    },
+    openMiniPlayer: function (url, resolution)
+    {
+        var idDevMiniPlayer = "ocmhnldnkkmebkncidbfangifbabjfdb";
+        var idMiniPlayer = "glccgoppknfoonfajicijebeaedpnkfp";
+        var options = {url: url};
+        if (resolution)
+            options.resolution = resolution;
+        chrome.management.get(idDevMiniPlayer, function (r) {
+            if (r && r.enabled)
+                chrome.runtime.sendMessage(idDevMiniPlayer, options);
+            else
+            {
+                chrome.management.get(idMiniPlayer, function (r) {
+                    if (r && r.enabled)
+                        chrome.runtime.sendMessage(idMiniPlayer, options);
+                    else
+                        chrome.tabs.create({url: "https://chrome.google.com/webstore/detail/" + idMiniPlayer});
+                });
+            }
+        });
     }
 };
 

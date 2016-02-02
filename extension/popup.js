@@ -24,8 +24,8 @@ function checkStreams()
     chrome.storage.sync.get({
         streams: ""
     }, function (options) {
-        var s = options.streams;
-        var streams = s.split("\n");
+        var streams = options.streams;
+        streams = streams.split("\n");
         for (var i = 0; i < streams.length; i++)
         {
             if (streams[i].length > 0)
@@ -113,7 +113,7 @@ function addOnlineElement(profile, server, _img, _title, _name, _game, embed)
     miniPlayer.setAttribute("class", "link");
     miniPlayer.innerHTML = chrome.i18n.getMessage("openMiniPlayer");
     miniPlayer.addEventListener("click", function () {
-        openMiniPlayer(embed);
+        tools.openMiniPlayer(embed);
     }, false);
     desc.appendChild(miniPlayer);
 
@@ -122,25 +122,6 @@ function addOnlineElement(profile, server, _img, _title, _name, _game, embed)
     document.getElementById("onlineList").appendChild(e);
     var onlineNumber = document.getElementById('online');
     onlineNumber.innerHTML = parseInt(onlineNumber.innerHTML) + 1;
-}
-
-function openMiniPlayer(url)
-{
-    var idDevMiniPlayer = "ocmhnldnkkmebkncidbfangifbabjfdb";
-    var idMiniPlayer = "glccgoppknfoonfajicijebeaedpnkfp";
-    chrome.management.get(idDevMiniPlayer, function (r) {
-        if (r && r.enabled)
-            chrome.runtime.sendMessage(idDevMiniPlayer, {url: url});
-        else
-        {
-            chrome.management.get(idMiniPlayer, function (r) {
-                if (r && r.enabled)
-                    chrome.runtime.sendMessage(idMiniPlayer, {url: url});
-                else
-                    chrome.tabs.create({url: "https://chrome.google.com/webstore/detail/" + idMiniPlayer});
-            });
-        }
-    });
 }
 
 function main()
