@@ -46,10 +46,24 @@ chrome.runtime.onMessageExternal.addListener(function (msg) {
         frame: {color: '#000000'}
     }, function (createdWindow) {
         var win = createdWindow.contentWindow;
-        win.addEventListener("load", function () { 
+        win.addEventListener("load", function () {
             win.document.querySelector('#home').style.display = "none";
             var webview = win.document.createElement('webview');
-            webview.setAttribute("src", msg.url);
+
+            var url = msg.url;
+            if (msg.resolution)
+            {
+                for (var i in modules)
+                {
+                    if (modules[i].check(url))
+                    {
+                        url = modules[i].getEmbedURL(url);
+                        break;
+                    }
+                }
+            }
+            webview.setAttribute("src", url);
+
             win.document.querySelector('#content').appendChild(webview);
             win.document.querySelector('#alwaysOnTopLabel').innerHTML = chrome.i18n.getMessage("alwaysOnTop");
             win.document.querySelector('#alwaysOnTop').addEventListener('change', function () {

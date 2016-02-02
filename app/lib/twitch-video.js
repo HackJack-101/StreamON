@@ -32,7 +32,7 @@ modules.twitch_video = {
     },
     getVideoID: function (url)
     {
-         var n = url.lastIndexOf("/");
+        var n = url.lastIndexOf("/");
         if (n == (url.length - 1))
             return modules.twitch_video.getVideoID(url.substring(0, url.length - 1));
         else
