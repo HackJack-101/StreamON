@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "__MSG_extName__",
     "default_locale": "en",
-    "version": "0.5",
+    "version": "0.5.1",
     "description": "__MSG_extDesc__",
     "app": {
         "background": {
@@ -12,6 +12,7 @@
                 "lib/youtube-short.js",
                 "lib/twitch-video.js",
                 "lib/twitch.js",
+                "lib/substitution.js",
                 "launch.js",
                 "message.js"
             ]
