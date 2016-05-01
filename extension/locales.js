@@ -19,6 +19,8 @@
  * Author : HackJack https://github.com/Jack3113
  */
 
+/* global chrome */
+
 var ids = [
     "title",
     "onlineTitle",
@@ -36,13 +38,13 @@ var ids = [
     "needRestart",
     "advancedOptions"
 ];
-function fill(id)
-{
+function fill(id) {
     if (document.getElementById(id))
         document.getElementById(id).innerHTML = chrome.i18n.getMessage(id);
 }
 
 window.addEventListener("DOMContentLoaded", function () {
-    for (var i in ids)
+    for (var i in ids) {
         fill(ids[i]);
+    }
 }, false);

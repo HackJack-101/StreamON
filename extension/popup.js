@@ -19,22 +19,19 @@
  * Author : HackJack https://github.com/Jack3113
  */
 
-function checkStreams()
-{
+/* global chrome, modules, tools */
+
+function checkStreams() {
     chrome.storage.sync.get({
         streams: ""
     }, function (options) {
         var streams = options.streams;
         streams = streams.split("\n");
-        for (var i = 0; i < streams.length; i++)
-        {
-            if (streams[i].length > 0)
-            {
+        for (var i = 0; i < streams.length; i++) {
+            if (streams[i].length > 0) {
                 var url = substitute(streams[i]);
-                for (var k in modules)
-                {
-                    if (modules[k].check(url))
-                    {
+                for (var k in modules) {
+                    if (modules[k].check(url)) {
                         modules[k].display(url);
                         break;
                     }
@@ -44,8 +41,7 @@ function checkStreams()
     });
 }
 
-function addOfflineElement(profile, server, name)
-{
+function addOfflineElement(profile, server, name) {
     var e = document.createElement("div");
     e.setAttribute("class", "streamOff link");
     e.setAttribute("data-profile", profile);
@@ -62,8 +58,7 @@ function addOfflineElement(profile, server, name)
     offlineNumber.innerHTML = parseInt(offlineNumber.innerHTML) + 1;
 }
 
-function addOnlineElement(profile, server, _img, _title, _name, _game, embed)
-{
+function addOnlineElement(profile, server, _img, _title, _name, _game, embed) {
     var e = document.createElement("a");
     e.setAttribute("class", "streamOn");
     e.setAttribute("data-profile", profile);
@@ -96,8 +91,7 @@ function addOnlineElement(profile, server, _img, _title, _name, _game, embed)
     name.innerHTML = _name;
     desc.appendChild(name);
 
-    if (_game)
-    {
+    if (_game) {
         var playing = document.createElement("span");
         playing.setAttribute("class", "playing");
         playing.innerHTML = ' ' + chrome.i18n.getMessage("playingTo") + ' ';
@@ -124,8 +118,7 @@ function addOnlineElement(profile, server, _img, _title, _name, _game, embed)
     onlineNumber.innerHTML = parseInt(onlineNumber.innerHTML) + 1;
 }
 
-function main()
-{
+function main() {
     checkStreams();
 }
 

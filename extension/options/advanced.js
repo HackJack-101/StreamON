@@ -19,6 +19,8 @@
  * Author : HackJack https://github.com/Jack3113
  */
 
+/* global chrome */
+
 function save_options() {
     var refreshTime = document.getElementById('refreshTime').value;
     refreshTime = parseInt(refreshTime);
@@ -30,8 +32,7 @@ function save_options() {
     var streams = document.getElementById('streams').value;
     var cleanedStreams = [];
     var streamArray = streams.split("\n");
-    for (var i in streamArray)
-    {
+    for (var i in streamArray) {
         var s = streamArray[i];
         s = s.trim();
         if (s.length > 0)
@@ -72,41 +73,36 @@ function restore_options() {
     });
 }
 
-function importTwitchFollowing(username, offset)
-{
+function importTwitchFollowing(username, offset) {
     var XHR = new XMLHttpRequest();
     XHR.onreadystatechange = function () {
-        if (XHR.readyState == 4 && (XHR.status == 200 || XHR.status == 0))
-        {
+        if (XHR.readyState === 4 && (XHR.status === 200 || XHR.status === 0)) {
             var result = JSON.parse(XHR.responseText);
             var streams = document.getElementById('streams').value;
-            for (var i = 0; i < result.follows.length; i++)
-            {
+            for (var i = 0; i < result.follows.length; i++) {
                 var url = result.follows[i].channel.url;
-                if (streams.lastIndexOf(url) < 0)
-                {
-                    if (i === 0 && streams.length > 0)
-                        document.getElementById('streams').value += "\n"
+                if (streams.lastIndexOf(url) < 0) {
+                    if (i === 0 && streams.length > 0) {
+                        document.getElementById('streams').value += "\n";
+                    }
                     document.getElementById('streams').value += url + "\n";
                 }
             }
-            if (result.follows.length >= 25)
+            if (result.follows.length >= 25) {
                 importTwitchFollowing(username, offset + 25);
-
+            }
         }
     };
     XHR.open("GET", "https://api.twitch.tv/kraken/users/" + username + "/follows/channels?direction=DESC&limit=25&offset=" + offset + "&sortby=created_at", true);
     XHR.send(null);
 }
 
-function addTwitch()
-{
+function addTwitch() {
     document.getElementById('addTwitch').style.display = 'none';
     document.getElementById('addTwitchDialog').style.display = 'flex';
     document.getElementById('importTwitch').addEventListener('click', function () {
         var username = document.getElementById('usernameTwitch').value;
-        if (username != null && username.length > 0)
-        {
+        if (username !== null && username.length > 0) {
             importTwitchFollowing(username, 0);
         }
         document.getElementById('usernameTwitch').value = "";
@@ -117,8 +113,7 @@ function addTwitch()
 
 }
 
-function setListener()
-{
+function setListener() {
     var addTwitchButton = document.getElementById('addTwitch');
     addTwitchButton.addEventListener('click', addTwitch);
 
@@ -128,8 +123,7 @@ function setListener()
     }, false);
 }
 
-document.addEventListener('DOMContentLoaded', function ()
-{
+document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('form').addEventListener('submit', function (e) {
         e.preventDefault();
     }, false);
@@ -137,11 +131,12 @@ document.addEventListener('DOMContentLoaded', function ()
     restore_options();
 
     var optionsAdvanced = document.getElementById('advancedOptions');
-    if (optionsAdvanced)
+    if (optionsAdvanced) {
         optionsAdvanced.addEventListener('click', function (e) {
             e.preventDefault();
             chrome.tabs.create({
                 url: chrome.extension.getURL('options/advanced.html')
             });
         }, false);
+    }
 }, false);

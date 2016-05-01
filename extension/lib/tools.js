@@ -19,17 +19,17 @@
  * Author : HackJack https://github.com/Jack3113
  */
 
+/* global chrome */
+
 var tools = {
-    getProfileName: function (url)
-    {
+    getProfileName: function (url) {
         var n = url.lastIndexOf("/");
-        if (n == (url.length - 1))
+        if (n === (url.length - 1))
             return tools.getProfileName(url.substring(0, url.length - 1));
         else
             return url.substring(n + 1);
     },
-    openTab: function (pattern, url)
-    {
+    openTab: function (pattern, url) {
         chrome.tabs.query({url: pattern}, function (a) {
             if (a.length < 1) // Si la page n'est pas déjà ouverte, on ouvre un nouvel onglet
                 chrome.tabs.create({url: url});
@@ -37,8 +37,7 @@ var tools = {
                 chrome.tabs.highlight({windowId: a[0].windowId, tabs: a[0].index});
         });
     },
-    openMiniPlayer: function (url, resolution)
-    {
+    openMiniPlayer: function (url, resolution) {
         var idDevMiniPlayer = "ocmhnldnkkmebkncidbfangifbabjfdb";
         var idMiniPlayer = "glccgoppknfoonfajicijebeaedpnkfp";
         var options = {url: url};
@@ -47,8 +46,7 @@ var tools = {
         chrome.management.get(idDevMiniPlayer, function (r) {
             if (r && r.enabled)
                 chrome.runtime.sendMessage(idDevMiniPlayer, options);
-            else
-            {
+            else {
                 chrome.management.get(idMiniPlayer, function (r) {
                     if (r && r.enabled)
                         chrome.runtime.sendMessage(idMiniPlayer, options);

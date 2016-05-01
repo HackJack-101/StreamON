@@ -19,17 +19,19 @@
  * Author : HackJack https://github.com/Jack3113
  */
 
+/* global chrome */
+
 function save_options() {
     var refreshTime = document.getElementById('refreshTime').value;
     refreshTime = parseInt(refreshTime);
-    if (refreshTime < 1)
+    if (refreshTime < 1){
         refreshTime = 1;
+    }
 
     var streams = document.getElementById('streams').value;
     var cleanedStreams = [];
     var streamArray = streams.split("\n");
-    for (var i in streamArray)
-    {
+    for (var i in streamArray) {
         var s = streamArray[i];
         s = s.trim();
         if (s.length > 0)
@@ -64,8 +66,7 @@ function restore_options() {
     });
 }
 
-document.addEventListener('DOMContentLoaded', function ()
-{
+document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('form').addEventListener('submit', function (e) {
         e.preventDefault();
     });
@@ -74,10 +75,12 @@ document.addEventListener('DOMContentLoaded', function ()
 
     var optionsAdvanced = document.getElementById('advancedOptions');
     if (optionsAdvanced)
+    {
         optionsAdvanced.addEventListener('click', function (e) {
             e.preventDefault();
             chrome.tabs.create({
                 url: chrome.extension.getURL('options/advanced.html')
             });
         }, false);
+    }
 }, false);

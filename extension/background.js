@@ -17,25 +17,21 @@
  * under the License.
  */
 
-function checkStreams()
-{
+/* global chrome, modules, tools */
+
+function checkStreams() {
     chrome.storage.sync.get({
         streams: "",
         background: true
     }, function (options) {
-        if (options.background)
-        {
+        if (options.background) {
             var streams = options.streams;
             streams = streams.split("\n");
-            for (var i = 0; i < streams.length; i++)
-            {
-                if (streams[i].length > 0)
-                {
+            for (var i = 0; i < streams.length; i++) {
+                if (streams[i].length > 0) {
                     var url = substitute(streams[i]);
-                    for (var k in modules)
-                    {
-                        if (modules[k].check(url))
-                        {
+                    for (var k in modules) {
+                        if (modules[k].check(url)) {
                             modules[k].notify(url);
                             break;
                         }
@@ -46,8 +42,7 @@ function checkStreams()
     });
 }
 
-function displayNotification(title, icon, body, callback)
-{
+function displayNotification(title, icon, body, callback) {
     var startStream = new Notification(title,
             {
                 icon: icon,
@@ -62,8 +57,7 @@ function displayNotification(title, icon, body, callback)
     };
 }
 
-function openMiniPlayer(info, tab)
-{
+function openMiniPlayer(info, tab) {
     if (info.frameUrl) // is a embed player
         tools.openMiniPlayer(info.linkURL, true);
     else if (info.linkUrl) // is a link
@@ -72,31 +66,30 @@ function openMiniPlayer(info, tab)
         tools.openMiniPlayer(tab.url, true);
 }
 
-function followStream(info, tab)
-{
+function followStream(info, tab) {
     var newStream = tab.url;
-    if (info.linkUrl)
+    if (info.linkUrl) {
         console.log(info.linkURL);
+    }
 
     chrome.storage.sync.get({
         streams: ""
     }, function (options) {
         var streams = options.streams;
-        if (streams.length > 0)
+        if (streams.length > 0) {
             streams += "\n";
+        }
         streams += newStream;
         chrome.storage.sync.set({streams: streams});
     });
 
 }
 
-function main()
-{
+function main() {
     chrome.storage.sync.get({
         contextMenu: true
     }, function (options) {
-        if (options.contextMenu)
-        {
+        if (options.contextMenu) {
             var menu = chrome.contextMenus.create({
                 title: "Stream[ON]",
                 contexts: ["all"]
