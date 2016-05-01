@@ -29,7 +29,7 @@ window.addEventListener("load", function () {
     });
 
     window.addEventListener('permissionrequest', function (e) {
-        if (e.permission == 'fullscreen') {
+        if (e.permission === "fullscreen") {
             e.request.allow();
         }
     });

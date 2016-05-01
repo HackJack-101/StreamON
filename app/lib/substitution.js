@@ -25,19 +25,19 @@ var subtitutionList = [
     {"pattern": /domingo\.tv/gi, "url": "http://www.twitch.tv/domingo"},
     {"pattern": /jiraya\.tv/gi, "url": "http://games.dailymotion.com/live/x2lzj0a"},
     {"pattern": /skyyart\.fr/gi, "url": "http://games.dailymotion.com/live/x2m6m14"},
-    {"pattern": /eclypsia\.com\/(fr|en)\/eclypsiatv/gi, "url": "http://www.hitbox.tv/ectv"},
-    {"pattern": /eclypsia\.com\/(fr|en)\/ectv2/gi, "url": "http://www.hitbox.tv/ectvlol"},
+    {"pattern": /eclypsia\.com\/(fr|en)\/eclypsiatv/gi, "url": "http://www.twitch.tv/eclypsiatv"},
+    {"pattern": /eclypsia\.com\/(fr|en)\/ectv2/gi, "url": "http://www.twitch.tv/eclypsiatvlol"},
     {"pattern": /jeuxvideo.com\/gaming-live\/tv01/gi, "url": "http://www.twitch.tv/gaminglive_tv1"},
     {"pattern": /jeuxvideo.com\/gaming-live\/tv02/gi, "url": "http://www.twitch.tv/gaminglive_powerplay"},
     {"pattern": /eclypsia\.com\/(fr|en)\/maxildan/gi, "url": "http://www.hitbox.tv/ec-max"},
-    {"pattern": /eclypsia\.com/gi, "url": "http://www.hitbox.tv/ectv"},
+    {"pattern": /eclypsia\.com/gi, "url": "http://www.twitch.tv/eclypsiatv"},
     {"pattern": /furiie\.tv/gi, "url": "http://www.twitch.tv/furiie"}
 ];
 
 var substitute = function (url) {
     for (var i = 0; i < subtitutionList.length; i++) {
         var regexp = subtitutionList[i].pattern;
-        if (url.match(regexp) != null && url.match(regexp).length > 0) {
+        if (url.match(regexp) !== null && url.match(regexp).length > 0) {
             return subtitutionList[i].url;
         }
     }
