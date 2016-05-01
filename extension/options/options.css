@@ -68,7 +68,7 @@
     margin: 5px 40px;
     justify-content: space-around;
 }
-#refreshTime
+input[type="number"]
 {
     display: inline-block;
     width: 4em;
@@ -98,4 +98,11 @@
     bottom: 1em; 
     text-align: center; 
     font-weight: bold;
+}
+#advanced .container
+{
+    margin: auto;
+    width: 80vw;
+    min-width: 600px;
+    max-width: 800px;
 }

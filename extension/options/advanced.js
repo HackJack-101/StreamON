@@ -24,26 +24,30 @@
 function save_options() {
     var refreshTime = document.getElementById('refreshTime').value;
     refreshTime = parseInt(refreshTime);
-    if (refreshTime < 1)
+    if (refreshTime < 1) {
         refreshTime = 1;
+    }
     var notif = document.getElementById('notif').checked;
     var titleNotif = document.getElementById('titleNotif').checked;
     var contextMenu = document.getElementById('contextMenu').checked;
     var streams = document.getElementById('streams').value;
+    var notificationTimeout = parseInt(document.getElementById('notificationTimeout').value);
     var cleanedStreams = [];
     var streamArray = streams.split("\n");
     for (var i in streamArray) {
         var s = streamArray[i];
         s = s.trim();
-        if (s.length > 0)
+        if (s.length > 0) {
             cleanedStreams.push(s);
+        }
     }
     chrome.storage.sync.set({
         refreshTime: refreshTime,
         streams: cleanedStreams.join("\n"),
         notif: notif,
         titleNotif: titleNotif,
-        contextMenu: contextMenu
+        contextMenu: contextMenu,
+        notificationTimeout: notificationTimeout
     }, function () {
         restore_options();
         var status = document.getElementById('status');
@@ -62,13 +66,15 @@ function restore_options() {
         streams: "",
         notif: true,
         titleNotif: false,
-        contextMenu: true
+        contextMenu: true,
+        notificationTimeout: 4000
     }, function (options) {
         document.getElementById('notif').checked = options.notif;
         document.getElementById('titleNotif').checked = options.titleNotif;
         document.getElementById('contextMenu').checked = options.contextMenu;
         document.getElementById('refreshTime').value = options.refreshTime;
         document.getElementById('streams').value = options.streams;
+        document.getElementById('notificationTimeout').value = options.notificationTimeout;
         setListener();
     });
 }

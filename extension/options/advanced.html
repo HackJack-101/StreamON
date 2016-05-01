@@ -5,8 +5,7 @@
         <meta charset="utf-8"/>
         <link rel="stylesheet" type="text/css" href="options.css"/>
     </head>
-    <body>
-
+    <body id="advanced">
         <div class="container">
             <form id="form">
 
@@ -36,6 +35,10 @@
 
                 <label style="display: block; margin-bottom: 0.2em">
                     <span id="refreshTimeLabel"></span> : <input type="number" min="1" step="1" id="refreshTime"/>
+                </label>
+
+                <label style="display: block; margin-bottom: 0.2em">
+                    <span id="notificationTimeoutLabel"></span> : <input type="number" min="500" step="500" id="notificationTimeout"/>
                 </label>
 
                 <label for="contextMenu" style="display: block; margin-bottom: 0.5em">

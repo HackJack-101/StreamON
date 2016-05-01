@@ -36,7 +36,8 @@ var ids = [
     "refreshTimeLabel",
     "contextMenuLabel",
     "needRestart",
-    "advancedOptions"
+    "advancedOptions",
+    "notificationTimeoutLabel"
 ];
 function fill(id) {
     if (document.getElementById(id))

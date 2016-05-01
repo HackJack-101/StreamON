@@ -48,7 +48,7 @@
         "message": "Activate stream notifications when game/title changes"
     },
     "refreshTimeLabel": {
-        "message": "Time between each checking of your streaming list (sec)"
+        "message": "Time between each checking of your streaming list (seconds)"
     },
     "contextMenuLabel": {
         "message": "Display Stream[ON] options in the context menu (right click)"
@@ -64,5 +64,8 @@
     },
     "needRestart": {
         "message": "You need to restart your browser"
+    },
+    "notificationTimeoutLabel": {
+        "message": "Notification display time (milliseconds)"
     }
 }

@@ -48,7 +48,7 @@
         "message": "Activer les notifications en cas de changement de titre/jeu du stream"
     },
     "refreshTimeLabel": {
-        "message": "Temps entre chaque vérification de votre liste de streaming (sec)"
+        "message": "Temps entre chaque vérification de votre liste de streaming (en secondes)"
     },
     "contextMenuLabel": {
         "message": "Afficher les options de Stream[ON] dans le menu contextuel (clic droit)"
@@ -64,5 +64,8 @@
     },
     "needRestart": {
         "message": "Nécessite un redémarrage du navigateur"
+    },
+    "notificationTimeoutLabel": {
+        "message": "Temps d'affichage des notifications (en millisecondes)"
     }
 }
