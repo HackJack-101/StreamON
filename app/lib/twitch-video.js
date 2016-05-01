@@ -20,22 +20,19 @@
  */
 
 modules.twitch_video = {
-    check: function (url)
-    {
-        var regexp = /twitch\.tv\/.*\/v\//gi;
-        return (url.match(regexp) != null && url.match(regexp).length > 0);
-    },
-    getEmbedURL: function (url)
-    {
-        var params = modules.twitch_video.getVideoID(url);
-        return "https://player.twitch.tv/?video=v" + params;
-    },
-    getVideoID: function (url)
-    {
-        var n = url.lastIndexOf("/");
-        if (n == (url.length - 1))
-            return modules.twitch_video.getVideoID(url.substring(0, url.length - 1));
-        else
-            return url.substring(n + 1);
-    }
+	check: function (url) {
+		var regexp = /twitch\.tv\/.*\/v\//gi;
+		return (url.match(regexp) != null && url.match(regexp).length > 0);
+	},
+	getEmbedURL: function (url) {
+		var params = modules.twitch_video.getVideoID(url);
+		return "https://player.twitch.tv/?video=v" + params;
+	},
+	getVideoID: function (url) {
+		var n = url.lastIndexOf("/");
+		if (n == (url.length - 1))
+			return modules.twitch_video.getVideoID(url.substring(0, url.length - 1));
+		else
+			return url.substring(n + 1);
+	}
 };

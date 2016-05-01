@@ -20,22 +20,19 @@
  */
 
 modules.twitch = {
-    check: function (url)
-    {
-        var regexp = /twitch\.tv/gi;
-        return (url.match(regexp) != null && url.match(regexp).length > 0);
-    },
-    getEmbedURL: function (url)
-    {
-        var params = modules.twitch.getProfileName(url);
-        return "https://player.twitch.tv/?channel=" + params;
-    },
-    getProfileName: function (url)
-    {
-        var n = url.lastIndexOf("/");
-        if (n == (url.length - 1))
-            return modules.twitch.getProfileName(url.substring(0, url.length - 1));
-        else
-            return url.substring(n + 1);
-    }
+	check: function (url) {
+		var regexp = /twitch\.tv/gi;
+		return (url.match(regexp) != null && url.match(regexp).length > 0);
+	},
+	getEmbedURL: function (url) {
+		var params = modules.twitch.getProfileName(url);
+		return "https://player.twitch.tv/?channel=" + params;
+	},
+	getProfileName: function (url) {
+		var n = url.lastIndexOf("/");
+		if (n == (url.length - 1))
+			return modules.twitch.getProfileName(url.substring(0, url.length - 1));
+		else
+			return url.substring(n + 1);
+	}
 };

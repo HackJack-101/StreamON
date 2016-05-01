@@ -20,17 +20,17 @@
  */
 
 window.addEventListener("load", function () {
-    document.addEventListener("mouseover", function () {
-        document.querySelector('#options').style.display = "block";
-    });
+	document.addEventListener("mouseover", function () {
+		document.querySelector('#options').style.display = "block";
+	});
 
-    document.addEventListener("mouseout", function () {
-        document.querySelector('#options').style.display = "none";
-    });
+	document.addEventListener("mouseout", function () {
+		document.querySelector('#options').style.display = "none";
+	});
 
-    window.addEventListener('permissionrequest', function (e) {
-        if (e.permission == 'fullscreen') {
-            e.request.allow();
-        }
-    });
+	window.addEventListener('permissionrequest', function (e) {
+		if (e.permission == 'fullscreen') {
+			e.request.allow();
+		}
+	});
 }, false);

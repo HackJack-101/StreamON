@@ -51,12 +51,9 @@ chrome.runtime.onMessageExternal.addListener(function (msg) {
 			var webview = win.document.createElement('webview');
 
 			var url = substitute(msg.url);
-			if (msg.resolution)
-			{
-				for (var i in modules)
-				{
-					if (modules[i].check(url))
-					{
+			if (msg.resolution) {
+				for (var i in modules) {
+					if (modules[i].check(url)) {
 						url = modules[i].getEmbedURL(url);
 						break;
 					}

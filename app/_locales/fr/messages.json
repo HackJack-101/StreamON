@@ -1,17 +1,17 @@
 {
-    "extName": {
-        "message": "Stream[ON] MiniPlayer"
-    },
-    "extDesc": {
-        "message": "Un mini-player pour Stream[ON]."
-    },
-    "alwaysOnTop": {
-        "message": "Rester au dessus"
-    },
-    "inputURL": {
-        "message": "Entrez ici l'adresse que vous souhaitez charger :"
-    },
-    "submit": {
-        "message": "Charger"
-    }
+	"extName": {
+		"message": "Stream[ON] MiniPlayer"
+	},
+	"extDesc": {
+		"message": "Un mini-player pour Stream[ON]."
+	},
+	"alwaysOnTop": {
+		"message": "Rester au dessus"
+	},
+	"inputURL": {
+		"message": "Entrez ici l'adresse que vous souhaitez charger :"
+	},
+	"submit": {
+		"message": "Charger"
+	}
 }

@@ -1,17 +1,17 @@
 {
-    "extName": {
-        "message": "Stream[ON] MiniPlayer"
-    },
-    "extDesc": {
-        "message": "A mini-player for Stream[ON]"
-    },
-    "alwaysOnTop": {
-        "message": "Always on top"
-    },
-    "inputURL": {
-        "message": "Enter here the URL:"
-    },
-    "submit": {
-        "message": "Submit"
-    }
+	"extName": {
+		"message": "Stream[ON] MiniPlayer"
+	},
+	"extDesc": {
+		"message": "A mini-player for Stream[ON]"
+	},
+	"alwaysOnTop": {
+		"message": "Always on top"
+	},
+	"inputURL": {
+		"message": "Enter here the URL:"
+	},
+	"submit": {
+		"message": "Submit"
+	}
 }

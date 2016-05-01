@@ -1,68 +1,68 @@
 {
-    "locale": {
-        "message": "en-US"
-    },
-    "extName": {
-        "message": "Stream[ON]"
-    },
-    "extDesc": {
-        "message": "An Chrome extension to alert you when a streaming goes online."
-    },
-    "game": {
-        "message": "Game"
-    },
-    "optionsSaved": {
-        "message": "Options saved"
-    },
-    "playingTo": {
-        "message": "is now playing"
-    },
-    "title": {
-        "message": "StreamON"
-    },
-    "onlineTitle": {
-        "message": "Online streams"
-    },
-    "offlineTitle": {
-        "message": "Offline streams"
-    },
-    "streamsLabel": {
-        "message": "Stream URLs split by line returns:"
-    },
-    "streamsHelp": {
-        "message": "Works with twitch.tv and hitbox.tv links"
-    },
-    "addTwitch": {
-        "message": "Import following streamers from Twitch"
-    },
-    "username": {
-        "message": "Username"
-    },
-    "importTwitch": {
-        "message": "Import following streamers"
-    },
-    "notifLabel": {
-        "message": "Activate stream notifications"
-    },
-    "titleNotifLabel": {
-        "message": "Activate stream notifications when game/title changes"
-    },
-    "refreshTimeLabel": {
-        "message": "Time between each checking of your streaming list (sec)"
-    },
-    "contextMenuLabel": {
-        "message": "Display Stream[ON] options in the context menu (right click)"
-    },
-    "openMiniPlayer": {
-        "message": "Open in the mini-player"
-    },
-    "followWithStreamON": {
-        "message": "Follow with Stream[ON]"
-    },
-    "advancedOptions": {
-        "message": "Advanced options"
-    },
-    "needRestart": {
-        "message": "You need to restart your browser"
-    }
+	"locale": {
+		"message": "en-US"
+	},
+	"extName": {
+		"message": "Stream[ON]"
+	},
+	"extDesc": {
+		"message": "An Chrome extension to alert you when a streaming goes online."
+	},
+	"game": {
+		"message": "Game"
+	},
+	"optionsSaved": {
+		"message": "Options saved"
+	},
+	"playingTo": {
+		"message": "is now playing"
+	},
+	"title": {
+		"message": "StreamON"
+	},
+	"onlineTitle": {
+		"message": "Online streams"
+	},
+	"offlineTitle": {
+		"message": "Offline streams"
+	},
+	"streamsLabel": {
+		"message": "Stream URLs split by line returns:"
+	},
+	"streamsHelp": {
+		"message": "Works with twitch.tv and hitbox.tv links"
+	},
+	"addTwitch": {
+		"message": "Import following streamers from Twitch"
+	},
+	"username": {
+		"message": "Username"
+	},
+	"importTwitch": {
+		"message": "Import following streamers"
+	},
+	"notifLabel": {
+		"message": "Activate stream notifications"
+	},
+	"titleNotifLabel": {
+		"message": "Activate stream notifications when game/title changes"
+	},
+	"refreshTimeLabel": {
+		"message": "Time between each checking of your streaming list (sec)"
+	},
+	"contextMenuLabel": {
+		"message": "Display Stream[ON] options in the context menu (right click)"
+	},
+	"openMiniPlayer": {
+		"message": "Open in the mini-player"
+	},
+	"followWithStreamON": {
+		"message": "Follow with Stream[ON]"
+	},
+	"advancedOptions": {
+		"message": "Advanced options"
+	},
+	"needRestart": {
+		"message": "You need to restart your browser"
+	}
 }
