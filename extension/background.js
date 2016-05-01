@@ -44,11 +44,11 @@ function checkStreams() {
 
 function displayNotification(title, icon, body, callback) {
     var startStream = new Notification(title,
-            {
-                icon: icon,
-                lang: chrome.i18n.getMessage("locale"),
-                body: body
-            }
+        {
+            icon: icon,
+            lang: chrome.i18n.getMessage("locale"),
+            body: body
+        }
     );
 
     startStream.onclick = function () {

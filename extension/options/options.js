@@ -24,7 +24,7 @@
 function save_options() {
     var refreshTime = document.getElementById('refreshTime').value;
     refreshTime = parseInt(refreshTime);
-    if (refreshTime < 1){
+    if (refreshTime < 1) {
         refreshTime = 1;
     }
 
@@ -74,8 +74,7 @@ document.addEventListener('DOMContentLoaded', function () {
     restore_options();
 
     var optionsAdvanced = document.getElementById('advancedOptions');
-    if (optionsAdvanced)
-    {
+    if (optionsAdvanced) {
         optionsAdvanced.addEventListener('click', function (e) {
             e.preventDefault();
             chrome.tabs.create({

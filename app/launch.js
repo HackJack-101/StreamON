@@ -29,44 +29,44 @@ chrome.app.runtime.onLaunched.addListener(function () {
             height: 468
         }
     },
-            function (createdWindow) {
-                var win = createdWindow.contentWindow;
-                win.onload = function () {
+        function (createdWindow) {
+            var win = createdWindow.contentWindow;
+            win.onload = function () {
 
-                    win.document.querySelector('#submit').value = chrome.i18n.getMessage("submit");
-                    win.document.querySelector('#alwaysOnTopLabel').innerHTML = chrome.i18n.getMessage("alwaysOnTop");
-                    win.document.querySelector('#alwaysOnTop').addEventListener('change', function () {
-                        var current = chrome.app.window.get("miniplayer");
-                        current.setAlwaysOnTop(current.contentWindow.document.querySelector('#alwaysOnTop').checked);
-                        current.drawAttention();
-                    });
+                win.document.querySelector('#submit').value = chrome.i18n.getMessage("submit");
+                win.document.querySelector('#alwaysOnTopLabel').innerHTML = chrome.i18n.getMessage("alwaysOnTop");
+                win.document.querySelector('#alwaysOnTop').addEventListener('change', function () {
+                    var current = chrome.app.window.get("miniplayer");
+                    current.setAlwaysOnTop(current.contentWindow.document.querySelector('#alwaysOnTop').checked);
+                    current.drawAttention();
+                });
 
-                    win.document.querySelector('#visibleOnAllWorkspacesLabel').innerHTML = chrome.i18n.getMessage("visibleOnAllWorkspaces");
-                    win.document.querySelector('#visibleOnAllWorkspaces').addEventListener('change', function () {
-                        var current = chrome.app.window.get("miniplayer");
-                        current.setVisibleOnAllWorkspaces(current.contentWindow.document.querySelector('#visibleOnAllWorkspaces').checked);
-                        current.drawAttention();
-                    });
+                win.document.querySelector('#visibleOnAllWorkspacesLabel').innerHTML = chrome.i18n.getMessage("visibleOnAllWorkspaces");
+                win.document.querySelector('#visibleOnAllWorkspaces').addEventListener('change', function () {
+                    var current = chrome.app.window.get("miniplayer");
+                    current.setVisibleOnAllWorkspaces(current.contentWindow.document.querySelector('#visibleOnAllWorkspaces').checked);
+                    current.drawAttention();
+                });
 
-                    var title = win.document.querySelector('#title');
-                    title.innerHTML = chrome.i18n.getMessage("inputURL");
+                var title = win.document.querySelector('#title');
+                title.innerHTML = chrome.i18n.getMessage("inputURL");
 
-                    var form = win.document.querySelector('#formURL');
-                    form.addEventListener('submit', function (e) {
-                        e.preventDefault();
-                        var url = substitute(win.document.querySelector('#url').value);
-                        for (var i in modules) {
-                            if (modules[i].check(url)) {
-                                url = modules[i].getEmbedURL(url);
-                                break;
-                            }
+                var form = win.document.querySelector('#formURL');
+                form.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    var url = substitute(win.document.querySelector('#url').value);
+                    for (var i in modules) {
+                        if (modules[i].check(url)) {
+                            url = modules[i].getEmbedURL(url);
+                            break;
                         }
-                        win.document.querySelector('#home').style.display = "none";
-                        var webview = win.document.createElement('webview');
-                        webview.setAttribute("src", url);
-                        win.document.querySelector('#content').appendChild(webview);
-                    });
-                };
-            }
+                    }
+                    win.document.querySelector('#home').style.display = "none";
+                    var webview = win.document.createElement('webview');
+                    webview.setAttribute("src", url);
+                    win.document.querySelector('#content').appendChild(webview);
+                });
+            };
+        }
     );
 });
