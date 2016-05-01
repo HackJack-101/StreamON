@@ -51,13 +51,18 @@ webview
 
 .options input
 {
-    margin: 0 5px;
+    margin: 0 2px 0 10px;
     vertical-align: middle;
 }
 
-#alwaysOnTopLabel, #alwaysOnTop
+.middle
 {
     vertical-align: middle;
+}
+
+label[for="visibleOnAllWorkspaces"]
+{
+    display: none;
 }
 
 #url

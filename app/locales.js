@@ -19,6 +19,8 @@
  * Author : HackJack https://github.com/Jack3113
  */
 
+/* global chrome */
+
 var ids = [
     "title",
     "onlineTitle",
@@ -33,8 +35,7 @@ var ids = [
     "titleNotifLabel",
     "refreshTimeLabel"
 ];
-function fill(id)
-{
+function fill(id) {
     if (document.getElementById(id))
         document.getElementById(id).innerHTML = chrome.i18n.getMessage(id);
 }
