@@ -8,6 +8,9 @@
     "alwaysOnTop": {
         "message": "Rester au dessus"
     },
+    "visibleOnAllWorkspaces": {
+        "message": "Visible sur tous les bureaux virtuels"
+    },
     "inputURL": {
         "message": "Entrez ici l'adresse que vous souhaitez charger :"
     },

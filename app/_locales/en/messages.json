@@ -8,6 +8,9 @@
     "alwaysOnTop": {
         "message": "Always on top"
     },
+    "visibleOnAllWorkspaces": {
+        "message": "Visible on all workspaces"
+    },
     "inputURL": {
         "message": "Enter here the URL:"
     },
