@@ -55,6 +55,15 @@ function displayNotification(title, icon, body, callback) {
         callback();
         this.close();
     };
+
+	chrome.storage.sync.get({
+		notificationTimeout: 4000
+	}, function (options) {
+		setTimeout(function () {
+			startStream.close();
+		}, options.notificationTimeout);
+	});
+
 }
 
 function openMiniPlayer(info, tab) {
