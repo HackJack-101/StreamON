@@ -19,16 +19,16 @@
  *  Author : HackJack https://github.com/Jack3113
  */
 
-window.addEventListener("load", function () {
-    document.addEventListener("mouseover", function () {
+window.addEventListener("load", function() {
+    document.addEventListener("mouseover", function() {
         document.querySelector('#options').style.display = "block";
     });
 
-    document.addEventListener("mouseout", function () {
+    document.addEventListener("mouseout", function() {
         document.querySelector('#options').style.display = "none";
     });
 
-    window.addEventListener('permissionrequest', function (e) {
+    window.addEventListener('permissionrequest', function(e) {
         if (e.permission === "fullscreen") {
             e.request.allow();
         }

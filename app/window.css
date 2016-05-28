@@ -19,120 +19,105 @@
  Author : HackJack https://github.com/Jack3113
 */
 
-
-*
-{
-    margin: 0;padding: 0
+* {
+        margin: 0;
+        padding: 0
 }
 
-.message
-{
-    text-align: center;
-    font-size: 2em;
-    font-weight: bold;
-    color: white;
+.message {
+        text-align: center;
+        font-size: 2em;
+        font-weight: bold;
+        color: white;
 }
 
-webview
-{
-    width:100vw;
-    height:100vh
+webview {
+        width: 100vw;
+        height: 100vh
 }
 
-#options
-{
-    position: absolute;
-    top: 0;
-    right: 5px;
-    float: right;
-    font-weight: bold;
-    color: white;
+#options {
+        position: absolute;
+        top: 0;
+        right: 5px;
+        float: right;
+        font-weight: bold;
+        color: white;
 }
 
-.options input
-{
-    margin: 0 2px 0 10px;
-    vertical-align: middle;
+.options input {
+        margin: 0 2px 0 10px;
+        vertical-align: middle;
 }
 
-.middle
-{
-    vertical-align: middle;
+.middle {
+        vertical-align: middle;
 }
 
-label[for="visibleOnAllWorkspaces"]
-{
-    display: none;
+label[for="visibleOnAllWorkspaces"] {
+        display: none;
 }
 
-#url
-{
-    width: 90vw;
-    margin: auto;
-    display: block;
-    line-height: 2em;
-    font-size: 1.5em;
-    font-weight: 600;
-    padding-left: 0.2em;
+#url {
+        width: 90vw;
+        margin: auto;
+        display: block;
+        line-height: 2em;
+        font-size: 1.5em;
+        font-weight: 600;
+        padding-left: 0.2em;
 }
 
-#home
-{
-    padding-top: 5em;
-    height: 100vh;
-    width: 100%;
-    background: #B0BEC5;
+#home {
+        padding-top: 5em;
+        height: 100vh;
+        width: 100%;
+        background: #B0BEC5;
 }
 
-#title
-{
-    margin-top: 1em; 
-    width: 100%;
-    text-align: center;
-    font-size: 1.5em;
-    font-weight: 500;
+#title {
+        margin-top: 1em;
+        width: 100%;
+        text-align: center;
+        font-size: 1.5em;
+        font-weight: 500;
 }
 
-#header
-{
-    height: 52px;
-    line-height: 52px;
-    text-align: center;
-    color: rgb(33,33,33);
+#header {
+        height: 52px;
+        line-height: 52px;
+        text-align: center;
+        color: rgb(33, 33, 33);
 }
 
-#header img
-{
-    width: 52px;
-    height: 52px;
-    vertical-align: middle;
+#header img {
+        width: 52px;
+        height: 52px;
+        vertical-align: middle;
 }
 
-#header span
-{
-    vertical-align: middle;
-    font-size: 4em;
-    font-weight: bold;
-    padding-left: 1em;
-    color: #880E4F;
+#header span {
+        vertical-align: middle;
+        font-size: 4em;
+        font-weight: bold;
+        padding-left: 1em;
+        color: #880E4F;
 }
 
-#submit
-{
-    display: block;
-    width: 10em;
-    margin: 1em auto;
-    padding: 0.2em;
-    background: white;
-    border: none;
-    border-radius: 1px;
-    font-size: 1.5em;
-    font-weight: 500;
-    box-shadow: 0 2px 5px 0 rgba(0,0,0,.26);
-    text-transform: uppercase;
+#submit {
+        display: block;
+        width: 10em;
+        margin: 1em auto;
+        padding: 0.2em;
+        background: white;
+        border: none;
+        border-radius: 1px;
+        font-size: 1.5em;
+        font-weight: 500;
+        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .26);
+        text-transform: uppercase;
 }
 
-#submit:hover
-{
-    cursor: pointer;
+#submit:hover {
+        cursor: pointer;
 }

@@ -20,15 +20,15 @@
  */
 
 modules.youtube_short = {
-    check: function (url) {
+    check: function(url) {
         var regexp = /youtu\.be/gi;
         return (url.match(regexp) != null && url.match(regexp).length > 0);
     },
-    getEmbedURL: function (url) {
+    getEmbedURL: function(url) {
         var params = modules.youtube_short.getVideoID(url);
         return "https://www.youtube.com/embed/" + params;
     },
-    getVideoID: function (url) {
+    getVideoID: function(url) {
         var n = url.lastIndexOf("/");
         return url.substring(n + 1);
     }

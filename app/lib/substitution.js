@@ -34,7 +34,7 @@ var subtitutionList = [
     {"pattern": /furiie\.tv/gi, "url": "http://www.twitch.tv/furiie"}
 ];
 
-var substitute = function (url) {
+var substitute = function(url) {
     for (var i = 0; i < subtitutionList.length; i++) {
         var regexp = subtitutionList[i].pattern;
         if (url.match(regexp) !== null && url.match(regexp).length > 0) {
