@@ -80,6 +80,10 @@ chrome.runtime.onMessageExternal.addListener(function(msg) {
                 current.setVisibleOnAllWorkspaces(current.contentWindow.document.querySelector('#visibleOnAllWorkspaces').checked);
                 current.drawAttention();
             });
+
+            if (!chrome.app.window.canSetVisibleOnAllWorkspaces()) {
+                win.document.querySelector('label[for="visibleOnAllWorkspaces"]').style.display = "none";
+            }
         });
     });
 });

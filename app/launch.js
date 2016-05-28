@@ -48,6 +48,10 @@ chrome.app.runtime.onLaunched.addListener(function() {
                     current.drawAttention();
                 });
 
+                if (!chrome.app.window.canSetVisibleOnAllWorkspaces()) {
+                    win.document.querySelector('label[for="visibleOnAllWorkspaces"]').style.display = "none";
+                }
+
                 var title = win.document.querySelector('#title');
                 title.innerHTML = chrome.i18n.getMessage("inputURL");
 

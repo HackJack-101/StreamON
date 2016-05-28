@@ -55,7 +55,7 @@ webview {
 }
 
 label[for="visibleOnAllWorkspaces"] {
-        display: none;
+        display: block;
 }
 
 #url {
