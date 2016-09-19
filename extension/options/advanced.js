@@ -20,6 +20,7 @@
  */
 
 /* global chrome */
+var clientID = 'jpzyevuwtdws8n0fz8gp5erx8274r8d';
 
 function save_options() {
     var refreshTime = document.getElementById('refreshTime').value;
@@ -100,6 +101,7 @@ function importTwitchFollowing(username, offset) {
         }
     };
     XHR.open("GET", "https://api.twitch.tv/kraken/users/" + username + "/follows/channels?direction=DESC&limit=25&offset=" + offset + "&sortby=created_at", true);
+    XHR.setRequestHeader("Client-ID", clientID);
     XHR.send(null);
 }
 
