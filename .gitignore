@@ -45,6 +45,7 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
-/nbproject/private/
-/app.zip
-/extension.zip
+nbproject/
+app.zip
+extension*.zip
+.idea/

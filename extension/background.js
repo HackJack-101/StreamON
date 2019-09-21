@@ -25,12 +25,12 @@ function checkStreams() {
         background: true
     }, function (options) {
         if (options.background) {
-            var streams = options.streams;
+            let streams = options.streams;
             streams = streams.split("\n");
-            for (var i = 0; i < streams.length; i++) {
+            for (let i = 0; i < streams.length; i++) {
                 if (streams[i].length > 0) {
-                    var url = substitute(streams[i]);
-                    for (var k in modules) {
+                    const url = substitute(streams[i]);
+                    for (let k in modules) {
                         if (modules[k].check(url)) {
                             modules[k].notify(url);
                             break;
@@ -76,7 +76,7 @@ function openMiniPlayer(info, tab) {
 }
 
 function followStream(info, tab) {
-    var newStream = tab.url;
+    const newStream = tab.url;
     if (info.linkUrl) {
         console.log(info.linkURL);
     }
@@ -84,7 +84,7 @@ function followStream(info, tab) {
     chrome.storage.sync.get({
         streams: ""
     }, function (options) {
-        var streams = options.streams;
+        let streams = options.streams;
         if (streams.length > 0) {
             streams += "\n";
         }
@@ -99,17 +99,17 @@ function main() {
         contextMenu: true
     }, function (options) {
         if (options.contextMenu) {
-            var menu = chrome.contextMenus.create({
+            const menu = chrome.contextMenus.create({
                 title: "Stream[ON]",
                 contexts: ["all"]
             });
-            var followMenu = chrome.contextMenus.create({
+            const followMenu = chrome.contextMenus.create({
                 title: chrome.i18n.getMessage("followWithStreamON"),
                 contexts: ["page", "link", "selection", "frame"],
                 parentId: menu,
                 onclick: followStream
             });
-            var miniPlayerMenu = chrome.contextMenus.create({
+            const miniPlayerMenu = chrome.contextMenus.create({
                 title: chrome.i18n.getMessage("openMiniPlayer"),
                 contexts: ["page", "link", "selection", "audio", "video", "frame"],
                 parentId: menu,

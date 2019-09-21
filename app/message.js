@@ -23,12 +23,12 @@
 /* global modules, chrome */
 
 String.prototype.hash = function() {
-    var hash = 0;
+    let hash = 0;
     if (this.length === 0) {
         return hash;
     }
-    for (i = 0; i < this.length; i++) {
-        var char = this.charCodeAt(i);
+    for (let i = 0; i < this.length; i++) {
+        const char = this.charCodeAt(i);
         hash = ((hash << 5) - hash) + char;
         hash = hash & hash;
     }
@@ -36,7 +36,7 @@ String.prototype.hash = function() {
 };
 
 chrome.runtime.onMessageExternal.addListener(function(msg) {
-    var windowID = msg.url.hash();
+    const windowID = msg.url.hash();
     if (chrome.app.window.get(windowID)) {
         chrome.app.window.get(windowID).focus();
     }
@@ -48,14 +48,14 @@ chrome.runtime.onMessageExternal.addListener(function(msg) {
         },
         frame: {color: '#000000'}
     }, function(createdWindow) {
-        var win = createdWindow.contentWindow;
+        const win = createdWindow.contentWindow;
         win.addEventListener("load", function() {
             win.document.querySelector('#home').style.display = "none";
-            var webview = win.document.createElement('webview');
+            const webview = win.document.createElement('webview');
 
-            var url = substitute(msg.url);
+            let url = substitute(msg.url);
             if (msg.resolution) {
-                for (var i in modules) {
+                for (const i in modules) {
                     if (modules.hasOwnProperty(i)) {
                         if (modules[i].check(url)) {
                             url = modules[i].getEmbedURL(url);
@@ -69,14 +69,14 @@ chrome.runtime.onMessageExternal.addListener(function(msg) {
             win.document.querySelector('#content').appendChild(webview);
             win.document.querySelector('#alwaysOnTopLabel').innerHTML = chrome.i18n.getMessage("alwaysOnTop");
             win.document.querySelector('#alwaysOnTop').addEventListener('change', function() {
-                var current = chrome.app.window.get(windowID);
+                const current = chrome.app.window.get(windowID);
                 current.setAlwaysOnTop(current.contentWindow.document.querySelector('#alwaysOnTop').checked);
                 current.drawAttention();
             });
 
             win.document.querySelector('#visibleOnAllWorkspacesLabel').innerHTML = chrome.i18n.getMessage("visibleOnAllWorkspaces");
             win.document.querySelector('#visibleOnAllWorkspaces').addEventListener('change', function() {
-                var current = chrome.app.window.get(windowID);
+                const current = chrome.app.window.get(windowID);
                 current.setVisibleOnAllWorkspaces(current.contentWindow.document.querySelector('#visibleOnAllWorkspaces').checked);
                 current.drawAttention();
             });

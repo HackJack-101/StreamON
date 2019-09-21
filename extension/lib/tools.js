@@ -21,9 +21,9 @@
 
 /* global chrome */
 
-var tools = {
+const tools = {
     getProfileName: function (url) {
-        var n = url.lastIndexOf("/");
+        const n = url.lastIndexOf('/');
         if (n === (url.length - 1))
             return tools.getProfileName(url.substring(0, url.length - 1));
         else
@@ -38,9 +38,9 @@ var tools = {
         });
     },
     openMiniPlayer: function (url, resolution) {
-        var idDevMiniPlayer = "ofdfelnalikpjnadfilplkdaijbalfhb";
-        var idMiniPlayer = "glccgoppknfoonfajicijebeaedpnkfp";
-        var options = {url: url};
+        const idDevMiniPlayer = 'ofdfelnalikpjnadfilplkdaijbalfhb';
+        const idMiniPlayer = 'glccgoppknfoonfajicijebeaedpnkfp';
+        const options = {url: url};
         if (resolution) {
             options.resolution = resolution;
         }
@@ -60,5 +60,5 @@ var tools = {
     }
 };
 
-var modules = {};
+const modules = {};
 

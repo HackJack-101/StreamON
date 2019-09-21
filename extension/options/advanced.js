@@ -20,23 +20,23 @@
  */
 
 /* global chrome */
-var clientID = 'jpzyevuwtdws8n0fz8gp5erx8274r8d';
+const CLIENT_ID = 'jpzyevuwtdws8n0fz8gp5erx8274r8d';
 
 function save_options() {
-    var refreshTime = document.getElementById('refreshTime').value;
+    let refreshTime = document.getElementById('refreshTime').value;
     refreshTime = parseInt(refreshTime);
     if (refreshTime < 1) {
         refreshTime = 1;
     }
-    var notif = document.getElementById('notif').checked;
-    var titleNotif = document.getElementById('titleNotif').checked;
-    var contextMenu = document.getElementById('contextMenu').checked;
-    var streams = document.getElementById('streams').value;
-    var notificationTimeout = parseInt(document.getElementById('notificationTimeout').value);
-    var cleanedStreams = [];
-    var streamArray = streams.split("\n");
-    for (var i in streamArray) {
-        var s = streamArray[i];
+    const notif = document.getElementById('notif').checked;
+    const titleNotif = document.getElementById('titleNotif').checked;
+    const contextMenu = document.getElementById('contextMenu').checked;
+    const streams = document.getElementById('streams').value;
+    const notificationTimeout = parseInt(document.getElementById('notificationTimeout').value);
+    const cleanedStreams = [];
+    const streamArray = streams.split('\n');
+    for (const i in streamArray) {
+        let s = streamArray[i];
         s = s.trim();
         if (s.length > 0) {
             cleanedStreams.push(s);
@@ -44,16 +44,16 @@ function save_options() {
     }
     chrome.storage.sync.set({
         refreshTime: refreshTime,
-        streams: cleanedStreams.join("\n"),
+        streams: cleanedStreams.join('\n'),
         notif: notif,
         titleNotif: titleNotif,
         contextMenu: contextMenu,
         notificationTimeout: notificationTimeout
     }, function () {
         restore_options();
-        var status = document.getElementById('status');
+        const status = document.getElementById('status');
         status.style.display = 'block';
-        status.textContent = chrome.i18n.getMessage("optionsSaved");
+        status.textContent = chrome.i18n.getMessage('optionsSaved');
         setTimeout(function () {
             status.textContent = '';
             status.style.display = 'none';
@@ -64,7 +64,7 @@ function save_options() {
 function restore_options() {
     chrome.storage.sync.get({
         refreshTime: 60,
-        streams: "",
+        streams: '',
         notif: true,
         titleNotif: false,
         contextMenu: true,
@@ -80,28 +80,48 @@ function restore_options() {
     });
 }
 
-function importTwitchFollowing(username, offset) {
-    var XHR = new XMLHttpRequest();
+function importTwitchFollowingFromUsername(username) {
+    const XHR = new XMLHttpRequest();
     XHR.onreadystatechange = function () {
         if (XHR.readyState === 4 && (XHR.status === 200 || XHR.status === 0)) {
-            var result = JSON.parse(XHR.responseText);
-            var streams = document.getElementById('streams').value;
-            for (var i = 0; i < result.follows.length; i++) {
-                var url = result.follows[i].channel.url;
+            const result = JSON.parse(XHR.responseText);
+            if (result.data && result.data.length > 0) {
+                importTwitchFollowing(result.data[0].id, 0);
+            }
+
+        }
+    };
+    XHR.open('GET', 'https://api.twitch.tv/helix/users?login=' + username, true);
+    XHR.setRequestHeader('Client-ID', CLIENT_ID);
+    XHR.send(null);
+}
+
+function importTwitchFollowing(userID, pagination) {
+    const XHR = new XMLHttpRequest();
+    XHR.onreadystatechange = function () {
+        if (XHR.readyState === 4 && (XHR.status === 200 || XHR.status === 0)) {
+            const result = JSON.parse(XHR.responseText);
+            const streams = document.getElementById('streams').value;
+            for (let i = 0; i < result.data.length; i++) {
+                const url = 'https://twitch.tv/' + result.data[i].to_name;
                 if (streams.lastIndexOf(url) < 0) {
                     if (i === 0 && streams.length > 0) {
-                        document.getElementById('streams').value += "\n";
+                        document.getElementById('streams').value += '\n';
                     }
-                    document.getElementById('streams').value += url + "\n";
+                    document.getElementById('streams').value += url + '\n';
                 }
             }
-            if (result.follows.length >= 25) {
-                importTwitchFollowing(username, offset + 25);
+            if (result.total > 100) {
+                importTwitchFollowing(userID, result.pagination.cursor);
             }
         }
     };
-    XHR.open("GET", "https://api.twitch.tv/kraken/users/" + username + "/follows/channels?direction=DESC&limit=25&offset=" + offset + "&sortby=created_at", true);
-    XHR.setRequestHeader("Client-ID", clientID);
+    let url = 'https://api.twitch.tv/helix/users/follows?from_id=' + userID + '&first=100';
+    if (pagination) {
+        url += '&after=' + pagination;
+    }
+    XHR.open('GET', url, true);
+    XHR.setRequestHeader('Client-ID', CLIENT_ID);
     XHR.send(null);
 }
 
@@ -109,11 +129,11 @@ function addTwitch() {
     document.getElementById('addTwitch').style.display = 'none';
     document.getElementById('addTwitchDialog').style.display = 'flex';
     document.getElementById('importTwitch').addEventListener('click', function () {
-        var username = document.getElementById('usernameTwitch').value;
+        const username = document.getElementById('usernameTwitch').value;
         if (username !== null && username.length > 0) {
-            importTwitchFollowing(username, 0);
+            importTwitchFollowingFromUsername(username);
         }
-        document.getElementById('usernameTwitch').value = "";
+        document.getElementById('usernameTwitch').value = '';
         document.getElementById('addTwitch').style.display = 'block';
         document.getElementById('addTwitchDialog').style.display = 'none';
     });
@@ -122,7 +142,7 @@ function addTwitch() {
 }
 
 function setListener() {
-    var addTwitchButton = document.getElementById('addTwitch');
+    const addTwitchButton = document.getElementById('addTwitch');
     addTwitchButton.addEventListener('click', addTwitch);
 
     document.getElementById('form').addEventListener('submit', function (e) {
@@ -138,7 +158,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     restore_options();
 
-    var optionsAdvanced = document.getElementById('advancedOptions');
+    const optionsAdvanced = document.getElementById('advancedOptions');
     if (optionsAdvanced) {
         optionsAdvanced.addEventListener('click', function (e) {
             e.preventDefault();

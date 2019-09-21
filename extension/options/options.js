@@ -22,17 +22,17 @@
 /* global chrome */
 
 function save_options() {
-    var refreshTime = document.getElementById('refreshTime').value;
+    let refreshTime = document.getElementById('refreshTime').value;
     refreshTime = parseInt(refreshTime);
     if (refreshTime < 1) {
         refreshTime = 1;
     }
 
-    var streams = document.getElementById('streams').value;
-    var cleanedStreams = [];
-    var streamArray = streams.split("\n");
-    for (var i in streamArray) {
-        var s = streamArray[i];
+    const streams = document.getElementById('streams').value;
+    const cleanedStreams = [];
+    const streamArray = streams.split('\n');
+    for (const i in streamArray) {
+        let s = streamArray[i];
         s = s.trim();
         if (s.length > 0)
             cleanedStreams.push(s);
@@ -42,7 +42,7 @@ function save_options() {
         streams: cleanedStreams.join("\n")
     }, function () {
         restore_options();
-        var status = document.getElementById('status');
+        const status = document.getElementById('status');
         status.style.display = 'block';
         status.textContent = chrome.i18n.getMessage("optionsSaved");
         setTimeout(function () {
@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     restore_options();
 
-    var optionsAdvanced = document.getElementById('advancedOptions');
+    const optionsAdvanced = document.getElementById('advancedOptions');
     if (optionsAdvanced) {
         optionsAdvanced.addEventListener('click', function (e) {
             e.preventDefault();

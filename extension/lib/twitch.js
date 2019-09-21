@@ -20,102 +20,132 @@
  */
 
 /* global tools, modules, chrome */
-var clientID = 'jpzyevuwtdws8n0fz8gp5erx8274r8d';
+const CLIENT_ID = 'jpzyevuwtdws8n0fz8gp5erx8274r8d';
 modules.twitch =
-{
-    data: {},
-    check: function(url) {
-        var regexp = /twitch\.tv/gi;
-        return (url.match(regexp) !== null && url.match(regexp).length > 0);
-    },
-    display: function(url) {
-        modules.twitch.getData(url, modules.twitch.displayData);
-    },
-    getData: function(url, callback) {
-        var profile = tools.getProfileName(url);
-        var XHR = new XMLHttpRequest();
+    {
+        data: {},
+        check: function (url) {
+            const regexp = /twitch\.tv/gi;
+            return (url.match(regexp) !== null && url.match(regexp).length > 0);
+        },
+        display: function (url) {
+            modules.twitch.getData(url, modules.twitch.displayData);
+        },
+        fetchData: function (url, callback, errorCallback) {
+            const XHR = new XMLHttpRequest();
 
-        XHR.onreadystatechange = function() {
-            if (XHR.readyState === 4 && (XHR.status === 200 || XHR.status === 0)) {
-                var result = JSON.parse(XHR.responseText);
-                callback(result.stream !== null, result, profile);
-            }
-        };
-        XHR.open("GET", "https://api.twitch.tv/kraken/streams/" + profile, true);
-        XHR.setRequestHeader("Client-ID", clientID);
-        XHR.send(null);
-    },
-    displayData: function(online, content, profile) {
-        if (online) {
-            var thumbnail = content.stream.preview.medium;
-            var title = content.stream.channel.status;
-            var name = content.stream.channel.display_name;
-            var game = content.stream.channel.game;
-            var embed = "http://player.twitch.tv/?channel=" + profile;
-            addOnlineElement(profile, "twitch", thumbnail, title, name, game, embed);
-        } else {
-            addOfflineElement(profile, "twitch", null);
-        }
-    },
-    notify: function(url) {
-        modules.twitch.getData(url, modules.twitch.notifyData);
-    },
-    notifyData: function(online, content, profile) {
-        if (!modules.twitch.data[profile]) {
-            modules.twitch.data[profile] = {
-                streamOnline: false,
-                game: "",
-                title: "",
-                logo: ""
-            };
-        }
-        if (online) {
-            if (!modules.twitch.data[profile].streamOnline) {
-                modules.twitch.data[profile].streamOnline = true;
-                modules.twitch.data[profile].game = content.stream.channel.game;
-                modules.twitch.data[profile].title = content.stream.channel.status;
-                modules.twitch.data[profile].logo = content.stream.channel.logo;
-                chrome.storage.sync.get({
-                    notif: true
-                }, function(options) {
-                    if (options.notif) {
-                        var title = modules.twitch.data[profile].title;
-                        var icon = modules.twitch.data[profile].logo;
-                        var body = chrome.i18n.getMessage("game") + ' : ' + modules.twitch.data[profile].game;
-                        displayNotification(title, icon, body, function() {
-                            modules.twitch.openStream(profile);
-                        });
+            XHR.onreadystatechange = function () {
+                if (XHR.readyState === 4 && (XHR.status === 200 || XHR.status === 0)) {
+                    const result = JSON.parse(XHR.responseText);
+                    if (result.data && result.data.length > 0) {
+                        callback(result);
+                    } else {
+                        errorCallback();
                     }
+                }
+            };
+            XHR.open('GET', url, true);
+            XHR.setRequestHeader('Client-ID', CLIENT_ID);
+            XHR.send(null);
+        },
+        getUserLogo: function (profile, callback) {
+            modules.twitch.fetchData('https://api.twitch.tv/helix/users?user_login=' + profile,
+                (res) => callback(res.data[0].profile_image_url),
+                () => callback(''));
+        },
+        getData: function (url, callback) {
+            const profile = tools.getProfileName(url);
+            modules.twitch.fetchData('https://api.twitch.tv/helix/streams?user_login=' + profile,
+                (res) => callback(true, res.data[0], profile),
+                () => callback(false, null, profile));
+        },
+        getGameInfo: function (gameID, callback) {
+            modules.twitch.fetchData('https://api.twitch.tv/helix/games?id=' + gameID,
+                (res) => callback(res.data[0].name),
+                () => callback('jeu inconnu'));
+        },
+        displayData: function (online, content, profile) {
+            if (online) {
+                const thumbnail = content.thumbnail_url.replace('{width}', '400').replace('{height}', '225');
+                const title = content.title;
+                const name = content.user_name;
+                const gameID = content.game_id;
+                const embed = 'http://player.twitch.tv/?channel=' + profile;
+                modules.twitch.getGameInfo(gameID, (game) => {
+                    addOnlineElement(profile, 'twitch', thumbnail, title, name, game, embed);
                 });
             } else {
-                if (content.stream.channel.game !== modules.twitch.data[profile].game || content.stream.channel.status !== modules.twitch.data[profile].title) {
-                    modules.twitch.data[profile].game = content.stream.channel.game;
-                    modules.twitch.data[profile].title = content.stream.channel.status;
-                    modules.twitch.data[profile].logo = content.stream.channel.logo;
-                    chrome.storage.sync.get({
-                        titleNotif: false
-                    }, function(options) {
-                        if (options.refreshTime) {
-                            var title = modules.twitch.data[profile].title;
-                            var icon = modules.twitch.data[profile].logo;
-                            var body = chrome.i18n.getMessage("game") + ' : ' + modules.twitch.data[profile].game;
-                            displayNotification(title, icon, body, function() {
-                                modules.twitch.openStream(profile);
+                addOfflineElement(profile, 'twitch', null);
+            }
+        },
+        notify: function (url) {
+            modules.twitch.getData(url, modules.twitch.notifyData);
+        },
+        notifyData: function (online, content, profile) {
+            if (!modules.twitch.data[profile]) {
+                modules.twitch.data[profile] = {
+                    streamOnline: false,
+                    game: '',
+                    title: '',
+                    logo: ''
+                };
+            }
+            if (online) {
+                if (!modules.twitch.data[profile].streamOnline) {
+                    modules.twitch.data[profile].streamOnline = true;
+                    modules.twitch.data[profile].game = content.game_id;
+                    modules.twitch.data[profile].title = content.title;
+                    modules.twitch.getUserLogo(profile, (logo) => {
+                        modules.twitch.getGameInfo(content.game_id, (game) => {
+                            chrome.storage.sync.get({
+                                notif: true
+                            }, (options) => {
+                                if (options.notif) {
+                                    const title = content.title;
+                                    const icon = logo;
+                                    const body = chrome.i18n.getMessage('game') + ' : ' + game;
+                                    displayNotification(title, icon, body, function () {
+                                        modules.twitch.openStream(profile);
+                                    });
+                                }
                             });
-                        }
+                        });
                     });
+
+                } else {
+                    if (content.game_id !== modules.twitch.data[profile].game || content.title !== modules.twitch.data[profile].title) {
+
+                        modules.twitch.data[profile].game = content.game_id;
+                        modules.twitch.data[profile].title = content.title;
+                        modules.twitch.getUserLogo(profile, (logo) => {
+                            modules.twitch.getGameInfo(content.game_id, (game) => {
+                                chrome.storage.sync.get({
+                                    notif: true,
+                                    titleNotif: false
+                                }, (options) => {
+                                    if (options.notif && options.titleNotif) {
+                                        const title = content.title;
+                                        const icon = logo;
+                                        const body = chrome.i18n.getMessage('game') + ' : ' + game;
+                                        displayNotification(title, icon, body, function () {
+                                            modules.twitch.openStream(profile);
+                                        });
+                                    }
+                                });
+                            });
+                        });
+                    }
+                }
+            } else {
+                if (modules.twitch.data[profile].streamOnline) {
+                    modules.twitch.data[profile].streamOnline = false;
                 }
             }
-        } else {
-            if (modules.twitch.data[profile].streamOnline) {
-                modules.twitch.data[profile].streamOnline = false;
-            }
-        }
 
-    },
-    openStream: function(profile) {
-        var pattern = "*://*.twitch.tv/" + profile;
-        var url = "http://www.twitch.tv/" + profile;
-        tools.openTab(pattern, url);
-    }
-};
+        },
+        openStream: function (profile) {
+            var pattern = '*://*.twitch.tv/' + profile;
+            var url = 'http://twitch.tv/' + profile;
+            tools.openTab(pattern, url);
+        }
+    };
