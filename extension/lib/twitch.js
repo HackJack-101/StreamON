@@ -24,6 +24,7 @@ const CLIENT_ID = 'jpzyevuwtdws8n0fz8gp5erx8274r8d';
 modules.twitch =
     {
         data: {},
+        cache: [],
         check: function (url) {
             const regexp = /twitch\.tv/gi;
             return (url.match(regexp) !== null && url.match(regexp).length > 0);
@@ -48,6 +49,43 @@ modules.twitch =
             XHR.setRequestHeader('Client-ID', CLIENT_ID);
             XHR.send(null);
         },
+        getAsyncBulkData: (streamers) => new Promise((resolve, reject) => {
+            const logins = streamers.map((streamer) => tools.getProfileName(streamer));
+            modules.twitch.fetchData('https://api.twitch.tv/helix/streams?user_login=' + logins.join('&user_login='),
+                (resStreams) => {
+                    const connectedStreamers = resStreams.data;
+                    const games = [];
+                    connectedStreamers.forEach(({game_id}) => {
+                        if (!games.includes(game_id)) {
+                            games.push(game_id);
+                        }
+                    });
+                    modules.twitch.fetchData('https://api.twitch.tv/helix/games?id=' + games.join('&id='), (fetchedGames) => {
+                        const gamesData = fetchedGames.data.reduce((acc, game) => {
+                            acc[game.id] = game;
+                            return acc;
+                        }, {});
+
+                        const streams = connectedStreamers.map((stream) => {
+                            return {
+                                name: stream.user_name,
+                                title: stream.title,
+                                game: gamesData[stream.game_id] ? gamesData[stream.game_id].name : '',
+                                thumbnail: stream.thumbnail_url.replace('{width}', '400').replace('{height}', '225'),
+                                startedAt: stream.started_at,
+                                viewers: stream.viewer_count,
+                                embed: 'http://player.twitch.tv/?channel=' + stream.user_name
+                            };
+                        });
+
+                        modules.twitch.cache = streams;
+
+
+                        resolve(streams);
+                    }, () => resolve(modules.twitch.cache));
+                },
+                () => resolve(modules.twitch.cache));
+        }),
         getUserLogo: function (profile, callback) {
             modules.twitch.fetchData('https://api.twitch.tv/helix/users?user_login=' + profile,
                 (res) => callback(res.data[0].profile_image_url),
@@ -78,8 +116,20 @@ modules.twitch =
                 addOfflineElement(profile, 'twitch', null);
             }
         },
-        notify: function (url) {
-            modules.twitch.getData(url, modules.twitch.notifyData);
+        isOffline: ({name}) => {
+            return !modules.twitch.data.hasOwnProperty(name);
+        },
+        notify: function (name, logo, title, game) {
+            chrome.storage.sync.get({
+                notif: true
+            }, (options) => {
+                if (options.notif) {
+                    const body = chrome.i18n.getMessage('game') + ' : ' + game;
+                    displayNotification(title, logo, body, () => {
+                        modules.twitch.openStream(name);
+                    });
+                }
+            });
         },
         notifyData: function (online, content, profile) {
             if (!modules.twitch.data[profile]) {

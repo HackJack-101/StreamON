@@ -21,23 +21,19 @@
 
 /* global chrome, modules, tools */
 
-function checkStreams() {
+async function checkStreams() {
     chrome.storage.sync.get({
         streams: ''
-    }, function (options) {
+    }, async (options) => {
         let streams = options.streams;
         streams = streams.split('\n');
-        for (let i = 0; i < streams.length; i++) {
-            if (streams[i].length > 0) {
-                const url = substitute(streams[i]);
-                for (const k in modules) {
-                    if (modules[k].check(url)) {
-                        modules[k].display(url);
-                        break;
-                    }
-                }
-            }
-        }
+        let twitchStreams = streams.filter((stream) => {
+            return modules.twitch.check(substitute(stream));
+        });
+        const twitch = await modules.twitch.getAsyncBulkData(twitchStreams);
+        twitch.forEach(({game, name, startedAt, thumbnail, title, viewers, embed}) => addOnlineElement(name, 'twitch', thumbnail, title, name, game, viewers, embed));
+        console.log(twitch);
+
     });
 }
 
@@ -58,7 +54,7 @@ function addOfflineElement(profile, server, name) {
     offlineNumber.innerHTML = parseInt(offlineNumber.innerHTML) + 1;
 }
 
-function addOnlineElement(profile, server, _img, _title, _name, _game, embed) {
+function addOnlineElement(profile, server, _img, _title, _name, _game, _viewers, embed) {
     const e = document.createElement('a');
     e.setAttribute('class', 'streamOn');
     e.setAttribute('data-profile', profile);
@@ -103,6 +99,10 @@ function addOnlineElement(profile, server, _img, _title, _name, _game, embed) {
         desc.appendChild(game);
     }
 
+    const viewers = document.createElement('div');
+    viewers.innerHTML = '' + _viewers + ' viewers';
+    desc.appendChild(viewers);
+
     const miniPlayer = document.createElement('div');
     miniPlayer.setAttribute('class', 'link');
     miniPlayer.innerHTML = chrome.i18n.getMessage('openMiniPlayer');
@@ -118,8 +118,8 @@ function addOnlineElement(profile, server, _img, _title, _name, _game, embed) {
     onlineNumber.innerHTML = parseInt(onlineNumber.innerHTML) + 1;
 }
 
-function main() {
-    checkStreams();
+async function main() {
+    await checkStreams();
 }
 
 window.addEventListener('DOMContentLoaded', main, false);

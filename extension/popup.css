@@ -23,8 +23,10 @@ body
 {
     font-family: 'Roboto', 'Segoe UI', Tahoma, sans-serif;
     min-width: 350px;
-    background: #FAFAFA;
+    background: rgb(24, 10, 21);
+    background: linear-gradient(135deg, rgba(24, 10, 21, 1) 0%, rgba(36, 1, 1, 1) 100%);
     cursor: default;
+    color: white
 }
 h1
 {
@@ -43,18 +45,14 @@ h2
 {
     display: flex;
     text-decoration: none;
-    color: black;
+    color: white;
     margin-left: 2px;
     margin-bottom: 2px;
     border-radius: 2px;
     border: 1px solid #D0D0D0;
     padding: 2px;
 }
-.streamOn:hover
-{
-    background: #E3F2FD;
-    border: 1px solid #D0D0D0;
-}
+
 .streamOn .description, .streamOn  .preview
 {
     vertical-align: middle;

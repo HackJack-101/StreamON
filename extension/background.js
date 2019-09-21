@@ -19,34 +19,36 @@
 
 /* global chrome, modules, tools */
 
-function checkStreams() {
+async function checkStreams() {
     chrome.storage.sync.get({
-        streams: "",
+        streams: '',
         background: true
-    }, function (options) {
+    }, async (options) => {
         if (options.background) {
             let streams = options.streams;
-            streams = streams.split("\n");
-            for (let i = 0; i < streams.length; i++) {
-                if (streams[i].length > 0) {
-                    const url = substitute(streams[i]);
-                    for (let k in modules) {
-                        if (modules[k].check(url)) {
-                            modules[k].notify(url);
-                            break;
-                        }
-                    }
-                }
-            }
+            streams = streams.split('\n');
+            let twitchStreams = streams.filter((stream) => {
+                return modules.twitch.check(substitute(stream));
+            });
+            const twitch = await modules.twitch.getAsyncBulkData(twitchStreams);
+            console.log(twitch, twitch.filter(modules.twitch.isOffline));
+            twitch.filter(modules.twitch.isOffline)
+                .forEach(({game, name, thumbnail, title}, index) =>
+                    setTimeout(() =>
+                        modules.twitch.notify(name, thumbnail, title, game), index * 2500));
+            modules.twitch.data = twitch.reduce((acc, stream) => {
+                acc[stream.name] = stream;
+                return acc;
+            }, {});
         }
     });
 }
 
 function displayNotification(title, icon, body, callback) {
-    var startStream = new Notification(title,
+    const startStream = new Notification(title,
         {
             icon: icon,
-            lang: chrome.i18n.getMessage("locale"),
+            lang: chrome.i18n.getMessage('locale'),
             body: body
         }
     );
@@ -58,7 +60,7 @@ function displayNotification(title, icon, body, callback) {
 
     chrome.storage.sync.get({
         notificationTimeout: 4000
-    }, function (options) {
+    }, (options) => {
         setTimeout(function () {
             startStream.close();
         }, options.notificationTimeout);
@@ -82,11 +84,11 @@ function followStream(info, tab) {
     }
 
     chrome.storage.sync.get({
-        streams: ""
-    }, function (options) {
+        streams: ''
+    }, (options) => {
         let streams = options.streams;
         if (streams.length > 0) {
-            streams += "\n";
+            streams += '\n';
         }
         streams += newStream;
         chrome.storage.sync.set({streams: streams});
@@ -94,31 +96,31 @@ function followStream(info, tab) {
 
 }
 
-function main() {
+async function main() {
     chrome.storage.sync.get({
         contextMenu: true
-    }, function (options) {
+    }, (options) => {
         if (options.contextMenu) {
             const menu = chrome.contextMenus.create({
-                title: "Stream[ON]",
-                contexts: ["all"]
+                title: 'Stream[ON]',
+                contexts: ['all']
             });
             const followMenu = chrome.contextMenus.create({
-                title: chrome.i18n.getMessage("followWithStreamON"),
-                contexts: ["page", "link", "selection", "frame"],
+                title: chrome.i18n.getMessage('followWithStreamON'),
+                contexts: ['page', 'link', 'selection', 'frame'],
                 parentId: menu,
                 onclick: followStream
             });
             const miniPlayerMenu = chrome.contextMenus.create({
-                title: chrome.i18n.getMessage("openMiniPlayer"),
-                contexts: ["page", "link", "selection", "audio", "video", "frame"],
+                title: chrome.i18n.getMessage('openMiniPlayer'),
+                contexts: ['page', 'link', 'selection', 'audio', 'video', 'frame'],
                 parentId: menu,
                 onclick: openMiniPlayer
             });
         }
     });
 
-    checkStreams();
+    await checkStreams();
     chrome.storage.sync.get({
         refreshTime: 60
     }, function (options) {
