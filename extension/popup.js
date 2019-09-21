@@ -23,14 +23,14 @@
 
 function checkStreams() {
     chrome.storage.sync.get({
-        streams: ""
+        streams: ''
     }, function (options) {
-        var streams = options.streams;
-        streams = streams.split("\n");
-        for (var i = 0; i < streams.length; i++) {
+        let streams = options.streams;
+        streams = streams.split('\n');
+        for (let i = 0; i < streams.length; i++) {
             if (streams[i].length > 0) {
-                var url = substitute(streams[i]);
-                for (var k in modules) {
+                const url = substitute(streams[i]);
+                for (const k in modules) {
                     if (modules[k].check(url)) {
                         modules[k].display(url);
                         break;
@@ -42,10 +42,10 @@ function checkStreams() {
 }
 
 function addOfflineElement(profile, server, name) {
-    var e = document.createElement("div");
-    e.setAttribute("class", "streamOff link");
-    e.setAttribute("data-profile", profile);
-    e.addEventListener("click", function () {
+    const e = document.createElement('div');
+    e.setAttribute('class', 'streamOff link');
+    e.setAttribute('data-profile', profile);
+    e.addEventListener('click', function () {
         modules[server].openStream(this.getAttribute('data-profile'));
     }, false);
     if (name)
@@ -53,68 +53,68 @@ function addOfflineElement(profile, server, name) {
     else
         e.innerHTML = profile;
 
-    document.getElementById("offlineList").appendChild(e);
-    var offlineNumber = document.getElementById('offline');
+    document.getElementById('offlineList').appendChild(e);
+    const offlineNumber = document.getElementById('offline');
     offlineNumber.innerHTML = parseInt(offlineNumber.innerHTML) + 1;
 }
 
 function addOnlineElement(profile, server, _img, _title, _name, _game, embed) {
-    var e = document.createElement("a");
-    e.setAttribute("class", "streamOn");
-    e.setAttribute("data-profile", profile);
+    const e = document.createElement('a');
+    e.setAttribute('class', 'streamOn');
+    e.setAttribute('data-profile', profile);
 
-    var img = document.createElement("img");
-    img.setAttribute("class", "preview pointer");
-    img.setAttribute("width", "80");
-    img.setAttribute("height", "45");
-    img.setAttribute("alt", "preview");
-    img.setAttribute("src", "assets/play.png");
-    img.setAttribute("style", "background-image:url('" + _img + "')");
-    img.addEventListener("click", function () {
+    const img = document.createElement('img');
+    img.setAttribute('class', 'preview pointer');
+    img.setAttribute('width', '80');
+    img.setAttribute('height', '45');
+    img.setAttribute('alt', 'preview');
+    img.setAttribute('src', 'assets/play.png');
+    img.setAttribute('style', 'background-image:url(\'' + _img + '\')');
+    img.addEventListener('click', function () {
         modules[server].openStream(this.parentNode.getAttribute('data-profile'));
     }, false);
     e.appendChild(img);
 
-    var desc = document.createElement("div");
-    desc.setAttribute("class", "description");
+    const desc = document.createElement('div');
+    desc.setAttribute('class', 'description');
 
-    var title = document.createElement("span");
-    title.setAttribute("class", "link title");
+    const title = document.createElement('span');
+    title.setAttribute('class', 'link title');
     title.innerHTML = _title;
-    title.addEventListener("click", function () {
+    title.addEventListener('click', function () {
         modules[server].openStream(this.parentNode.parentNode.getAttribute('data-profile'));
     }, false);
     desc.appendChild(title);
 
-    var name = document.createElement("span");
-    name.setAttribute("class", "username");
+    const name = document.createElement('span');
+    name.setAttribute('class', 'username');
     name.innerHTML = _name;
     desc.appendChild(name);
 
     if (_game) {
-        var playing = document.createElement("span");
-        playing.setAttribute("class", "playing");
-        playing.innerHTML = ' ' + chrome.i18n.getMessage("playingTo") + ' ';
+        const playing = document.createElement('span');
+        playing.setAttribute('class', 'playing');
+        playing.innerHTML = ' ' + chrome.i18n.getMessage('playingTo') + ' ';
 
-        var game = document.createElement("span");
-        game.setAttribute("class", "game");
+        const game = document.createElement('span');
+        game.setAttribute('class', 'game');
         game.innerHTML = _game;
         desc.appendChild(playing);
         desc.appendChild(game);
     }
 
-    var miniPlayer = document.createElement("div");
-    miniPlayer.setAttribute("class", "link");
-    miniPlayer.innerHTML = chrome.i18n.getMessage("openMiniPlayer");
-    miniPlayer.addEventListener("click", function () {
+    const miniPlayer = document.createElement('div');
+    miniPlayer.setAttribute('class', 'link');
+    miniPlayer.innerHTML = chrome.i18n.getMessage('openMiniPlayer');
+    miniPlayer.addEventListener('click', function () {
         tools.openMiniPlayer(embed);
     }, false);
     desc.appendChild(miniPlayer);
 
     e.appendChild(desc);
 
-    document.getElementById("onlineList").appendChild(e);
-    var onlineNumber = document.getElementById('online');
+    document.getElementById('onlineList').appendChild(e);
+    const onlineNumber = document.getElementById('online');
     onlineNumber.innerHTML = parseInt(onlineNumber.innerHTML) + 1;
 }
 
@@ -122,4 +122,4 @@ function main() {
     checkStreams();
 }
 
-window.addEventListener("DOMContentLoaded", main, false);
+window.addEventListener('DOMContentLoaded', main, false);
