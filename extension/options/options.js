@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function () {
         optionsAdvanced.addEventListener('click', function (e) {
             e.preventDefault();
             chrome.tabs.create({
-                url: chrome.extension.getURL('options/advanced.html')
+                url: chrome.runtime.getURL('options/advanced.html')
             });
         }, false);
     }
