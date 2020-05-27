@@ -6,16 +6,16 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
- * 
+ *
  * Author : HackJack https://github.com/Jack3113
  */
 
@@ -42,53 +42,58 @@ function save_options() {
             cleanedStreams.push(s);
         }
     }
-    chrome.storage.sync.set({
-        refreshTime: refreshTime,
-        streams: cleanedStreams.join('\n'),
-        notif: notif,
-        titleNotif: titleNotif,
-        contextMenu: contextMenu,
-        notificationTimeout: notificationTimeout
-    }, function () {
-        restore_options();
-        const status = document.getElementById('status');
-        status.style.display = 'block';
-        status.textContent = chrome.i18n.getMessage('optionsSaved');
-        setTimeout(function () {
-            status.textContent = '';
-            status.style.display = 'none';
-        }, 750);
-    });
+    chrome.storage.sync.set(
+        {
+            refreshTime: refreshTime,
+            streams: cleanedStreams.join('\n'),
+            notif: notif,
+            titleNotif: titleNotif,
+            contextMenu: contextMenu,
+            notificationTimeout: notificationTimeout,
+        },
+        function() {
+            restore_options();
+            const status = document.getElementById('status');
+            status.style.display = 'block';
+            status.textContent = chrome.i18n.getMessage('optionsSaved');
+            setTimeout(function() {
+                status.textContent = '';
+                status.style.display = 'none';
+            }, 750);
+        },
+    );
 }
 
 function restore_options() {
-    chrome.storage.sync.get({
-        refreshTime: 60,
-        streams: '',
-        notif: true,
-        titleNotif: false,
-        contextMenu: true,
-        notificationTimeout: 4000
-    }, function (options) {
-        document.getElementById('notif').checked = options.notif;
-        document.getElementById('titleNotif').checked = options.titleNotif;
-        document.getElementById('contextMenu').checked = options.contextMenu;
-        document.getElementById('refreshTime').value = options.refreshTime;
-        document.getElementById('streams').value = options.streams;
-        document.getElementById('notificationTimeout').value = options.notificationTimeout;
-        setListener();
-    });
+    chrome.storage.sync.get(
+        {
+            refreshTime: 60,
+            streams: '',
+            notif: true,
+            titleNotif: false,
+            contextMenu: true,
+            notificationTimeout: 4000,
+        },
+        function(options) {
+            document.getElementById('notif').checked = options.notif;
+            document.getElementById('titleNotif').checked = options.titleNotif;
+            document.getElementById('contextMenu').checked = options.contextMenu;
+            document.getElementById('refreshTime').value = options.refreshTime;
+            document.getElementById('streams').value = options.streams;
+            document.getElementById('notificationTimeout').value = options.notificationTimeout;
+            setListener();
+        },
+    );
 }
 
 function importTwitchFollowingFromUsername(username) {
     const XHR = new XMLHttpRequest();
-    XHR.onreadystatechange = function () {
+    XHR.onreadystatechange = function() {
         if (XHR.readyState === 4 && (XHR.status === 200 || XHR.status === 0)) {
             const result = JSON.parse(XHR.responseText);
             if (result.data && result.data.length > 0) {
                 importTwitchFollowing(result.data[0].id, 0);
             }
-
         }
     };
     XHR.open('GET', 'https://api.twitch.tv/helix/users?login=' + username, true);
@@ -98,7 +103,7 @@ function importTwitchFollowingFromUsername(username) {
 
 function importTwitchFollowing(userID, pagination) {
     const XHR = new XMLHttpRequest();
-    XHR.onreadystatechange = function () {
+    XHR.onreadystatechange = function() {
         if (XHR.readyState === 4 && (XHR.status === 200 || XHR.status === 0)) {
             const result = JSON.parse(XHR.responseText);
             const streams = document.getElementById('streams').value;
@@ -128,7 +133,7 @@ function importTwitchFollowing(userID, pagination) {
 function addTwitch() {
     document.getElementById('addTwitch').style.display = 'none';
     document.getElementById('addTwitchDialog').style.display = 'flex';
-    document.getElementById('importTwitch').addEventListener('click', function () {
+    document.getElementById('importTwitch').addEventListener('click', function() {
         const username = document.getElementById('usernameTwitch').value;
         if (username !== null && username.length > 0) {
             importTwitchFollowingFromUsername(username);
@@ -137,34 +142,48 @@ function addTwitch() {
         document.getElementById('addTwitch').style.display = 'block';
         document.getElementById('addTwitchDialog').style.display = 'none';
     });
-
-
 }
 
 function setListener() {
     const addTwitchButton = document.getElementById('addTwitch');
     addTwitchButton.addEventListener('click', addTwitch);
 
-    document.getElementById('form').addEventListener('submit', function (e) {
-        e.preventDefault();
-        save_options();
-    }, false);
+    document.getElementById('form').addEventListener(
+        'submit',
+        function(e) {
+            e.preventDefault();
+            save_options();
+        },
+        false,
+    );
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('form').addEventListener('submit', function (e) {
-        e.preventDefault();
-    }, false);
+document.addEventListener(
+    'DOMContentLoaded',
+    function() {
+        document.getElementById('form').addEventListener(
+            'submit',
+            function(e) {
+                e.preventDefault();
+            },
+            false,
+        );
 
-    restore_options();
+        restore_options();
 
-    const optionsAdvanced = document.getElementById('advancedOptions');
-    if (optionsAdvanced) {
-        optionsAdvanced.addEventListener('click', function (e) {
-            e.preventDefault();
-            chrome.tabs.create({
-                url: chrome.runtime.getURL('options/advanced.html')
-            });
-        }, false);
-    }
-}, false);
+        const optionsAdvanced = document.getElementById('advancedOptions');
+        if (optionsAdvanced) {
+            optionsAdvanced.addEventListener(
+                'click',
+                function(e) {
+                    e.preventDefault();
+                    chrome.tabs.create({
+                        url: chrome.runtime.getURL('options/advanced.html'),
+                    });
+                },
+                false,
+            );
+        }
+    },
+    false,
+);
