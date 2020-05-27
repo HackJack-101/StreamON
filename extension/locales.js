@@ -22,7 +22,6 @@
 /* global chrome */
 
 var ids = [
-    "title",
     "onlineTitle",
     "offlineTitle",
     "streamsLabel",

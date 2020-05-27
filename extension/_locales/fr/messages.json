@@ -3,7 +3,7 @@
         "message": "fr-FR"
     },
     "extName": {
-        "message": "Stream[ON]"
+        "message": "stream[on]"
     },
     "extDesc": {
         "message": "Une extension pour savoir si tes streamers préférés sont en live."
@@ -17,8 +17,14 @@
     "playingTo": {
         "message": "joue à"
     },
+    "startedAt": {
+        "message": "démarré à"
+    },
+    "noStreams": {
+        "message": "Aucun stream pour le moment"
+    },
     "title": {
-        "message": "Stream[ON]"
+        "message": "stream[on]"
     },
     "onlineTitle": {
         "message": "Streams en ligne"
