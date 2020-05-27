@@ -3,7 +3,7 @@
         "message": "en-US"
     },
     "extName": {
-        "message": "Stream[ON]"
+        "message": "stream[on]"
     },
     "extDesc": {
         "message": "An Chrome extension to alert you when a streaming goes online."
@@ -17,8 +17,14 @@
     "playingTo": {
         "message": "is now playing"
     },
+    "startedAt": {
+        "message": "started at"
+    },
+    "noStreams": {
+        "message": "No streaming currently"
+    },
     "title": {
-        "message": "Stream[ON]"
+        "message": "stream[on]"
     },
     "onlineTitle": {
         "message": "Online streams"

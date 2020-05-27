@@ -102,7 +102,7 @@ async function main() {
     }, (options) => {
         if (options.contextMenu) {
             const menu = chrome.contextMenus.create({
-                title: 'Stream[ON]',
+                title: 'stream[on]',
                 contexts: ['all']
             });
             const followMenu = chrome.contextMenus.create({
