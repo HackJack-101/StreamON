@@ -32,21 +32,31 @@ modules.twitch = {
         modules.twitch.getData(url, modules.twitch.displayData);
     },
     fetchData: function(url, callback, errorCallback) {
-        const XHR = new XMLHttpRequest();
+        chrome.storage.sync.get(
+            {
+                token: '',
+            },
+            (config) => {
+                console.log({ config });
+                const XHR = new XMLHttpRequest();
 
-        XHR.onreadystatechange = function() {
-            if (XHR.readyState === 4 && (XHR.status === 200 || XHR.status === 0)) {
-                const result = JSON.parse(XHR.responseText);
-                if (result.data && result.data.length > 0) {
-                    callback(result);
-                } else {
-                    errorCallback();
-                }
-            }
-        };
-        XHR.open('GET', url, true);
-        XHR.setRequestHeader('Client-ID', CLIENT_ID);
-        XHR.send(null);
+                XHR.onreadystatechange = function() {
+                    if (XHR.readyState === 4 && (XHR.status === 200 || XHR.status === 0)) {
+                        const result = JSON.parse(XHR.responseText);
+                        if (result.data && result.data.length > 0) {
+                            callback(result);
+                        } else {
+                            errorCallback();
+                        }
+                    }
+                };
+
+                XHR.open('GET', url, true);
+                XHR.setRequestHeader('Client-ID', CLIENT_ID);
+                XHR.setRequestHeader('Authorization', 'Bearer ' + config.token);
+                XHR.send(null);
+            },
+        );
     },
     getAsyncBulkData: (streamers) =>
         new Promise((resolve, reject) => {

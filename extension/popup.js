@@ -21,6 +21,8 @@
 
 /* global chrome, modules, tools */
 
+const tokenRegex = new RegExp('#access_token=([^&]+)', 'i');
+
 async function checkStreams() {
     chrome.storage.sync.get(
         {
@@ -169,6 +171,7 @@ function createStreamerNameDiv(streamerName) {
 }
 
 function createTimeDiv(startedAt) {
+    startedAt = new Date(startedAt);
     const timeContainer = document.createElement('div');
     timeContainer.setAttribute('class', 'icon-text-container');
 
@@ -201,11 +204,42 @@ function createViewersDiv(viewersNumber) {
 }
 
 async function main() {
+    document.getElementById('settings-button').addEventListener(
+        'click',
+        () => {
+            chrome.runtime.openOptionsPage();
+        },
+        false,
+    );
+    document.getElementById('authenticate-button').addEventListener(
+        'click',
+        () => {
+            chrome.identity.launchWebAuthFlow(
+                {
+                    url:
+                        'https://id.twitch.tv/oauth2/authorize?client_id=' +
+                        CLIENT_ID +
+                        '&redirect_uri=https://' +
+                        chrome.runtime.id +
+                        '.chromiumapp.org/oauth&response_type=token&scopes=user_follows_edit',
+                    interactive: true,
+                },
+                function(redirect_url) {
+                    const res = tokenRegex.exec(redirect_url);
+                    if (res[1]) {
+                        // TODO Notification pour informer de l'ajout du token
+                        const token = res[1];
+                        chrome.storage.sync.set({ token }, () => {
+                            checkStreams();
+                        });
+                    }
+                },
+            );
+        },
+        false,
+    );
+
     await checkStreams();
 }
 
 window.addEventListener('DOMContentLoaded', main, false);
-
-document.getElementById('settings-button').on('click', () => {
-    // TODO: Open settings
-});
