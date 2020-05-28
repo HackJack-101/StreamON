@@ -34,6 +34,8 @@ async function checkStreams() {
                 });
                 const twitch = await modules.twitch.getAsyncBulkData(twitchStreams);
                 console.log(twitch, twitch.filter(modules.twitch.isOffline));
+
+
                 twitch
                     .filter(modules.twitch.isOffline)
                     .forEach(({ game, name, thumbnail, title }, index) =>

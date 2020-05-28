@@ -27,7 +27,7 @@ body {
     background: rgb(24, 10, 21);
     background: linear-gradient(135deg, rgba(24, 10, 21, 1), rgba(36, 1, 1, 1));
     cursor: default;
-    color: white
+    color: white;
 }
 
 h1 {
@@ -42,19 +42,19 @@ h1 {
 
 h2 {
     font-size: 1.25em;
-    color: #D81B60;
+    color: #d81b60;
 }
 
 ::-webkit-scrollbar {
     height: 12px;
     width: 6px;
-    background: rgba(0, 0, 0, 0.50);
+    background: rgba(0, 0, 0, 0.5);
 }
 
 ::-webkit-scrollbar-thumb {
     background: rgba(100, 10, 10, 0.5);
-    -webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.50);
-    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.50);
+    -webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 ::-webkit-scrollbar-corner {
@@ -67,9 +67,9 @@ h2 {
     text-decoration: none;
     color: white;
     margin-bottom: 16px;
-    background-color: rgba(255, 255, 255, 0.10);
+    background-color: rgba(255, 255, 255, 0.1);
     max-height: 90px;
-    transition: all .25s ease-in-out;
+    transition: all 0.25s ease-in-out;
     cursor: pointer;
 }
 
@@ -127,7 +127,7 @@ h2 {
     right: 40px;
     cursor: pointer;
     background-color: transparent;
-    transition: all .25s ease-in-out;
+    transition: all 0.25s ease-in-out;
     padding: 8px;
     border-radius: 8px;
 }
@@ -181,7 +181,7 @@ h2 {
 
 .link {
     cursor: pointer;
-    color: #1976D2;
+    color: #1976d2;
     font-weight: 700;
 }
 
@@ -191,4 +191,25 @@ h2 {
 
 .game {
     font-style: initial;
+}
+
+#authenticate {
+    display: none;
+}
+
+#authenticate-button {
+    background: #755ca7;
+    cursor: pointer;
+    margin: 20px 60px;
+    padding: 10px 15px;
+    font-size: 1.5em;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#authenticate-button img {
+    width: 40px;
+    height: 40px;
 }

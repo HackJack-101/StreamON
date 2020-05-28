@@ -21,6 +21,8 @@
 
 /* global tools, modules, chrome */
 const CLIENT_ID = 'jpzyevuwtdws8n0fz8gp5erx8274r8d';
+const tokenRegex = new RegExp('#access_token=([^&]+)', 'i');
+
 modules.twitch = {
     data: {},
     cache: [],
@@ -57,6 +59,60 @@ modules.twitch = {
                 XHR.send(null);
             },
         );
+    },
+    connect: (callback, notify) => {
+        chrome.identity.launchWebAuthFlow(
+            {
+                url:
+                    'https://id.twitch.tv/oauth2/authorize?client_id=' +
+                    CLIENT_ID +
+                    '&redirect_uri=https://' +
+                    chrome.runtime.id +
+                    '.chromiumapp.org/oauth&response_type=token&scopes=user_follows_edit',
+                interactive: true,
+            },
+            function(redirect_url) {
+                const res = tokenRegex.exec(redirect_url);
+                if (res[1]) {
+                    notify();
+                    const token = res[1];
+                    chrome.storage.sync.set({ token }, () => {
+                        modules.twitch.syncUser(callback);
+                    });
+                }
+            },
+        );
+    },
+    isConnected: (success, error) => {
+        chrome.storage.sync.get(
+            {
+                token: '',
+            },
+            (config) => {
+                if (!config.token) {
+                    return error();
+                }
+                modules.twitch.fetchData('https://api.twitch.tv/helix/users', success, error);
+            },
+        );
+    },
+    syncUser: (callback, error) => {
+        modules.twitch.isConnected((result) => {
+            const id = result.data[0].id;
+            if (id) {
+                chrome.storage.sync.set({ twitchID: result.data[0].id }, () => {
+                    modules.twitch.fetchData(
+                        'https://api.twitch.tv/helix/users/follows?from_id=' + id + '&first=100',
+                        (following) => {
+                            const streams = following.data
+                                .map((user) => 'https://twitch.tv/' + user.to_name)
+                                .join('\n');
+                            chrome.storage.sync.set({ streams }, callback);
+                        },
+                    );
+                });
+            }
+        }, error);
     },
     getAsyncBulkData: (streamers) =>
         new Promise((resolve, reject) => {
@@ -140,6 +196,7 @@ modules.twitch = {
         }
     },
     isOffline: ({ name }) => {
+        console.log(modules.twitch.data);
         return !modules.twitch.data.hasOwnProperty(name);
     },
     notify: function(name, logo, title, game) {
