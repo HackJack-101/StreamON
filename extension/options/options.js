@@ -16,7 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  *
- * Author : HackJack https://github.com/Jack3113
+ * Authors :
+ * - HackJack https://github.com/Jack3113
+ * - AamuLumi https://github.com/AamuLumi
  */
 
 /* global chrome */
@@ -32,21 +34,25 @@ function save_options() {
     const cleanedStreams = [];
     const streamArray = streams.split('\n');
     for (const i in streamArray) {
-        let s = streamArray[i];
-        s = s.trim();
-        if (s.length > 0) cleanedStreams.push(s);
+        if (streamArray.hasOwnProperty(i)) {
+            let s = streamArray[i];
+            s = s.trim();
+            if (s.length > 0) {
+                cleanedStreams.push(s);
+            }
+        }
     }
     chrome.storage.sync.set(
         {
             refreshTime: refreshTime,
             streams: cleanedStreams.join('\n'),
         },
-        function() {
+        () => {
             restore_options();
             const status = document.getElementById('status');
             status.style.display = 'block';
             status.textContent = chrome.i18n.getMessage('optionsSaved');
-            setTimeout(function() {
+            setTimeout(() => {
                 status.textContent = '';
                 status.style.display = 'none';
             }, 750);
@@ -75,12 +81,71 @@ function restore_options() {
     );
 }
 
+function displayAuthentication() {
+    document.getElementById('authenticate').style.display = 'block';
+}
+
+function hideAuthentication() {
+    document.getElementById('authenticate').style.display = 'none';
+}
+
+function displayUser(user) {
+    document.getElementById('user-pp').src = user.profile_image_url;
+    document.getElementById('user-username').innerText = user.display_name;
+    document.getElementById('user-revoke').innerHTML = chrome.i18n.getMessage('disconnectionAction');
+    document.getElementById('user-revoke').addEventListener('click', (e) => {
+        e.preventDefault();
+        chrome.storage.sync.get(
+            {
+                token: '',
+            },
+            (config) => {
+                if (config.token) {
+                    chrome.storage.sync.set(
+                        {
+                            token: undefined,
+                        },
+                        document.location.reload(true),
+                    );
+                }
+            },
+        );
+    });
+    document.getElementById('user-info').style.display = 'flex';
+}
+
+function hideUser() {
+    document.getElementById('user-info').style.display = 'none';
+}
+
 document.addEventListener(
     'DOMContentLoaded',
-    function() {
-        document.getElementById('form').addEventListener('submit', function(e) {
+    () => {
+        document.getElementById('form').addEventListener('submit', (e) => {
             e.preventDefault();
         });
+
+        document.getElementById('authenticate-button').addEventListener(
+            'click',
+            () => {
+                modules.twitch.connect((user) => {
+                    hideAuthentication();
+                    tools.displayNotification(
+                        chrome.i18n.getMessage('twitchConnectionSucceed'),
+                        'assets/icon512.png',
+                        chrome.i18n.getMessage('welcome') + ' ' + user.display_name,
+                        () => {},
+                    );
+                });
+            },
+            false,
+        );
+
+        modules.twitch.syncUser(async (res) => {
+            console.log({ res });
+            hideAuthentication();
+            displayUser(res);
+        }, displayAuthentication);
 
         restore_options();
 
@@ -88,7 +153,7 @@ document.addEventListener(
         if (optionsAdvanced) {
             optionsAdvanced.addEventListener(
                 'click',
-                function(e) {
+                (e) => {
                     e.preventDefault();
                     chrome.tabs.create({
                         url: chrome.runtime.getURL('options/advanced.html'),

@@ -16,7 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  * 
- * Author : HackJack https://github.com/Jack3113
+
+ * Authors :
+ * - HackJack https://github.com/Jack3113
+ * - AamuLumi https://github.com/AamuLumi
  */
 
 /* global modules, tools, chrome */
@@ -80,7 +83,7 @@ modules.dailymotion =
                             var title = modules.dailymotion.data[profile].title;
                             var icon = modules.dailymotion.data[profile].logo;
                             var body = modules.dailymotion.data[profile].name;
-                            displayNotification(title, icon, body, function () {
+                            tools.displayNotification(title, icon, body, function () {
                                 modules.dailymotion.openStream(profile);
                             });
                         }
@@ -97,7 +100,7 @@ modules.dailymotion =
                                 var title = modules.dailymotion.data[profile].title;
                                 var icon = modules.dailymotion.data[profile].logo;
                                 var body = modules.dailymotion.data[profile].name;
-                                displayNotification(title, icon, body, function () {
+                                tools.displayNotification(title, icon, body, function () {
                                     modules.dailymotion.openStream(profile);
                                 });
                             }

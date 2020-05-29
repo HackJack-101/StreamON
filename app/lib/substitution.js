@@ -16,7 +16,9 @@
  *  specific language governing permissions and limitations
  *  under the License.
  *
- *  Author : HackJack https://github.com/Jack3113
+ * Authors :
+ * - HackJack https://github.com/Jack3113
+ * - AamuLumi https://github.com/AamuLumi
  */
 
 var subtitutionList = [

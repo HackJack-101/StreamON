@@ -6,59 +6,82 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
- * 
- * Author : HackJack https://github.com/Jack3113
+ *
+ * Authors :
+ * - HackJack https://github.com/Jack3113
+ * - AamuLumi https://github.com/AamuLumi
  */
 
 /* global chrome */
 
 const tools = {
-    getProfileName: function (url) {
+    getProfileName: function(url) {
         const n = url.lastIndexOf('/');
-        if (n === (url.length - 1))
-            return tools.getProfileName(url.substring(0, url.length - 1));
-        else
-            return url.substring(n + 1);
+        if (n === url.length - 1) return tools.getProfileName(url.substring(0, url.length - 1));
+        else return url.substring(n + 1);
     },
-    openTab: function (pattern, url) {
-        chrome.tabs.query({url: pattern}, function (a) {
-            if (a.length < 1) // Si la page n'est pas déjà ouverte, on ouvre un nouvel onglet
-                chrome.tabs.create({url: url});
-            else // Sinon on passe le focus sur la premiere page contenant le pattern
-                chrome.tabs.highlight({windowId: a[0].windowId, tabs: a[0].index});
+    openTab: function(pattern, url) {
+        chrome.tabs.query({ url: pattern }, function(a) {
+            if (a.length < 1)
+                // Si la page n'est pas déjà ouverte, on ouvre un nouvel onglet
+                chrome.tabs.create({ url: url });
+            // Sinon on passe le focus sur la premiere page contenant le pattern
+            else chrome.tabs.highlight({ windowId: a[0].windowId, tabs: a[0].index });
         });
     },
-    openMiniPlayer: function (url, resolution) {
+    openMiniPlayer: function(url, resolution) {
         const idDevMiniPlayer = 'ofdfelnalikpjnadfilplkdaijbalfhb';
         const idMiniPlayer = 'glccgoppknfoonfajicijebeaedpnkfp';
-        const options = {url: url};
+        const options = { url: url };
         if (resolution) {
             options.resolution = resolution;
         }
-        chrome.management.get(idDevMiniPlayer, function (r) {
+        chrome.management.get(idDevMiniPlayer, function(r) {
             if (r && r.enabled) {
                 chrome.runtime.sendMessage(idDevMiniPlayer, options);
             } else {
-                chrome.management.get(idMiniPlayer, function (r) {
+                chrome.management.get(idMiniPlayer, function(r) {
                     if (r && r.enabled) {
                         chrome.runtime.sendMessage(idMiniPlayer, options);
                     } else {
-                        chrome.tabs.create({url: "https://chrome.google.com/webstore/detail/" + idMiniPlayer});
+                        chrome.tabs.create({ url: 'https://chrome.google.com/webstore/detail/' + idMiniPlayer });
                     }
                 });
             }
         });
-    }
+    },
+    displayNotification: (title, icon, body, callback) => {
+        const notification = new Notification(title, {
+            icon: icon,
+            lang: chrome.i18n.getMessage('locale'),
+            body: body,
+        });
+
+        notification.onclick = function() {
+            callback();
+            this.close();
+        };
+
+        chrome.storage.sync.get(
+            {
+                notificationTimeout: 4000,
+            },
+            (options) => {
+                setTimeout(function() {
+                    notification.close();
+                }, options.notificationTimeout);
+            },
+        );
+    },
 };
 
 const modules = {};
-

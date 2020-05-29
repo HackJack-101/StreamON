@@ -33,10 +33,10 @@
         "message": "Offline streams"
     },
     "streamsLabel": {
-        "message": "Stream URLs split by line returns:"
+        "message": "Stream URLs synched with stream[on]:"
     },
     "streamsHelp": {
-        "message": "Works with twitch.tv and hitbox.tv links"
+        "message": ""
     },
     "addTwitch": {
         "message": "Import following streamers from Twitch"
@@ -73,5 +73,14 @@
     },
     "notificationTimeoutLabel": {
         "message": "Notification display time (milliseconds)"
+    },
+    "welcome": {
+        "message": "Welcome"
+    },
+    "twitchConnectionSucceed": {
+        "message": "Twitch connection succeed"
+    },
+    "disconnectionAction": {
+        "message": "It's not you? Sign off."
     }
 }

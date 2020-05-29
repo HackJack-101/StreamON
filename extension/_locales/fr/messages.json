@@ -33,10 +33,10 @@
         "message": "Streams hors ligne"
     },
     "streamsLabel": {
-        "message": "Les URL des streams séparés par des retours à la ligne :"
+        "message": "Les URL des streams synchronisés avec stream[on] :"
     },
     "streamsHelp": {
-        "message": "Marche avec des liens twitch.tv , hitbox.tv"
+        "message": ""
     },
     "addTwitch": {
         "message": "Ajouter à la liste les streamers que je suis sur Twitch"
@@ -73,5 +73,14 @@
     },
     "notificationTimeoutLabel": {
         "message": "Temps d'affichage des notifications (en millisecondes)"
+    },
+    "welcome": {
+        "message": "Bienvenue"
+    },
+    "twitchConnectionSucceed": {
+        "message": "Connexion à Twitch réussie"
+    },
+    "disconnectionAction": {
+        "message": "Ce n'est pas vous ? Déconnectez-vous."
     }
 }

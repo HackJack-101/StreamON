@@ -1,34 +1,54 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Stream[ON] Options</title>
-        <meta charset="utf-8"/>
-        <link rel="stylesheet" type="text/css" href="options.css"/>
+        <title>stream[on] Options</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" type="text/css" href="../main.css" />
+        <link rel="stylesheet" type="text/css" href="options.css" />
     </head>
     <body>
-
         <div class="container">
             <form id="form">
+                <div id="authenticate">
+                    <div>
+                        Pour utiliser <strong>stream[on]</strong>, nous avons besoin que vous vous connectiez à Twitch
+                        afin de connaître vos abonnements.
+                    </div>
+                    <div id="authenticate-button">
+                        <img src="../assets/twitch.svg" alt="Twitch logo" /> <span> S'authentifier avec Twitch </span>
+                    </div>
+                </div>
+
+                <div id="user-info">
+                    <img
+                        id="user-pp"
+                        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+                        alt="Profile picture"
+                    />
+                    <div>
+                        <div id="user-username"></div>
+                        <a id="user-revoke" href="#"></a>
+                    </div>
+                </div>
 
                 <div>
-                    <label for="streams" id="streamsLabel"></label>
-                    <textarea id="streams"></textarea>
+                    <label for="streams" id="streamsLabel"></label> <textarea id="streams" readonly></textarea>
                     <i id="streamsHelp"></i>
                 </div>
 
                 <label style="display: block; margin-bottom: 0.2em">
-                    <span id="refreshTimeLabel"></span> : <input type="number" min="1" step="1" id="refreshTime"/>
+                    <span id="refreshTimeLabel"></span> : <input type="number" min="1" step="1" id="refreshTime" />
                 </label>
-
 
                 <div id="status" class="hidden"></div>
 
-                <input type="submit" id="save" value="Enregistrer"/>
+                <input type="submit" id="save" value="Enregistrer" />
             </form>
             <a href="#" id="advancedOptions"></a>
-
         </div>
         <script src="options.js"></script>
-        <script src="/locales.js"></script>
+        <script src="../lib/tools.js"></script>
+        <script src="../lib/twitch.js"></script>
+        <script src="../locales.js"></script>
     </body>
 </html>

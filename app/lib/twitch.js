@@ -16,7 +16,9 @@
  *  specific language governing permissions and limitations
  *  under the License.
  *
- *  Author : HackJack https://github.com/Jack3113
+ * Authors :
+ * - HackJack https://github.com/Jack3113
+ * - AamuLumi https://github.com/AamuLumi
  */
 
 modules.twitch = {
@@ -30,7 +32,7 @@ modules.twitch = {
     },
     getProfileName: function(url) {
         let n = url.lastIndexOf('/');
-        if (n == url.length - 1) {
+        if (n === url.length - 1) {
             return modules.twitch.getProfileName(url.substring(0, url.length - 1));
         } else {
             return url.substring(n + 1);

@@ -35,7 +35,6 @@ async function checkStreams() {
                 const twitch = await modules.twitch.getAsyncBulkData(twitchStreams);
                 console.log(twitch, twitch.filter(modules.twitch.isOffline));
 
-
                 twitch
                     .filter(modules.twitch.isOffline)
                     .forEach(({ game, name, thumbnail, title }, index) =>
@@ -46,30 +45,6 @@ async function checkStreams() {
                     return acc;
                 }, {});
             }
-        },
-    );
-}
-
-function displayNotification(title, icon, body, callback) {
-    const startStream = new Notification(title, {
-        icon: icon,
-        lang: chrome.i18n.getMessage('locale'),
-        body: body,
-    });
-
-    startStream.onclick = function() {
-        callback();
-        this.close();
-    };
-
-    chrome.storage.sync.get(
-        {
-            notificationTimeout: 4000,
-        },
-        (options) => {
-            setTimeout(function() {
-                startStream.close();
-            }, options.notificationTimeout);
         },
     );
 }
@@ -109,6 +84,7 @@ async function main() {
     chrome.storage.sync.get(
         {
             contextMenu: true,
+            launched: false,
         },
         (options) => {
             if (options.contextMenu) {
@@ -129,15 +105,32 @@ async function main() {
                     onclick: openMiniPlayer,
                 });
             }
+
+            if (!options.launched) {
+                chrome.storage.sync.set(
+                    {
+                        launched: false,
+                    },
+                    () => {
+                        // TODO i18n
+                        tools.displayNotification(
+                            'Bienvenue sur stream[on] !',
+                            'assets/icon512.png',
+                            "Cliquez ici pour paramétrer l'application",
+                            chrome.runtime.openOptionsPage,
+                        );
+                    },
+                );
+            }
         },
     );
 
-    await checkStreams();
+    // await checkStreams();
     chrome.storage.sync.get(
         {
             refreshTime: 60,
         },
-        function(options) {
+        (options) => {
             setInterval(checkStreams, 1000 * options.refreshTime);
         },
     );

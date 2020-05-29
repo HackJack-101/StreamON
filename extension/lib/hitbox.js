@@ -16,7 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  * 
- * Author : HackJack https://github.com/Jack3113
+
+ * Authors :
+ * - HackJack https://github.com/Jack3113
+ * - AamuLumi https://github.com/AamuLumi
  */
 
 /* global modules, chrome, tools */
@@ -81,7 +84,7 @@ modules.hitbox =
                             var title = modules.hitbox.data[profile].title;
                             var icon = modules.hitbox.data[profile].logo;
                             var body = chrome.i18n.getMessage("game") + ' : ' + modules.hitbox.data[profile].game;
-                            displayNotification(title, icon, body, function () {
+                            tools.displayNotification(title, icon, body, function () {
                                 modules.hitbox.openStream(profile);
                             });
                         }
@@ -98,7 +101,7 @@ modules.hitbox =
                                 var title = modules.hitbox.data[profile].title;
                                 var icon = modules.hitbox.data[profile].logo;
                                 var body = chrome.i18n.getMessage("game") + ' : ' + modules.hitbox.data[profile].game;
-                                displayNotification(title, icon, body, function () {
+                                tools.displayNotification(title, icon, body, function () {
                                     modules.hitbox.openStream(profile);
                                 });
                             }

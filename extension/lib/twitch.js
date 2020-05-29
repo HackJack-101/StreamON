@@ -16,7 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  *
- * Author : HackJack https://github.com/Jack3113
+ * Authors :
+ * - HackJack https://github.com/Jack3113
+ * - AamuLumi https://github.com/AamuLumi
  */
 
 /* global tools, modules, chrome */
@@ -43,10 +45,12 @@ modules.twitch = {
                 const XHR = new XMLHttpRequest();
 
                 XHR.onreadystatechange = function() {
-                    if (XHR.readyState === 4 && (XHR.status === 200 || XHR.status === 0)) {
-                        const result = JSON.parse(XHR.responseText);
-                        if (result.data && result.data.length > 0) {
-                            callback(result);
+                    if (XHR.readyState === 4) {
+                        if (XHR.status === 200 || XHR.status === 0) {
+                            const result = JSON.parse(XHR.responseText);
+                            if (result.data && result.data.length > 0) {
+                                callback(result);
+                            }
                         } else {
                             errorCallback();
                         }
@@ -60,7 +64,7 @@ modules.twitch = {
             },
         );
     },
-    connect: (callback, notify) => {
+    connect: (callback) => {
         chrome.identity.launchWebAuthFlow(
             {
                 url:
@@ -74,7 +78,6 @@ modules.twitch = {
             function(redirect_url) {
                 const res = tokenRegex.exec(redirect_url);
                 if (res[1]) {
-                    notify();
                     const token = res[1];
                     chrome.storage.sync.set({ token }, () => {
                         modules.twitch.syncUser(callback);
@@ -107,7 +110,7 @@ modules.twitch = {
                             const streams = following.data
                                 .map((user) => 'https://twitch.tv/' + user.to_name)
                                 .join('\n');
-                            chrome.storage.sync.set({ streams }, callback);
+                            chrome.storage.sync.set({ streams }, () => callback(result.data[0]));
                         },
                     );
                 });
@@ -207,7 +210,7 @@ modules.twitch = {
             (options) => {
                 if (options.notif) {
                     const body = chrome.i18n.getMessage('game') + ' : ' + game;
-                    displayNotification(title, logo, body, () => {
+                    tools.displayNotification(title, logo, body, () => {
                         modules.twitch.openStream(name);
                     });
                 }
@@ -239,7 +242,7 @@ modules.twitch = {
                                     const title = content.title;
                                     const icon = logo;
                                     const body = chrome.i18n.getMessage('game') + ' : ' + game;
-                                    displayNotification(title, icon, body, function() {
+                                    tools.displayNotification(title, icon, body, function() {
                                         modules.twitch.openStream(profile);
                                     });
                                 }
@@ -266,7 +269,7 @@ modules.twitch = {
                                         const title = content.title;
                                         const icon = logo;
                                         const body = chrome.i18n.getMessage('game') + ' : ' + game;
-                                        displayNotification(title, icon, body, function() {
+                                        tools.displayNotification(title, icon, body, function() {
                                             modules.twitch.openStream(profile);
                                         });
                                     }
