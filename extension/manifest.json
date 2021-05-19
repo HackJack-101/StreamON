@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "__MSG_extName__",
     "default_locale": "en",
-    "version": "0.11.4",
+    "version": "1.0.0",
     "description": "__MSG_extDesc__",
     "browser_action": {
         "default_icon": "assets/icon128.png",
@@ -30,7 +30,7 @@
         ],
         "persistent": true
     },
-    "web_accessible_resources": ["assets/*.png", "scripts/*.js", "lib/*.js"],
+    "web_accessible_resources": ["assets/*.png", "scripts/*.js", "lib/*.js", "options/options.html"],
     "icons": {
         "16": "assets/icon16.png",
         "48": "assets/icon48.png",

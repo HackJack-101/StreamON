@@ -82,6 +82,7 @@ h2 {
 .streamOn .preview {
     object-fit: cover;
     height: 90px;
+    width: 160px;
     flex-shrink: 0;
 }
 

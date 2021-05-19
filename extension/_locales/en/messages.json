@@ -66,7 +66,7 @@
         "message": "Follow with Stream[ON]"
     },
     "advancedOptions": {
-        "message": "Advanced options"
+        "message": "Debug options"
     },
     "needRestart": {
         "message": "You need to restart your browser"
@@ -82,5 +82,26 @@
     },
     "disconnectionAction": {
         "message": "It's not you? Sign off."
+    },
+    "channels": {
+        "message": "Followed channels"
+    },
+    "twitchConnection": {
+        "message": "Twitch connection"
+    },
+    "isOnline": {
+        "message": "is online"
+    },
+    "configuration": {
+        "message": "Configuration"
+    },
+    "toUse": {
+        "message": "To use"
+    },
+    "weNeedTwitchConnection": {
+        "message": "you have to be connected to Twitch in order to retrieve your followed channels"
+    },
+    "authenticateWithTwitch": {
+        "message": "Authenticate with Twitch"
     }
 }

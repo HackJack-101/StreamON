@@ -22,28 +22,11 @@
 async function checkStreams() {
     chrome.storage.sync.get(
         {
-            streams: '',
             background: true,
         },
         async (options) => {
             if (options.background) {
-                let streams = options.streams;
-                streams = streams.split('\n');
-                let twitchStreams = streams.filter((stream) => {
-                    return modules.twitch.check(substitute(stream));
-                });
-                const twitch = await modules.twitch.getAsyncBulkData(twitchStreams);
-                console.log(twitch, twitch.filter(modules.twitch.isOffline));
-
-                twitch
-                    .filter(modules.twitch.isOffline)
-                    .forEach(({ game, name, thumbnail, title }, index) =>
-                        setTimeout(() => modules.twitch.notify(name, thumbnail, title, game), index * 2500),
-                    );
-                modules.twitch.data = twitch.reduce((acc, stream) => {
-                    acc[stream.name] = stream;
-                    return acc;
-                }, {});
+                await modules.twitch.checkStreams();
             }
         },
     );
@@ -75,7 +58,7 @@ function followStream(info, tab) {
                 streams += '\n';
             }
             streams += newStream;
-            chrome.storage.sync.set({ streams: streams });
+            chrome.storage.sync.set({streams: streams});
         },
     );
 }
@@ -125,12 +108,12 @@ async function main() {
         },
     );
 
-    // await checkStreams();
     chrome.storage.sync.get(
         {
             refreshTime: 60,
         },
         (options) => {
+            setTimeout(checkStreams, 1000 * 5); // We wait 5 seconds after the welcome notification
             setInterval(checkStreams, 1000 * options.refreshTime);
         },
     );

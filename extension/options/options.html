@@ -9,13 +9,25 @@
     <body>
         <div class="container">
             <form id="form">
+
+                <h2 id="configuration"></h2>
+
+                <label style="display: block; margin-bottom: 0.2em">
+                    <span id="refreshTimeLabel"></span> : <input type="number" min="1" step="1" id="refreshTime" />
+                </label>
+
+                <div id="status" class="hidden"></div>
+
+                <input type="submit" id="save" value="Enregistrer" />
+
+                <h2 id="twitchConnection"></h2>
+
                 <div id="authenticate">
                     <div>
-                        Pour utiliser <strong>stream[on]</strong>, nous avons besoin que vous vous connectiez à Twitch
-                        afin de connaître vos abonnements.
+                        <span id="toUse"></span> <strong>stream[on]</strong>, <span id="weNeedTwitchConnection"></span>.
                     </div>
                     <div id="authenticate-button">
-                        <img src="../assets/twitch.svg" alt="Twitch logo" /> <span> S'authentifier avec Twitch </span>
+                        <img src="../assets/twitch.svg" alt="Twitch logo" /> <span id="authenticateWithTwitch"></span>
                     </div>
                 </div>
 
@@ -31,20 +43,16 @@
                     </div>
                 </div>
 
-                <div>
-                    <label for="streams" id="streamsLabel"></label> <textarea id="streams" readonly></textarea>
-                    <i id="streamsHelp"></i>
-                </div>
+                <h2 id="channels"></h2>
 
-                <label style="display: block; margin-bottom: 0.2em">
-                    <span id="refreshTimeLabel"></span> : <input type="number" min="1" step="1" id="refreshTime" />
-                </label>
+                <div id="streamers-list"></div>
 
-                <div id="status" class="hidden"></div>
-
-                <input type="submit" id="save" value="Enregistrer" />
             </form>
+
+            <h2 id="debugOptions"></h2>
             <a href="#" id="advancedOptions"></a>
+            <br>
+            <button role=button id="checkTwitchStreams">Test Twitch notification</button>
         </div>
         <script src="options.js"></script>
         <script src="../lib/tools.js"></script>

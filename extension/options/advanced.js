@@ -53,12 +53,12 @@ function save_options() {
             contextMenu: contextMenu,
             notificationTimeout: notificationTimeout,
         },
-        function() {
+        function () {
             restore_options();
             const status = document.getElementById('status');
             status.style.display = 'block';
             status.textContent = chrome.i18n.getMessage('optionsSaved');
-            setTimeout(function() {
+            setTimeout(function () {
                 status.textContent = '';
                 status.style.display = 'none';
             }, 750);
@@ -76,7 +76,7 @@ function restore_options() {
             contextMenu: true,
             notificationTimeout: 4000,
         },
-        function(options) {
+        function (options) {
             document.getElementById('notif').checked = options.notif;
             document.getElementById('titleNotif').checked = options.titleNotif;
             document.getElementById('contextMenu').checked = options.contextMenu;
@@ -90,7 +90,7 @@ function restore_options() {
 
 function importTwitchFollowingFromUsername(username) {
     const XHR = new XMLHttpRequest();
-    XHR.onreadystatechange = function() {
+    XHR.onreadystatechange = function () {
         if (XHR.readyState === 4 && (XHR.status === 200 || XHR.status === 0)) {
             const result = JSON.parse(XHR.responseText);
             if (result.data && result.data.length > 0) {
@@ -105,7 +105,7 @@ function importTwitchFollowingFromUsername(username) {
 
 function importTwitchFollowing(userID, pagination) {
     const XHR = new XMLHttpRequest();
-    XHR.onreadystatechange = function() {
+    XHR.onreadystatechange = function () {
         if (XHR.readyState === 4 && (XHR.status === 200 || XHR.status === 0)) {
             const result = JSON.parse(XHR.responseText);
             const streams = document.getElementById('streams').value;
@@ -135,7 +135,7 @@ function importTwitchFollowing(userID, pagination) {
 function addTwitch() {
     document.getElementById('addTwitch').style.display = 'none';
     document.getElementById('addTwitchDialog').style.display = 'flex';
-    document.getElementById('importTwitch').addEventListener('click', function() {
+    document.getElementById('importTwitch').addEventListener('click', function () {
         const username = document.getElementById('usernameTwitch').value;
         if (username !== null && username.length > 0) {
             importTwitchFollowingFromUsername(username);
@@ -152,7 +152,7 @@ function setListener() {
 
     document.getElementById('form').addEventListener(
         'submit',
-        function(e) {
+        function (e) {
             e.preventDefault();
             save_options();
         },
@@ -162,10 +162,10 @@ function setListener() {
 
 document.addEventListener(
     'DOMContentLoaded',
-    function() {
+    function () {
         document.getElementById('form').addEventListener(
             'submit',
-            function(e) {
+            function (e) {
                 e.preventDefault();
             },
             false,
@@ -177,7 +177,7 @@ document.addEventListener(
         if (optionsAdvanced) {
             optionsAdvanced.addEventListener(
                 'click',
-                function(e) {
+                function (e) {
                     e.preventDefault();
                     chrome.tabs.create({
                         url: chrome.runtime.getURL('options/advanced.html'),

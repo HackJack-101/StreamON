@@ -66,7 +66,7 @@
         "message": "Suivre avec Stream[ON]"
     },
     "advancedOptions": {
-        "message": "Options avancées"
+        "message": "Options de debug"
     },
     "needRestart": {
         "message": "Nécessite un redémarrage du navigateur"
@@ -82,5 +82,26 @@
     },
     "disconnectionAction": {
         "message": "Ce n'est pas vous ? Déconnectez-vous."
+    },
+    "channels": {
+        "message": "Chaînes suivies"
+    },
+    "twitchConnection": {
+        "message": "Connexion à Twitch"
+    },
+    "isOnline": {
+        "message": "est en ligne"
+    },
+    "configuration": {
+        "message": "Configuration"
+    },
+    "toUse": {
+        "message": "Pour utiliser"
+    },
+    "weNeedTwitchConnection": {
+        "message": "nous avons besoin que vous vous connectiez à Twitch afin de connaître vos abonnements"
+    },
+    "authenticateWithTwitch": {
+        "message": "S'authentifier avec Twitch"
     }
 }

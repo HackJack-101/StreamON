@@ -23,7 +23,7 @@
 
 /* global chrome */
 
-var ids = [
+const ids = [
     'onlineTitle',
     'offlineTitle',
     'streamsLabel',
@@ -39,17 +39,24 @@ var ids = [
     'needRestart',
     'advancedOptions',
     'notificationTimeoutLabel',
+    'twitchConnection',
+    'channels',
+    'configuration',
+    'toUse',
+    'weNeedTwitchConnection',
+    'authenticateWithTwitch'
 ];
+
 function fill(id) {
-    if (document.getElementById(id)) document.getElementById(id).innerHTML = chrome.i18n.getMessage(id);
+    if (document.getElementById(id)) {
+        document.getElementById(id).innerHTML = chrome.i18n.getMessage(id);
+    }
 }
 
 window.addEventListener(
     'DOMContentLoaded',
-    function() {
-        for (var i in ids) {
-            fill(ids[i]);
-        }
+    function () {
+        ids.forEach((id) => fill(id))
     },
     false,
 );

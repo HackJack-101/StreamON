@@ -5,19 +5,27 @@
         <title>stream[on]</title>
         <link rel="stylesheet" type="text/css" href="main.css" />
         <link rel="stylesheet" type="text/css" href="popup.css" />
+        <link rel="stylesheet" type="text/css" href="spinner.css" />
     </head>
     <body>
         <img id="settings-button" src="assets/settings.svg" alt="Settings" />
         <h1>
             <span id="title">stream<strong>[on]</strong></span>
         </h1>
+        <div class="loading">
+            <div class="lds-ring mini-lds-ring">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
         <div id="authenticate">
             <div>
-                Pour utiliser <strong>stream[on]</strong>, nous avons besoin que vous vous connectiez à Twitch afin de connaître vos
-                abonnements.
+                <span id="toUse"></span> <strong>stream[on]</strong>, <span id="weNeedTwitchConnection"></span>.
             </div>
             <div id="authenticate-button">
-                <img src="assets/twitch.svg" alt="Twitch logo" /> <span> S'authentifier avec Twitch </span>
+                <img src="assets/twitch.svg" alt="Twitch logo" /> <span id="authenticateWithTwitch"></span>
             </div>
         </div>
         <nav id="onlineList"></nav>

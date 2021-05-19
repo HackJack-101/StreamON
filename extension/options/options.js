@@ -23,32 +23,19 @@
 
 /* global chrome */
 
-function save_options() {
+function saveOptions() {
     let refreshTime = document.getElementById('refreshTime').value;
     refreshTime = parseInt(refreshTime);
     if (refreshTime < 1) {
         refreshTime = 1;
     }
 
-    const streams = document.getElementById('streams').value;
-    const cleanedStreams = [];
-    const streamArray = streams.split('\n');
-    for (const i in streamArray) {
-        if (streamArray.hasOwnProperty(i)) {
-            let s = streamArray[i];
-            s = s.trim();
-            if (s.length > 0) {
-                cleanedStreams.push(s);
-            }
-        }
-    }
     chrome.storage.sync.set(
         {
             refreshTime: refreshTime,
-            streams: cleanedStreams.join('\n'),
         },
         () => {
-            restore_options();
+            restoreOptions();
             const status = document.getElementById('status');
             status.style.display = 'block';
             status.textContent = chrome.i18n.getMessage('optionsSaved');
@@ -60,25 +47,47 @@ function save_options() {
     );
 }
 
-function restore_options() {
+function restoreOptions() {
     chrome.storage.sync.get(
         {
             refreshTime: 60,
-            streams: '',
+            streams: [],
         },
-        function(options) {
+        function (options) {
+            options.streams.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())).forEach(displayStream);
             document.getElementById('refreshTime').value = options.refreshTime;
-            document.getElementById('streams').value = options.streams;
             document.getElementById('form').addEventListener(
                 'submit',
-                function(e) {
+                function (e) {
                     e.preventDefault();
-                    save_options();
+                    saveOptions();
                 },
                 false,
             );
         },
     );
+}
+
+function displayStream(stream) {
+    const newElement = document.createElement('div');
+    newElement.setAttribute('class', 'stream-options');
+
+    const profilePicture = document.createElement('img');
+    profilePicture.setAttribute('alt', stream + ' profile picture');
+    profilePicture.setAttribute(
+        'src',
+        'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=',
+    );
+    modules.twitch.getUserInfo(stream, (data) => profilePicture.setAttribute('src', data.profile_image_url));
+
+    const title = document.createElement('div');
+    title.setAttribute('class', 'streamer-name')
+    title.innerHTML = '<a href="https://twitch.com/' + stream + '" target="_blank" class="twitch-link">' + stream + '</a>';
+
+    newElement.appendChild(profilePicture);
+    newElement.appendChild(title);
+
+    document.getElementById('streamers-list').appendChild(newElement);
 }
 
 function displayAuthentication() {
@@ -103,9 +112,10 @@ function displayUser(user) {
                 if (config.token) {
                     chrome.storage.sync.set(
                         {
-                            token: undefined,
+                            token: '',
+                            streams: []
                         },
-                        document.location.reload(true),
+                        () => document.location.reload(true),
                     );
                 }
             },
@@ -121,6 +131,9 @@ function hideUser() {
 document.addEventListener(
     'DOMContentLoaded',
     () => {
+
+        restoreOptions();
+
         document.getElementById('form').addEventListener('submit', (e) => {
             e.preventDefault();
         });
@@ -134,20 +147,23 @@ document.addEventListener(
                         chrome.i18n.getMessage('twitchConnectionSucceed'),
                         'assets/icon512.png',
                         chrome.i18n.getMessage('welcome') + ' ' + user.display_name,
-                        () => {},
                     );
+                    document.location.reload(true);
                 });
             },
             false,
         );
 
+        document.getElementById('checkTwitchStreams').addEventListener('click', async function (e) {
+            e.preventDefault();
+            await modules.twitch.checkStreams(true)
+        })
+
         modules.twitch.syncUser(async (res) => {
-            console.log({ res });
             hideAuthentication();
             displayUser(res);
         }, displayAuthentication);
 
-        restore_options();
 
         const optionsAdvanced = document.getElementById('advancedOptions');
         if (optionsAdvanced) {

@@ -24,32 +24,23 @@
 /* global chrome, modules, tools */
 
 async function checkStreams() {
-    chrome.storage.sync.get(
-        {
-            streams: '',
-        },
-        async (options) => {
-            let streams = options.streams;
-            streams = streams.split('\n');
-            let twitchStreams = streams.filter((stream) => {
-                return modules.twitch.check(substitute(stream));
-            });
 
-            const twitch = await modules.twitch.getAsyncBulkData(twitchStreams);
+    const twitch = await modules.twitch.getAsyncBulkData();
 
-            if (!twitch.length) {
-                const noStreamingText = document.createElement('div');
-                noStreamingText.setAttribute('class', 'empty-text');
-                noStreamingText.innerHTML = chrome.i18n.getMessage('noStreams');
+    if (!twitch.length) {
+        const noStreamingText = document.createElement('div');
+        noStreamingText.setAttribute('class', 'empty-text');
+        noStreamingText.innerHTML = chrome.i18n.getMessage('noStreams');
 
-                document.getElementById('onlineList').appendChild(noStreamingText);
-            } else {
-                twitch.forEach(({ game, name, startedAt, thumbnail, title, viewers, embed }) =>
-                    addOnlineElement(name, 'twitch', thumbnail, title, name, game, viewers, embed, startedAt),
-                );
-            }
-        },
-    );
+        document.getElementById('onlineList').appendChild(noStreamingText);
+    } else {
+        Array.prototype.forEach.call(document.getElementsByClassName('loading'), (element) => {
+            element.style.display = 'none';
+        });
+        twitch.forEach(({game, name, startedAt, thumbnail, title, viewers, embed}) =>
+            addOnlineElement(name, 'twitch', thumbnail, title, name, game, viewers, embed, startedAt),
+        );
+    }
 }
 
 function addOfflineElement(profile, server, name) {
@@ -58,7 +49,7 @@ function addOfflineElement(profile, server, name) {
     e.setAttribute('data-profile', profile);
     e.addEventListener(
         'click',
-        function() {
+        function () {
             modules[server].openStream(this.getAttribute('data-profile'));
         },
         false,
@@ -82,7 +73,7 @@ function addOnlineElement(profile, server, _img, _title, _name, _game, _viewers,
     img.setAttribute('src', _img);
     img.addEventListener(
         'click',
-        function() {
+        function () {
             modules[server].openStream(this.parentNode.getAttribute('data-profile'));
         },
         false,
@@ -97,7 +88,7 @@ function addOnlineElement(profile, server, _img, _title, _name, _game, _viewers,
     title.innerHTML = _title;
     title.addEventListener(
         'click',
-        function() {
+        function () {
             modules[server].openStream(this.parentNode.parentNode.getAttribute('data-profile'));
         },
         false,
