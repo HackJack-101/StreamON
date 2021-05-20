@@ -38,21 +38,26 @@ async function checkStreams() {
             element.style.display = 'none';
         });
         twitch.forEach(({game, name, startedAt, thumbnail, title, viewers, embed}, index) =>
-            setTimeout(() => addOnlineElement(name, 'twitch', thumbnail, title, name, game, viewers, embed, startedAt), index * 100)
+            setTimeout(() => addOnlineElement(name, thumbnail, title, name, game, viewers, embed, startedAt), index * 100)
         );
     }
 }
 
-function addOfflineElement(profile, server, name) {
+/**
+ * @deprecated
+ * @param profile
+ * @param name
+ */
+function addOfflineElement(profile, name) {
     const e = document.createElement('div');
     e.setAttribute('class', 'streamOff link');
     e.setAttribute('data-profile', profile);
     e.addEventListener(
         'click',
         function () {
-            modules[server].openStream(this.getAttribute('data-profile'));
+            modules.twitch.openStream(this.getAttribute('data-profile'));
         },
-        false
+        false,
     );
     if (name) e.innerHTML = name;
     else e.innerHTML = profile;
@@ -62,22 +67,22 @@ function addOfflineElement(profile, server, name) {
     offlineNumber.innerHTML = parseInt(offlineNumber.innerHTML) + 1;
 }
 
-function addOnlineElement(profile, server, _img, _title, _name, _game, _viewers, embed, startedAt) {
-    const e = document.createElement('a');
+function addOnlineElement(profile, _img, _title, _name, _game, _viewers, embed, startedAt) {
+    const e = document.createElement('div');
     e.setAttribute('class', 'streamOn component-enter');
     e.setAttribute('data-profile', profile);
+    e.addEventListener(
+        'click',
+        function () {
+            modules.twitch.openStream(profile);
+        },
+        false
+    );
 
     const img = document.createElement('img');
     img.setAttribute('class', 'preview pointer');
     img.setAttribute('alt', 'preview');
     img.setAttribute('src', _img);
-    img.addEventListener(
-        'click',
-        function () {
-            modules[server].openStream(this.parentNode.getAttribute('data-profile'));
-        },
-        false
-    );
     e.appendChild(img);
 
     const desc = document.createElement('div');
@@ -86,20 +91,15 @@ function addOnlineElement(profile, server, _img, _title, _name, _game, _viewers,
     const title = document.createElement('span');
     title.setAttribute('class', 'title');
     title.innerHTML = _title;
-    title.addEventListener(
-        'click',
-        function () {
-            modules[server].openStream(this.parentNode.parentNode.getAttribute('data-profile'));
-        },
-        false
-    );
+
     desc.appendChild(title);
+
+
+    desc.appendChild(createStreamerNameDiv(_name));
 
     if (_game) {
         desc.appendChild(createGameDiv(_game));
     }
-
-    desc.appendChild(createStreamerNameDiv(_name));
 
     const lastRowContainer = document.createElement('span');
     lastRowContainer.setAttribute('class', 'flex-row space-between');

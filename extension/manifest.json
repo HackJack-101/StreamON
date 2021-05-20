@@ -21,11 +21,8 @@
     ],
     "background": {
         "scripts": [
-            "lib/substitution.js",
             "lib/tools.js",
             "lib/twitch.js",
-            "lib/hitbox.js",
-            "lib/dailymotion.js",
             "background.js"
         ],
         "persistent": true

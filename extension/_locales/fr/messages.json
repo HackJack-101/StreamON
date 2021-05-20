@@ -33,7 +33,7 @@
         "message": "Streams hors ligne"
     },
     "streamsLabel": {
-        "message": "Les URL des streams synchronisés avec stream[on] :"
+        "message": "Streamers Twitch synchronisés avec stream[on] :"
     },
     "streamsHelp": {
         "message": ""
@@ -77,6 +77,9 @@
     "welcome": {
         "message": "Bienvenue"
     },
+    "welcomeMessage": {
+        "message": "Bienvenue sur stream[on] !"
+    },
     "twitchConnectionSucceed": {
         "message": "Connexion à Twitch réussie"
     },
@@ -103,5 +106,11 @@
     },
     "authenticateWithTwitch": {
         "message": "S'authentifier avec Twitch"
+    },
+    "clickHereToOpenOptions": {
+        "message": "Cliquez ici pour paramétrer l'extension"
+    },
+    "debugOptions": {
+        "message": "Debug"
     }
 }

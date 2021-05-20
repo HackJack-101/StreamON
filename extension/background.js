@@ -58,7 +58,7 @@ function followStream(info, tab) {
                 streams += '\n';
             }
             streams += newStream;
-            chrome.storage.sync.set({streams: streams});
+            chrome.storage.sync.set({ streams: streams });
         },
     );
 }
@@ -95,11 +95,10 @@ async function main() {
                         launched: false,
                     },
                     () => {
-                        // TODO i18n
                         tools.displayNotification(
-                            'Bienvenue sur stream[on] !',
+                            chrome.i18n.getMessage('welcomeMessage'),
                             'assets/icon512.png',
-                            "Cliquez ici pour paramétrer l'application",
+                            chrome.i18n.getMessage('clickHereToOpenOptions'),
                             chrome.runtime.openOptionsPage,
                         );
                     },

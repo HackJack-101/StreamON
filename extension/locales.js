@@ -44,7 +44,8 @@ const ids = [
     'configuration',
     'toUse',
     'weNeedTwitchConnection',
-    'authenticateWithTwitch'
+    'authenticateWithTwitch',
+    'debugOptions',
 ];
 
 function fill(id) {
@@ -56,7 +57,7 @@ function fill(id) {
 window.addEventListener(
     'DOMContentLoaded',
     function () {
-        ids.forEach((id) => fill(id))
+        ids.forEach((id) => fill(id));
     },
     false,
 );

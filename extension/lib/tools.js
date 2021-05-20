@@ -24,13 +24,13 @@
 /* global chrome */
 
 const tools = {
-    getProfileName: function(url) {
+    getProfileName: function (url) {
         const n = url.lastIndexOf('/');
         if (n === url.length - 1) return tools.getProfileName(url.substring(0, url.length - 1));
         else return url.substring(n + 1);
     },
-    openTab: function(pattern, url) {
-        chrome.tabs.query({ url: pattern }, function(a) {
+    openTab: function (pattern, url) {
+        chrome.tabs.query({ url: pattern }, function (a) {
             if (a.length < 1)
                 // Si la page n'est pas déjà ouverte, on ouvre un nouvel onglet
                 chrome.tabs.create({ url: url });
@@ -38,18 +38,18 @@ const tools = {
             else chrome.tabs.highlight({ windowId: a[0].windowId, tabs: a[0].index });
         });
     },
-    openMiniPlayer: function(url, resolution) {
+    openMiniPlayer: function (url, resolution) {
         const idDevMiniPlayer = 'ofdfelnalikpjnadfilplkdaijbalfhb';
         const idMiniPlayer = 'glccgoppknfoonfajicijebeaedpnkfp';
         const options = { url: url };
         if (resolution) {
             options.resolution = resolution;
         }
-        chrome.management.get(idDevMiniPlayer, function(r) {
+        chrome.management.get(idDevMiniPlayer, function (r) {
             if (r && r.enabled) {
                 chrome.runtime.sendMessage(idDevMiniPlayer, options);
             } else {
-                chrome.management.get(idMiniPlayer, function(r) {
+                chrome.management.get(idMiniPlayer, function (r) {
                     if (r && r.enabled) {
                         chrome.runtime.sendMessage(idMiniPlayer, options);
                     } else {
@@ -66,7 +66,7 @@ const tools = {
             body: body,
         });
 
-        notification.onclick = function() {
+        notification.onclick = function () {
             callback();
             this.close();
         };
@@ -76,7 +76,7 @@ const tools = {
                 notificationTimeout: 4000,
             },
             (options) => {
-                setTimeout(function() {
+                setTimeout(function () {
                     notification.close();
                 }, options.notificationTimeout);
             },

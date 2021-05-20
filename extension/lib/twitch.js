@@ -22,25 +22,19 @@
  */
 
 /* global tools, modules, chrome */
-// const CLIENT_ID = 'jpzyevuwtdws8n0fz8gp5erx8274r8d';
-const CLIENT_ID = 'j8iz9c0ve7u9rnhmt9pmfqdpfmqfx6';
+const CLIENT_ID = 'jpzyevuwtdws8n0fz8gp5erx8274r8d'; // Mac ID
+// const CLIENT_ID = 'j8iz9c0ve7u9rnhmt9pmfqdpfmqfx6'; // Windows ID
+// const CLIENT_ID = 'kehnkjfpdndnpddnhlnaeaplnbegleim'; // Published extension
 const tokenRegex = new RegExp('#access_token=([^&]+)', 'i');
 const TWITCH_API = 'https://api.twitch.tv/helix';
 
 modules.twitch = {
     data: {}, // Store channel key if online
     cache: [],
-    check: function (url) {
-        const regexp = /twitch\.tv/gi;
-        return url.match(regexp) !== null && url.match(regexp).length > 0;
-    },
-    display: function (url) {
-        modules.twitch.getData(url, modules.twitch.displayData);
-    },
     fetchData: function (url, callback, errorCallback) {
         chrome.storage.sync.get(
             {
-                token: ''
+                token: '',
             },
             (config) => {
                 console.log('fetchData', url, config.token);
@@ -63,7 +57,7 @@ modules.twitch = {
                 XHR.setRequestHeader('Client-ID', CLIENT_ID);
                 XHR.setRequestHeader('Authorization', 'Bearer ' + config.token);
                 XHR.send(null);
-            }
+            },
         );
     },
     connect: (callback) => {
@@ -75,30 +69,30 @@ modules.twitch = {
                     '&redirect_uri=https://' +
                     chrome.runtime.id +
                     '.chromiumapp.org/oauth&response_type=token&scope=user:read:follows',
-                interactive: true
+                interactive: true,
             },
             function (redirect_url) {
                 const res = tokenRegex.exec(redirect_url);
                 if (res[1]) {
                     const token = res[1];
-                    chrome.storage.sync.set({token}, () => {
+                    chrome.storage.sync.set({ token }, () => {
                         modules.twitch.syncUser(callback);
                     });
                 }
-            }
+            },
         );
     },
     isConnected: (success, error) => {
         chrome.storage.sync.get(
             {
-                token: ''
+                token: '',
             },
             (config) => {
                 if (!config.token) {
                     return error();
                 }
                 modules.twitch.fetchData(TWITCH_API + '/users', success, error);
-            }
+            },
         );
     },
     getFollows: (twitchID, callback, list = [], after = null) => {
@@ -106,34 +100,31 @@ modules.twitch = {
         if (after) {
             url += '&after=' + after;
         }
-        modules.twitch.fetchData(
-            url,
-            (following) => {
-                const streams = following.data
-                    .filter(({to_name}) => to_name.toLowerCase() !== 'sardoche') // C'ÉTAIT SÛR !!!!
-                    .map((user) => user.to_name);
+        modules.twitch.fetchData(url, (following) => {
+            const streams = following.data
+                .filter(({ to_name }) => to_name.toLowerCase() !== 'sardoche') // C'ÉTAIT SÛR !!!!
+                .map((user) => user.to_name);
 
-                if (following.pagination && following.pagination.cursor) {
-                    return modules.twitch.getFollows(twitchID, callback, list.concat(streams), following.pagination.cursor);
-                } else {
-                    return chrome.storage.sync.set({streams: list.concat(streams)}, () => callback());
-                }
+            if (following.pagination && following.pagination.cursor) {
+                return modules.twitch.getFollows(twitchID, callback, list.concat(streams), following.pagination.cursor);
+            } else {
+                return chrome.storage.sync.set({ streams: list.concat(streams) }, () => callback());
             }
-        );
+        });
     },
     syncUser: (callback, error) => {
         modules.twitch.isConnected((result) => {
             const id = result.data[0].id;
             if (id) {
-                chrome.storage.sync.set({twitchID: id}, () =>
-                    modules.twitch.getFollows(id, () => callback(result.data[0]))
+                chrome.storage.sync.set({ twitchID: id }, () =>
+                    modules.twitch.getFollows(id, () => callback(result.data[0])),
                 );
             }
         }, error);
     },
     getAsyncBulkData: () =>
         new Promise((resolve, reject) => {
-            chrome.storage.sync.get({twitchID: ''}, (config) => {
+            chrome.storage.sync.get({ twitchID: '' }, (config) => {
                 if (!config.twitchID) {
                     console.error('no twitchID');
                     return;
@@ -142,9 +133,9 @@ modules.twitch = {
                     TWITCH_API + '/streams/followed?user_id=' + config.twitchID,
                     (resStreams) => {
                         const connectedStreamers = resStreams.data;
-                        console.log({connectedStreamers});
+                        console.log({ connectedStreamers });
                         const games = [];
-                        connectedStreamers.forEach(({game_id}) => {
+                        connectedStreamers.forEach(({ game_id }) => {
                             if (!games.includes(game_id)) {
                                 games.push(game_id);
                             }
@@ -153,14 +144,13 @@ modules.twitch = {
                         const streams = connectedStreamers.map((stream) => {
                             return {
                                 name: stream.user_name ? stream.user_name : stream.user_login,
+                                login: stream.user_login,
                                 title: stream.title,
                                 game: stream.game_name,
-                                thumbnail: stream.thumbnail_url
-                                    .replace('{width}', '400')
-                                    .replace('{height}', '225'),
+                                thumbnail: stream.thumbnail_url.replace('{width}', '400').replace('{height}', '225'),
                                 startedAt: stream.started_at,
                                 viewers: stream.viewer_count,
-                                embed: 'http://player.twitch.tv/?channel=' + stream.user_name
+                                embed: 'http://player.twitch.tv/?channel=' + stream.user_name,
                             };
                         });
 
@@ -168,141 +158,78 @@ modules.twitch = {
 
                         resolve(streams);
                     },
-                    () => resolve(modules.twitch.cache)
+                    () => resolve(modules.twitch.cache),
                 );
             });
         }),
-    getUserLogo: function (profile, callback) {
-        modules.twitch.fetchData(
-            TWITCH_API + '/users?user_login=' + profile,
-            (res) => callback(res.data[0].profile_image_url),
-            () => callback('')
-        );
-    },
+    getUserLogo: (profile) =>
+        new Promise((resolve, reject) => {
+            modules.twitch.fetchData(
+                TWITCH_API + '/users?login=' + profile,
+                (res) => {
+                    console.log(res, res.data[0].profile_image_url);
+                    if (res.data && res.data[0] && res.data[0].profile_image_url) {
+                        return resolve(res.data[0].profile_image_url);
+                    }
+                    return reject('User data not found');
+                },
+                () => reject('User not found'),
+            );
+        }),
+    /**
+     * @deprecated
+     * @param url
+     * @param callback
+     */
     getData: function (url, callback) {
         const profile = tools.getProfileName(url);
         modules.twitch.fetchData(
             TWITCH_API + '/streams?user_login=' + profile,
             (res) => callback(true, res.data[0], profile),
-            () => callback(false, null, profile)
+            () => callback(false, null, profile),
         );
     },
+    /**
+     * @deprecated
+     * @param gameID
+     * @param callback
+     */
     getGameInfo: function (gameID, callback) {
         modules.twitch.fetchData(
             TWITCH_API + '/games?id=' + gameID,
             (res) => callback(res.data[0].name),
-            () => callback('jeu inconnu')
+            () => callback('Game not found'),
         );
     },
     getUserInfo: (login, callback) => {
         modules.twitch.fetchData(
             TWITCH_API + '/users?login=' + login,
             (res) => callback(res.data[0]),
-            () => callback(null)
+            () => callback(null),
         );
     },
-    displayData: (online, content, profile) => {
-        if (online) {
-            const thumbnail = content.thumbnail_url.replace('{width}', '400').replace('{height}', '225');
-            const title = content.title;
-            const name = content.user_name;
-            const gameID = content.game_id;
-            const embed = 'http://player.twitch.tv/?channel=' + profile;
-            modules.twitch.getGameInfo(gameID, (game) => {
-                addOnlineElement(profile, 'twitch', thumbnail, title, name, game, embed);
-            });
-        } else {
-            addOfflineElement(profile, 'twitch', null);
-        }
-    },
-    isNewOnline: ({name}) => {
+    isNewOnline: ({ name }) => {
         return !modules.twitch.data.hasOwnProperty(name);
     },
     notify: function (name, logo, title, game) {
         chrome.storage.sync.get(
             {
-                notif: true
+                notif: true,
             },
             (options) => {
                 if (options.notif) {
-                    const body = [
-                        chrome.i18n.getMessage('game') + ' : ' + game,
-                        title
-                    ];
-                    tools.displayNotification(name + ' ' + chrome.i18n.getMessage('isOnline'), logo, body.join('\n'), () => {
-                        modules.twitch.openStream(name);
-                    });
+                    const body = [chrome.i18n.getMessage('game') + ' : ' + game, title];
+                    tools.displayNotification(
+                        name + ' ' + chrome.i18n.getMessage('isOnline'),
+                        logo,
+                        body.join('\n'),
+                        () => {
+                            modules.twitch.openStream(name);
+                        },
+                    );
                 }
-            }
+            },
         );
-    },
-    notifyData: function (online, content, profile) {
-        if (!modules.twitch.data[profile]) {
-            modules.twitch.data[profile] = {
-                streamOnline: false,
-                game: '',
-                title: '',
-                logo: ''
-            };
-        }
-        if (online) {
-            if (!modules.twitch.data[profile].streamOnline) {
-                modules.twitch.data[profile].streamOnline = true;
-                modules.twitch.data[profile].game = content.game_id;
-                modules.twitch.data[profile].title = content.title;
-                modules.twitch.getUserLogo(profile, (logo) => {
-                    modules.twitch.getGameInfo(content.game_id, (game) => {
-                        chrome.storage.sync.get(
-                            {
-                                notif: true
-                            },
-                            (options) => {
-                                if (options.notif) {
-                                    const title = content.title;
-                                    const icon = logo;
-                                    const body = chrome.i18n.getMessage('game') + ' : ' + game;
-                                    tools.displayNotification(title, icon, body, function () {
-                                        modules.twitch.openStream(profile);
-                                    });
-                                }
-                            }
-                        );
-                    });
-                });
-            } else {
-                if (
-                    content.game_id !== modules.twitch.data[profile].game ||
-                    content.title !== modules.twitch.data[profile].title
-                ) {
-                    modules.twitch.data[profile].game = content.game_id;
-                    modules.twitch.data[profile].title = content.title;
-                    modules.twitch.getUserLogo(profile, (logo) => {
-                        modules.twitch.getGameInfo(content.game_id, (game) => {
-                            chrome.storage.sync.get(
-                                {
-                                    notif: true,
-                                    titleNotif: false
-                                },
-                                (options) => {
-                                    if (options.notif && options.titleNotif) {
-                                        const title = content.title;
-                                        const icon = logo;
-                                        const body = chrome.i18n.getMessage('game') + ' : ' + game;
-                                        tools.displayNotification(title, icon, body, function () {
-                                            modules.twitch.openStream(profile);
-                                        });
-                                    }
-                                }
-                            );
-                        });
-                    });
-                }
-            }
-        } else {
-            if (modules.twitch.data[profile].streamOnline) {
-                modules.twitch.data[profile].streamOnline = false;
-            }
-        }
     },
     openStream: function (profile) {
         const pattern = '*://*.twitch.tv/' + profile;
@@ -312,17 +239,19 @@ modules.twitch = {
     checkStreams: async function (force = false) {
         const twitch = await modules.twitch.getAsyncBulkData();
 
-        twitch
-            .filter((data) => force || modules.twitch.isNewOnline(data))
-            .forEach((stream, index) => {
-                    console.log(stream);
-                    const {game, name, thumbnail, title} = stream;
-                    return setTimeout(() => modules.twitch.notify(name, thumbnail, title, game), index * 2500);
-                }
-            );
+        await Promise.all(
+            twitch
+                .filter((data) => force || modules.twitch.isNewOnline(data))
+                .map(async (stream, index) => {
+                    const { game, name, title, login } = stream;
+                    const profileImage = await modules.twitch.getUserLogo(login);
+                    console.log(profileImage);
+                    return setTimeout(() => modules.twitch.notify(name, profileImage, title, game), index * 2500);
+                }),
+        );
         modules.twitch.data = twitch.reduce((acc, stream) => {
             acc[stream.name] = stream;
             return acc;
         }, {});
-    }
+    },
 };

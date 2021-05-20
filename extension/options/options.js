@@ -81,8 +81,9 @@ function displayStream(stream) {
     modules.twitch.getUserInfo(stream, (data) => profilePicture.setAttribute('src', data.profile_image_url));
 
     const title = document.createElement('div');
-    title.setAttribute('class', 'streamer-name')
-    title.innerHTML = '<a href="https://twitch.com/' + stream + '" target="_blank" class="twitch-link">' + stream + '</a>';
+    title.setAttribute('class', 'streamer-name');
+    title.innerHTML =
+        '<a href="https://twitch.com/' + stream + '" target="_blank" class="twitch-link">' + stream + '</a>';
 
     newElement.appendChild(profilePicture);
     newElement.appendChild(title);
@@ -113,7 +114,7 @@ function displayUser(user) {
                     chrome.storage.sync.set(
                         {
                             token: '',
-                            streams: []
+                            streams: [],
                         },
                         () => document.location.reload(true),
                     );
@@ -131,7 +132,6 @@ function hideUser() {
 document.addEventListener(
     'DOMContentLoaded',
     () => {
-
         restoreOptions();
 
         document.getElementById('form').addEventListener('submit', (e) => {
@@ -156,14 +156,13 @@ document.addEventListener(
 
         document.getElementById('checkTwitchStreams').addEventListener('click', async function (e) {
             e.preventDefault();
-            await modules.twitch.checkStreams(true)
-        })
+            await modules.twitch.checkStreams(true);
+        });
 
         modules.twitch.syncUser(async (res) => {
             hideAuthentication();
             displayUser(res);
         }, displayAuthentication);
-
 
         const optionsAdvanced = document.getElementById('advancedOptions');
         if (optionsAdvanced) {
