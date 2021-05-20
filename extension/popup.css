@@ -20,6 +20,9 @@
  * - HackJack https://github.com/Jack3113
  * - AamuLumi https://github.com/AamuLumi
  */
+html {
+    overflow: hidden;
+}
 
 body {
     font-family: 'PT Sans', 'Roboto', 'Segoe UI', Tahoma, sans-serif;
@@ -30,6 +33,11 @@ body {
     background: linear-gradient(135deg, rgba(24, 10, 21, 1), rgba(36, 1, 1, 1));
     cursor: default;
     color: white;
+    margin: 0;
+    min-height: calc(599px - 48px);
+    max-height: calc(599px - 48px);
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 #header {
@@ -201,4 +209,25 @@ h2 {
 
 .game {
     font-style: initial;
+}
+
+@keyframes appear {
+    0% {
+        opacity: 0;
+        margin-top: 30px;
+    }
+
+    100% {
+        opacity: 1;
+        margin-top: 0;
+    }
+}
+
+.component-enter {
+    animation: appear 2s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+#authenticate {
+    margin-top: 32px;
+    font-size: 1rem;
 }

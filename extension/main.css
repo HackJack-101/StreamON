@@ -5,9 +5,9 @@
 #authenticate-button {
     background: #755ca7;
     cursor: pointer;
-    margin: 20px auto;
+    margin: 32px auto;
     padding: 10px 15px;
-    font-size: 1.5em;
+    font-size: 1.125rem;
     display: flex;
     flex-direction: row;
     align-items: center;

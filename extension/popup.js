@@ -37,8 +37,8 @@ async function checkStreams() {
         Array.prototype.forEach.call(document.getElementsByClassName('loading'), (element) => {
             element.style.display = 'none';
         });
-        twitch.forEach(({game, name, startedAt, thumbnail, title, viewers, embed}) =>
-            addOnlineElement(name, 'twitch', thumbnail, title, name, game, viewers, embed, startedAt),
+        twitch.forEach(({game, name, startedAt, thumbnail, title, viewers, embed}, index) =>
+            setTimeout(() => addOnlineElement(name, 'twitch', thumbnail, title, name, game, viewers, embed, startedAt), index * 100)
         );
     }
 }
@@ -52,7 +52,7 @@ function addOfflineElement(profile, server, name) {
         function () {
             modules[server].openStream(this.getAttribute('data-profile'));
         },
-        false,
+        false
     );
     if (name) e.innerHTML = name;
     else e.innerHTML = profile;
@@ -64,7 +64,7 @@ function addOfflineElement(profile, server, name) {
 
 function addOnlineElement(profile, server, _img, _title, _name, _game, _viewers, embed, startedAt) {
     const e = document.createElement('a');
-    e.setAttribute('class', 'streamOn');
+    e.setAttribute('class', 'streamOn component-enter');
     e.setAttribute('data-profile', profile);
 
     const img = document.createElement('img');
@@ -76,7 +76,7 @@ function addOnlineElement(profile, server, _img, _title, _name, _game, _viewers,
         function () {
             modules[server].openStream(this.parentNode.getAttribute('data-profile'));
         },
-        false,
+        false
     );
     e.appendChild(img);
 
@@ -91,7 +91,7 @@ function addOnlineElement(profile, server, _img, _title, _name, _game, _viewers,
         function () {
             modules[server].openStream(this.parentNode.parentNode.getAttribute('data-profile'));
         },
-        false,
+        false
     );
     desc.appendChild(title);
 
@@ -196,6 +196,9 @@ function createViewersDiv(viewersNumber) {
 
 function displayAuthentication() {
     document.getElementById('authenticate').style.display = 'block';
+    Array.prototype.forEach.call(document.getElementsByClassName('loading'), (element) => {
+        element.style.display = 'none';
+    });
 }
 
 function hideAuthentication() {
@@ -208,17 +211,19 @@ async function main() {
         () => {
             chrome.runtime.openOptionsPage();
         },
-        false,
+        false
     );
     document.getElementById('authenticate-button').addEventListener(
         'click',
         () => {
             modules.twitch.connect(
-                checkStreams,
-                () => console.log('Connected'),
+                () => {
+                    checkStreams();
+                    hideAuthentication();
+                }
             );
         },
-        false,
+        false
     );
 
     modules.twitch.syncUser(async () => {
@@ -226,10 +231,6 @@ async function main() {
         await checkStreams();
     }, displayAuthentication);
 
-    // modules.twitch.isConnected(async () => {
-    //     hideAuthentication();
-    //     await checkStreams();
-    // }, displayAuthentication);
 }
 
 window.addEventListener('DOMContentLoaded', main, false);
