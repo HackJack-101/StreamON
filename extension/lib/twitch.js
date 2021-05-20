@@ -22,7 +22,8 @@
  */
 
 /* global tools, modules, chrome */
-const CLIENT_ID = 'jpzyevuwtdws8n0fz8gp5erx8274r8d';
+// const CLIENT_ID = 'jpzyevuwtdws8n0fz8gp5erx8274r8d';
+const CLIENT_ID = 'j8iz9c0ve7u9rnhmt9pmfqdpfmqfx6';
 const tokenRegex = new RegExp('#access_token=([^&]+)', 'i');
 const TWITCH_API = 'https://api.twitch.tv/helix';
 
@@ -39,10 +40,10 @@ modules.twitch = {
     fetchData: function (url, callback, errorCallback) {
         chrome.storage.sync.get(
             {
-                token: '',
+                token: ''
             },
             (config) => {
-                console.log('fetchData', url, config.token)
+                console.log('fetchData', url, config.token);
                 const XHR = new XMLHttpRequest();
 
                 XHR.onreadystatechange = function () {
@@ -62,7 +63,7 @@ modules.twitch = {
                 XHR.setRequestHeader('Client-ID', CLIENT_ID);
                 XHR.setRequestHeader('Authorization', 'Bearer ' + config.token);
                 XHR.send(null);
-            },
+            }
         );
     },
     connect: (callback) => {
@@ -74,7 +75,7 @@ modules.twitch = {
                     '&redirect_uri=https://' +
                     chrome.runtime.id +
                     '.chromiumapp.org/oauth&response_type=token&scope=user:read:follows',
-                interactive: true,
+                interactive: true
             },
             function (redirect_url) {
                 const res = tokenRegex.exec(redirect_url);
@@ -84,20 +85,20 @@ modules.twitch = {
                         modules.twitch.syncUser(callback);
                     });
                 }
-            },
+            }
         );
     },
     isConnected: (success, error) => {
         chrome.storage.sync.get(
             {
-                token: '',
+                token: ''
             },
             (config) => {
                 if (!config.token) {
                     return error();
                 }
                 modules.twitch.fetchData(TWITCH_API + '/users', success, error);
-            },
+            }
         );
     },
     getFollows: (twitchID, callback, list = [], after = null) => {
@@ -113,11 +114,11 @@ modules.twitch = {
                     .map((user) => user.to_name);
 
                 if (following.pagination && following.pagination.cursor) {
-                    return modules.twitch.getFollows(twitchID, callback, list.concat(streams), following.pagination.cursor)
+                    return modules.twitch.getFollows(twitchID, callback, list.concat(streams), following.pagination.cursor);
                 } else {
                     return chrome.storage.sync.set({streams: list.concat(streams)}, () => callback());
                 }
-            },
+            }
         );
     },
     syncUser: (callback, error) => {
@@ -130,7 +131,7 @@ modules.twitch = {
             }
         }, error);
     },
-    getAsyncBulkData: (userID) =>
+    getAsyncBulkData: () =>
         new Promise((resolve, reject) => {
             chrome.storage.sync.get({twitchID: ''}, (config) => {
                 if (!config.twitchID) {
@@ -141,50 +142,41 @@ modules.twitch = {
                     TWITCH_API + '/streams/followed?user_id=' + config.twitchID,
                     (resStreams) => {
                         const connectedStreamers = resStreams.data;
+                        console.log({connectedStreamers});
                         const games = [];
                         connectedStreamers.forEach(({game_id}) => {
                             if (!games.includes(game_id)) {
                                 games.push(game_id);
                             }
                         });
-                        modules.twitch.fetchData(
-                            TWITCH_API + '/games?id=' + games.join('&id='),
-                            (fetchedGames) => {
-                                const gamesData = fetchedGames.data.reduce((acc, game) => {
-                                    acc[game.id] = game;
-                                    return acc;
-                                }, {});
 
-                                const streams = connectedStreamers.map((stream) => {
-                                    return {
-                                        name: stream.user_name,
-                                        title: stream.title,
-                                        game: gamesData[stream.game_id] ? gamesData[stream.game_id].name : '',
-                                        thumbnail: stream.thumbnail_url
-                                            .replace('{width}', '400')
-                                            .replace('{height}', '225'),
-                                        startedAt: stream.started_at,
-                                        viewers: stream.viewer_count,
-                                        embed: 'http://player.twitch.tv/?channel=' + stream.user_name,
-                                    };
-                                });
+                        const streams = connectedStreamers.map((stream) => {
+                            return {
+                                name: stream.user_name ? stream.user_name : stream.user_login,
+                                title: stream.title,
+                                game: stream.game_name,
+                                thumbnail: stream.thumbnail_url
+                                    .replace('{width}', '400')
+                                    .replace('{height}', '225'),
+                                startedAt: stream.started_at,
+                                viewers: stream.viewer_count,
+                                embed: 'http://player.twitch.tv/?channel=' + stream.user_name
+                            };
+                        });
 
-                                modules.twitch.cache = streams;
+                        modules.twitch.cache = streams;
 
-                                resolve(streams);
-                            },
-                            () => resolve(modules.twitch.cache),
-                        );
+                        resolve(streams);
                     },
-                    () => resolve(modules.twitch.cache),
-                )
+                    () => resolve(modules.twitch.cache)
+                );
             });
         }),
     getUserLogo: function (profile, callback) {
         modules.twitch.fetchData(
             TWITCH_API + '/users?user_login=' + profile,
             (res) => callback(res.data[0].profile_image_url),
-            () => callback(''),
+            () => callback('')
         );
     },
     getData: function (url, callback) {
@@ -192,21 +184,21 @@ modules.twitch = {
         modules.twitch.fetchData(
             TWITCH_API + '/streams?user_login=' + profile,
             (res) => callback(true, res.data[0], profile),
-            () => callback(false, null, profile),
+            () => callback(false, null, profile)
         );
     },
     getGameInfo: function (gameID, callback) {
         modules.twitch.fetchData(
             TWITCH_API + '/games?id=' + gameID,
             (res) => callback(res.data[0].name),
-            () => callback('jeu inconnu'),
+            () => callback('jeu inconnu')
         );
     },
     getUserInfo: (login, callback) => {
         modules.twitch.fetchData(
             TWITCH_API + '/users?login=' + login,
             (res) => callback(res.data[0]),
-            () => callback(null),
+            () => callback(null)
         );
     },
     displayData: (online, content, profile) => {
@@ -229,19 +221,19 @@ modules.twitch = {
     notify: function (name, logo, title, game) {
         chrome.storage.sync.get(
             {
-                notif: true,
+                notif: true
             },
             (options) => {
                 if (options.notif) {
                     const body = [
                         chrome.i18n.getMessage('game') + ' : ' + game,
-                        title,
+                        title
                     ];
-                    tools.displayNotification(name + ' ' + chrome.i18n.getMessage('isOnline'), logo, body.join("\n"), () => {
+                    tools.displayNotification(name + ' ' + chrome.i18n.getMessage('isOnline'), logo, body.join('\n'), () => {
                         modules.twitch.openStream(name);
                     });
                 }
-            },
+            }
         );
     },
     notifyData: function (online, content, profile) {
@@ -250,7 +242,7 @@ modules.twitch = {
                 streamOnline: false,
                 game: '',
                 title: '',
-                logo: '',
+                logo: ''
             };
         }
         if (online) {
@@ -262,7 +254,7 @@ modules.twitch = {
                     modules.twitch.getGameInfo(content.game_id, (game) => {
                         chrome.storage.sync.get(
                             {
-                                notif: true,
+                                notif: true
                             },
                             (options) => {
                                 if (options.notif) {
@@ -273,7 +265,7 @@ modules.twitch = {
                                         modules.twitch.openStream(profile);
                                     });
                                 }
-                            },
+                            }
                         );
                     });
                 });
@@ -289,7 +281,7 @@ modules.twitch = {
                             chrome.storage.sync.get(
                                 {
                                     notif: true,
-                                    titleNotif: false,
+                                    titleNotif: false
                                 },
                                 (options) => {
                                     if (options.notif && options.titleNotif) {
@@ -300,7 +292,7 @@ modules.twitch = {
                                             modules.twitch.openStream(profile);
                                         });
                                     }
-                                },
+                                }
                             );
                         });
                     });
