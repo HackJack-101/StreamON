@@ -1,0 +1,20 @@
+{
+  "name": "streamon",
+  "version": "1.0.0",
+  "description": "A web extension for Twitch followed channels",
+  "main": "background.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "prettier": "^2.3.0",
+    "replace-in-file": "^6.2.0",
+    "uglify-js": "^3.13.7"
+  },
+  "scripts": {
+    "build": "./build/build.sh"
+  },
+  "author": "HackJack",
+  "license": "Apache-2.0"
+}

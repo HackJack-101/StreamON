@@ -22,9 +22,9 @@
  */
 
 /* global tools, modules, chrome */
-const CLIENT_ID = 'jpzyevuwtdws8n0fz8gp5erx8274r8d'; // Mac ID
 // const CLIENT_ID = 'j8iz9c0ve7u9rnhmt9pmfqdpfmqfx6'; // Windows ID
-// const CLIENT_ID = 'kehnkjfpdndnpddnhlnaeaplnbegleim'; // Published extension
+/* @devKey */ const CLIENT_ID = 'jpzyevuwtdws8n0fz8gp5erx8274r8d'; // Mac ID
+// @publishedKey const CLIENT_ID = 'kehnkjfpdndnpddnhlnaeaplnbegleim'; // Published extension
 const tokenRegex = new RegExp('#access_token=([^&]+)', 'i');
 const TWITCH_API = 'https://api.twitch.tv/helix';
 
