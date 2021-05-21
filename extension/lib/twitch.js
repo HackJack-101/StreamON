@@ -73,6 +73,7 @@ modules.twitch = {
             },
             function (redirect_url) {
                 const res = tokenRegex.exec(redirect_url);
+                console.log(res);
                 if (res[1]) {
                     const token = res[1];
                     chrome.storage.sync.set({ token }, () => {

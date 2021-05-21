@@ -42,27 +42,6 @@ function openMiniPlayer(info, tab) {
     else tools.openMiniPlayer(tab.url, true);
 }
 
-function followStream(info, tab) {
-    const newStream = tab.url;
-    if (info.linkUrl) {
-        console.log(info.linkURL);
-    }
-
-    chrome.storage.sync.get(
-        {
-            streams: '',
-        },
-        (options) => {
-            let streams = options.streams;
-            if (streams.length > 0) {
-                streams += '\n';
-            }
-            streams += newStream;
-            chrome.storage.sync.set({ streams: streams });
-        },
-    );
-}
-
 async function main() {
     chrome.storage.sync.get(
         {
@@ -74,12 +53,6 @@ async function main() {
                 const menu = chrome.contextMenus.create({
                     title: 'stream[on]',
                     contexts: ['all'],
-                });
-                const followMenu = chrome.contextMenus.create({
-                    title: chrome.i18n.getMessage('followWithStreamON'),
-                    contexts: ['page', 'link', 'selection', 'frame'],
-                    parentId: menu,
-                    onclick: followStream,
                 });
                 const miniPlayerMenu = chrome.contextMenus.create({
                     title: chrome.i18n.getMessage('openMiniPlayer'),

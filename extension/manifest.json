@@ -27,7 +27,7 @@
         ],
         "persistent": true
     },
-    "web_accessible_resources": ["assets/*.png", "scripts/*.js", "lib/*.js", "options/options.html"],
+    "web_accessible_resources": ["assets/*.png", "lib/*.js", "options/options.html"],
     "icons": {
         "16": "assets/icon16.png",
         "48": "assets/icon48.png",
