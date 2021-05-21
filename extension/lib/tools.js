@@ -39,23 +39,17 @@ const tools = {
         });
     },
     openMiniPlayer: function (url, resolution) {
-        const idDevMiniPlayer = 'ofdfelnalikpjnadfilplkdaijbalfhb';
-        const idMiniPlayer = 'glccgoppknfoonfajicijebeaedpnkfp';
+        /* @devKey */ const idMiniPlayer = 'ofdfelnalikpjnadfilplkdaijbalfhb';
+        // @publishedKey const idMiniPlayer = 'glccgoppknfoonfajicijebeaedpnkfp';
         const options = { url: url };
         if (resolution) {
             options.resolution = resolution;
         }
-        chrome.management.get(idDevMiniPlayer, function (r) {
+        chrome.management.get(idMiniPlayer, function (r) {
             if (r && r.enabled) {
-                chrome.runtime.sendMessage(idDevMiniPlayer, options);
+                chrome.runtime.sendMessage(idMiniPlayer, options);
             } else {
-                chrome.management.get(idMiniPlayer, function (r) {
-                    if (r && r.enabled) {
-                        chrome.runtime.sendMessage(idMiniPlayer, options);
-                    } else {
-                        chrome.tabs.create({ url: 'https://chrome.google.com/webstore/detail/' + idMiniPlayer });
-                    }
-                });
+                chrome.tabs.create({ url: 'https://chrome.google.com/webstore/detail/' + idMiniPlayer });
             }
         });
     },
