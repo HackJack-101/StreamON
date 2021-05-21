@@ -19,14 +19,14 @@
 
 /* global chrome, modules, tools */
 
-async function checkStreams() {
+async function checkStreams(silent = false) {
     chrome.storage.sync.get(
         {
             background: true,
         },
         async (options) => {
             if (options.background) {
-                await modules.twitch.checkStreams();
+                await modules.twitch.checkStreams(false, silent);
             }
         },
     );
@@ -65,7 +65,7 @@ async function main() {
             if (!options.launched) {
                 chrome.storage.sync.set(
                     {
-                        launched: false,
+                        launched: true,
                     },
                     () => {
                         tools.displayNotification(
@@ -85,7 +85,7 @@ async function main() {
             refreshTime: 60,
         },
         (options) => {
-            setTimeout(checkStreams, 1000 * 5); // We wait 5 seconds after the welcome notification
+            checkStreams(true);
             setInterval(checkStreams, 1000 * options.refreshTime);
         },
     );

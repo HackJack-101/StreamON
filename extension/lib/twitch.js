@@ -31,7 +31,7 @@ const TWITCH_API = 'https://api.twitch.tv/helix';
 modules.twitch = {
     data: {}, // Store channel key if online
     cache: [],
-    fetchData: function (url, callback, errorCallback) {
+    fetchData: function(url, callback, errorCallback) {
         chrome.storage.sync.get(
             {
                 token: '',
@@ -40,7 +40,7 @@ modules.twitch = {
                 console.log('fetchData', url, config.token);
                 const XHR = new XMLHttpRequest();
 
-                XHR.onreadystatechange = function () {
+                XHR.onreadystatechange = function() {
                     if (XHR.readyState === 4) {
                         if (XHR.status === 200 || XHR.status === 0) {
                             const result = JSON.parse(XHR.responseText);
@@ -71,7 +71,7 @@ modules.twitch = {
                     '.chromiumapp.org/oauth&response_type=token&scope=user:read:follows',
                 interactive: true,
             },
-            function (redirect_url) {
+            function(redirect_url) {
                 const res = tokenRegex.exec(redirect_url);
                 console.log(res);
                 if (res[1]) {
@@ -182,7 +182,7 @@ modules.twitch = {
      * @param url
      * @param callback
      */
-    getData: function (url, callback) {
+    getData: function(url, callback) {
         const profile = tools.getProfileName(url);
         modules.twitch.fetchData(
             TWITCH_API + '/streams?user_login=' + profile,
@@ -195,7 +195,7 @@ modules.twitch = {
      * @param gameID
      * @param callback
      */
-    getGameInfo: function (gameID, callback) {
+    getGameInfo: function(gameID, callback) {
         modules.twitch.fetchData(
             TWITCH_API + '/games?id=' + gameID,
             (res) => callback(res.data[0].name),
@@ -212,7 +212,7 @@ modules.twitch = {
     isNewOnline: ({ name }) => {
         return !modules.twitch.data.hasOwnProperty(name);
     },
-    notify: function (name, logo, title, game) {
+    notify: function(name, logo, title, game) {
         chrome.storage.sync.get(
             {
                 notif: true,
@@ -232,12 +232,12 @@ modules.twitch = {
             },
         );
     },
-    openStream: function (profile) {
+    openStream: function(profile) {
         const pattern = '*://*.twitch.tv/' + profile;
         const url = 'http://twitch.tv/' + profile;
         tools.openTab(pattern, url);
     },
-    checkStreams: async function (force = false) {
+    checkStreams: async function(force = false, silent = false) {
         const twitch = await modules.twitch.getAsyncBulkData();
 
         await Promise.all(
@@ -246,7 +246,9 @@ modules.twitch = {
                 .map(async (stream, index) => {
                     const { game, name, title, login } = stream;
                     const profileImage = await modules.twitch.getUserLogo(login);
-                    console.log(profileImage);
+                    if (silent) {
+                        return Promise.resolve(true);
+                    }
                     return setTimeout(() => modules.twitch.notify(name, profileImage, title, game), index * 2500);
                 }),
         );
