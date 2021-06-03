@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "__MSG_extName__",
     "default_locale": "en",
-    "version": "1.0.1",
+    "version": "1.0.3",
     "description": "__MSG_extDesc__",
     "browser_action": {
         "default_icon": "assets/icon128.png",

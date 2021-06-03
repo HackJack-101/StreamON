@@ -159,7 +159,7 @@ modules.twitch = {
 
                         resolve(streams);
                     },
-                    () => resolve(modules.twitch.cache),
+                    (err) => reject(err),
                 );
             });
         }),
@@ -209,8 +209,8 @@ modules.twitch = {
             () => callback(null),
         );
     },
-    isNewOnline: ({ name }) => {
-        return !modules.twitch.data.hasOwnProperty(name);
+    isNewOnline: ({ login }) => {
+        return !modules.twitch.data.hasOwnProperty(login);
     },
     notify: function(name, logo, title, game) {
         chrome.storage.sync.get(
@@ -240,21 +240,25 @@ modules.twitch = {
     checkStreams: async function(force = false, silent = false) {
         const twitch = await modules.twitch.getAsyncBulkData();
 
-        await Promise.all(
-            twitch
-                .filter((data) => force || modules.twitch.isNewOnline(data))
-                .map(async (stream, index) => {
-                    const { game, name, title, login } = stream;
-                    const profileImage = await modules.twitch.getUserLogo(login);
-                    if (silent) {
-                        return Promise.resolve(true);
-                    }
-                    return setTimeout(() => modules.twitch.notify(name, profileImage, title, game), index * 2500);
-                }),
-        );
+        let newStreams = twitch;
+        if (!force) {
+            newStreams = twitch.filter((data) => modules.twitch.isNewOnline(data));
+        }
+
         modules.twitch.data = twitch.reduce((acc, stream) => {
-            acc[stream.name] = stream;
+            acc[stream.login] = stream;
             return acc;
         }, {});
+
+        await Promise.all(
+            newStreams.map(async (stream, index) => {
+                const { game, name, title, login } = stream;
+                const profileImage = await modules.twitch.getUserLogo(login);
+                if (silent) {
+                    return Promise.resolve(true);
+                }
+                return setTimeout(() => modules.twitch.notify(name, profileImage, title, game), index * 2500);
+            }),
+        );
     },
 };
